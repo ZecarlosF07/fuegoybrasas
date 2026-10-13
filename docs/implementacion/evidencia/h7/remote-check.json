@@ -1,0 +1,94 @@
+{
+  "checkedAt": "2026-10-12T00:43:07.822Z",
+  "projectRef": "geazxsvjkqpzbghlywbw",
+  "acl": [
+    {
+      "result": {
+        "anonymousDashboardDenied": true,
+        "authBridgeDenied": true,
+        "customers": 0,
+        "events": 0,
+        "incidentBindingTrigger": true,
+        "managementFunctions": [
+          {
+            "name": "complete_staff_invitation",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "credit_contingency_stamp",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "get_admin_customers",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "get_customer_history",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "get_loyalty_dashboard",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "get_loyalty_incidents",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "get_managed_staff",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "prepare_staff_invitation",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "recover_card_access",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "reinstate_reward",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "reverse_stamp",
+            "owner": "app_owner",
+            "securityDefiner": true
+          },
+          {
+            "name": "stage_staff_invitation",
+            "owner": "app_owner",
+            "securityDefiner": true
+          }
+        ],
+        "migrations": 22,
+        "ordinaryCustomerTableDenied": true,
+        "privateSchemaDenied": true,
+        "privilegedRestitutionDenied": true,
+        "publicLoyaltyEnabled": false,
+        "tables": 18
+      }
+    }
+  ],
+  "integrity": [
+    {
+      "active_partial_invitations": 0,
+      "application_tables": 18,
+      "balance_mismatches": 0,
+      "hidden_open_incidents": 0,
+      "hidden_protected_rewards": 0,
+      "invalid_available_ordinals": 0,
+      "public_loyalty_enabled": false
+    }
+  ]
+}

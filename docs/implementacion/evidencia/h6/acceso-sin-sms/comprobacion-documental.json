@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-11",
+  "files": 7,
+  "links": 173,
+  "failures": [],
+  "h6Pending": [
+    "Completar revisión manual con lector de pantalla y zoom real. Teclado, foco, labels/errores, axe/contraste y reflujo automático pasan; los casos no ejecutados se identifican en el reporte."
+  ]
+}

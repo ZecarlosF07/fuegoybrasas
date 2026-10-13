@@ -1,0 +1,75 @@
+{
+  "checkedAt": "2026-10-11",
+  "projectRefVerifiedBeforeQuery": "geazxsvjkqpzbghlywbw",
+  "source": "supabase/checks/card-access-readonly.sql",
+  "result": [
+    {
+      "access_check": {
+        "activeProgramCount": 0,
+        "cardCount": 0,
+        "contactPhoneColumnPresent": true,
+        "customerConstraints": [
+          "customer_active_identity",
+          "customer_key_pair",
+          "customers_access_key_hash_check",
+          "customers_access_key_hash_key",
+          "customers_auth_user_id_fkey",
+          "customers_auth_user_id_key",
+          "customers_check1",
+          "customers_contact_phone_check",
+          "customers_deleted_by_fkey",
+          "customers_display_name_check",
+          "customers_frequent_instructions_check",
+          "customers_pkey",
+          "customers_revision_check",
+          "customers_status_check",
+          "customers_terms_version_check",
+          "loyalty_deletion_metadata"
+        ],
+        "customerCount": 0,
+        "eventCount": 0,
+        "keyNotInProjection": true,
+        "keyRpcPermissions": [
+          {
+            "anonDenied": true,
+            "authenticatedDenied": true,
+            "function": "ensure_card_by_key",
+            "owner": "app_owner",
+            "securityDefiner": true,
+            "serverAllowed": true
+          },
+          {
+            "anonDenied": true,
+            "authenticatedDenied": true,
+            "function": "get_card_by_key",
+            "owner": "app_owner",
+            "securityDefiner": true,
+            "serverAllowed": true
+          },
+          {
+            "anonDenied": true,
+            "authenticatedDenied": true,
+            "function": "update_card_phone_by_key",
+            "owner": "app_owner",
+            "securityDefiner": true,
+            "serverAllowed": true
+          },
+          {
+            "anonDenied": true,
+            "authenticatedDenied": true,
+            "function": "update_card_profile_by_key",
+            "owner": "app_owner",
+            "securityDefiner": true,
+            "serverAllowed": true
+          }
+        ],
+        "loyaltyEnabled": false,
+        "migrationApplied": true,
+        "migrationCount": 15,
+        "ownTableCount": 18,
+        "privateSchemaDenied": true,
+        "rewardCount": 0
+      }
+    }
+  ]
+}

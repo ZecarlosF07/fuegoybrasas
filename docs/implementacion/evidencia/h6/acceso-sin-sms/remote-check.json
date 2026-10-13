@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-10",
+  "projectRefVerifiedBeforeQuery": "geazxsvjkqpzbghlywbw",
+  "source": "supabase/checks/card-access-readonly.sql",
+  "migrationApplied": true,
+  "migrationCount": 15,
+  "ownTableCount": 18,
+  "customerCount": 0,
+  "cardCount": 0,
+  "eventCount": 0,
+  "rewardCount": 0,
+  "activeProgramCount": 0,
+  "loyaltyEnabled": false,
+  "contactPhoneColumnPresent": true,
+  "keyNotInProjection": true,
+  "privateSchemaDenied": true,
+  "keyRpcPermissions": [
+    { "function": "ensure_card_by_key", "anonDenied": true, "authenticatedDenied": true, "serverAllowed": true, "securityDefiner": true, "owner": "app_owner" },
+    { "function": "get_card_by_key", "anonDenied": true, "authenticatedDenied": true, "serverAllowed": true, "securityDefiner": true, "owner": "app_owner" },
+    { "function": "update_card_phone_by_key", "anonDenied": true, "authenticatedDenied": true, "serverAllowed": true, "securityDefiner": true, "owner": "app_owner" },
+    { "function": "update_card_profile_by_key", "anonDenied": true, "authenticatedDenied": true, "serverAllowed": true, "securityDefiner": true, "owner": "app_owner" }
+  ]
+}

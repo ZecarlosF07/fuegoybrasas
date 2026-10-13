@@ -1,0 +1,17 @@
+begin;
+select plan(13);
+select ok(not has_function_privilege('anon','public.get_admin_catalog(boolean)','execute'),'Proyección privada sin anónimo');
+select ok(has_function_privilege('authenticated','public.update_catalog_item(uuid,integer,jsonb,uuid)','execute'),'RPC comercial disponible con validación de identidad interna');
+select ok(not has_function_privilege('service_role','public.update_catalog_item(uuid,integer,jsonb,uuid)','execute'),'Secreto no sustituye actor de catálogo');
+select ok(not has_schema_privilege('authenticated','app_private','usage'),'Sin acceso a auxiliares privados');
+select is((select count(*)::integer from pg_proc where pronamespace='public'::regnamespace and proname in('update_catalog_item','update_catalog_category','update_catalog_price','update_catalog_promotion','update_catalog_option_group','update_catalog_option_choice') and prosecdef),6,'Seis escritores estrechos security definer');
+select ok((select bool_and(proconfig @> array['search_path=""']) from pg_proc where pronamespace='public'::regnamespace and proname like 'update_catalog_%'),'search_path cerrado');
+select is((select count(*)::integer from public.catalog_items where content_verified),17,'H8 conserva únicamente los contenidos confirmados por el propietario');
+select ok((select content_verified from public.catalog_items where source_ref='P05'),'P05 conserva confirmación del propietario');
+select ok((select public and file_size_limit=3145728 from storage.buckets where id='catalog-media'),'Bucket público limitado a 3 MiB');
+select is((select count(*)::integer from pg_policies where schemaname='storage' and tablename='objects' and policyname='catalog_media_manager_insert'),1,'Inserción Storage protegida por responsable');
+select is((select count(*)::integer from pg_policies where schemaname='storage' and tablename='objects' and policyname like 'catalog_media_%' and cmd in('UPDATE','DELETE')),0,'Sin sobrescritura ni borrado directo');
+select throws_ok('select public.get_admin_catalog(true)','P0001','AUTH_REQUIRED','Invocación directa también valida identidad');
+select throws_ok('select public.prepare_catalog_image_cleanup(''items/invalid/photo.png'',gen_random_uuid())','P0001','AUTH_REQUIRED','Limpieza verifica autorización primero');
+select * from finish();
+rollback;

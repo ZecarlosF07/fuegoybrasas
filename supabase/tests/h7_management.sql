@@ -1,0 +1,18 @@
+begin;
+select plan(14);
+select has_function('public','reverse_stamp',array['uuid','uuid','text','uuid'],'Reversión transaccional');
+select has_function('public','get_customer_history',array['uuid','uuid','integer'],'Historial paginado');
+select has_function('public','get_loyalty_dashboard',array['date','date'],'Resumen privado');
+select ok(not has_function_privilege('anon','public.get_loyalty_dashboard(date,date)','execute'),'Anónimo no consulta indicadores');
+select ok(not has_function_privilege('service_role','public.reverse_stamp(uuid,uuid,text,uuid)','execute'),'Clave privilegiada no omite al responsable');
+select ok(has_function_privilege('authenticated','public.reverse_stamp(uuid,uuid,text,uuid)','execute'),'JWT entra por autorización SQL');
+select ok(not has_function_privilege('authenticated','app_private.conserve_existing_delete(text,uuid,integer,text,uuid)','execute'),'No se elude el dispatcher');
+select ok(not has_schema_privilege('authenticated','app_private','usage'),'Esquema privado restringido');
+select ok(not has_table_privilege('authenticated','app_private.loyalty_events','update'),'Historial inmutable');
+select ok(not has_table_privilege('authenticated','app_private.customers','select'),'Clientes solo mediante RPC autorizada');
+select is((select rolname::text from pg_roles where oid=(select proowner from pg_proc where oid='public.get_admin_customers(text,uuid,integer)'::regprocedure)),'app_owner','Propietario controlado');
+select throws_ok($$select public.get_loyalty_dashboard(current_date,current_date)$$,'P0001','AUTH_REQUIRED','Lectura exige identidad');
+select has_trigger('app_private','loyalty_incidents','incident_redemption_binding','Incidencia vinculada al canje exacto desde alta');
+select ok(not has_function_privilege('authenticated','app_private.bind_failed_redemption()','execute'),'No hay acceso directo al trigger privado');
+select * from finish();
+rollback;

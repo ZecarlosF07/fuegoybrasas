@@ -1,0 +1,11 @@
+export const CATALOG_ENTITY_TYPES = ["category", "catalog_item", "catalog_price", "promotion", "option_group", "option_choice"] as const;
+export const CATALOG_JOURNAL_KEY = "fyb.catalog-operations.v1";
+export const MEDIA_BUCKET = "catalog-media";
+export const MAX_IMAGE_BYTES = 3 * 1024 * 1024;
+export const MAX_REQUEST_BYTES = 4 * 1024 * 1024;
+export const MAX_IMAGE_DIMENSION = 4096;
+export const MAX_IMAGE_PIXELS = MAX_IMAGE_DIMENSION * MAX_IMAGE_DIMENSION;
+export const PROMOTION_LOCAL_OFFSET = "-05:00";
+export const WEEKDAY_LABELS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+export const IMAGE_FORMATS = { jpeg: { mime: "image/jpeg", extension: "jpg" }, png: { mime: "image/png", extension: "png" }, webp: { mime: "image/webp", extension: "webp" } } as const;
+export const ENTITY_LABELS = { category: "Categoría", catalog_item: "Producto", catalog_price: "Precio", promotion: "Promoción", option_group: "Grupo de opciones", option_choice: "Opción" } as const;

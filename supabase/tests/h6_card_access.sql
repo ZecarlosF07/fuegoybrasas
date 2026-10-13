@@ -1,0 +1,15 @@
+begin;
+select plan(11);
+select has_column('app_private','customers','contact_phone','Contacto declarado sin SMS');
+select has_column('app_private','customers','access_key_hash','Solo huella privada persistida');
+select has_column('app_private','customers','access_key_expires_at','Vigencia técnica independiente de premios');
+select hasnt_column('app_private','customers','access_key','Nunca guardar clave cruda');
+select ok(not has_function_privilege('anon','public.get_card_by_key(text)','execute'),'Anónimo no consulta por hash');
+select ok(not has_function_privilege('authenticated','public.get_card_by_key(text)','execute'),'JWT cliente no elude servidor');
+select ok(has_function_privilege('service_role','public.get_card_by_key(text)','execute'),'Servidor ejecuta consulta acotada');
+select ok(not has_function_privilege('anon','public.ensure_card_by_key(text,text,text,text,boolean)','execute'),'Alta no es RPC pública directa');
+select ok(not has_function_privilege('authenticated','public.update_card_phone_by_key(text,text,integer)','execute'),'Contacto no se modifica con UUID libre');
+select throws_ok($$select public.get_card_by_key('999000001')$$,'P0001','AUTH_REQUIRED','Teléfono nunca autentica');
+select throws_ok($$select public.get_card_by_key(repeat('0',64))$$,'P0001','AUTH_REQUIRED','Clave inexistente denegada');
+select * from finish();
+rollback;

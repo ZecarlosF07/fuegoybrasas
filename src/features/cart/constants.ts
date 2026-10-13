@@ -1,0 +1,12 @@
+export const CART_KEY = "fyb.cart.v1";
+export const CHECKOUT_KEY = "fyb.checkout.v1";
+export const CART_SCHEMA_VERSION = 1;
+export const CART_MAX_LINES = 30;
+export const CART_MAX_QUANTITY = 20;
+export const CART_MAX_UNITS = 120;
+export const CART_MAX_CHOICES = 20;
+export const CART_BODY_BYTES = 32 * 1024;
+export const CART_MAX_IDLE_MS = 7 * 24 * 60 * 60 * 1000;
+export const VALIDATION_TTL_MS = 60_000;
+export const WHATSAPP_MAX_URL_LENGTH = 7000;
+export const MODE_LABELS = { delivery: "Entrega", pickup: "Recojo" };

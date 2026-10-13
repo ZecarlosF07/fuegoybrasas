@@ -1,0 +1,41 @@
+import type { z } from "zod";
+
+import type { customerListSchema, dashboardSchema, historyEventSchema, historySchema, incidentRowSchema, incidentsSchema, managedStaffSchema } from "../validation/dto";
+import type { closeIncidentSchema, correctionSchema, managementInputSchema, managementJournalSchema, periodSchema, reverseSchema } from "../validation/schemas";
+import type { OperationError } from "@/contracts/types/result";
+import type { PrivateCardLink, StaffCard } from "@/features/loyalty/types/loyalty";
+import type { StaffConflict } from "@/features/staff/types/staff";
+
+export type Dashboard = z.infer<typeof dashboardSchema>;
+export type Customers = z.infer<typeof customerListSchema>;
+export type History = z.infer<typeof historySchema>;
+export type HistoryEvent = z.infer<typeof historyEventSchema>;
+export type Incidents = z.infer<typeof incidentsSchema>;
+export type Incident = z.infer<typeof incidentRowSchema>;
+export type Period = z.infer<typeof periodSchema>;
+export type ReverseInput = z.infer<typeof reverseSchema>;
+export type CorrectionInput = z.infer<typeof correctionSchema>;
+export type CloseInput = z.infer<typeof closeIncidentSchema>;
+export type ManagementInput = z.infer<typeof managementInputSchema>;
+export type ManagementJournal = z.infer<typeof managementJournalSchema>;
+export type ManagementKind = ManagementJournal["kind"];
+export type ManagementController = {
+  pending: boolean; ready: boolean; checked: boolean; journal: ManagementJournal | null; error: OperationError<StaffConflict> | null; message: string | null;
+  setError: (value: OperationError<StaffConflict> | null) => void;
+  recoveryLink: PrivateCardLink | null;
+  run: (kind: ManagementKind, input: ManagementInput) => Promise<void>; check: () => Promise<void>; refresh: () => Promise<void>;
+};
+export type DashboardProps = { initial: Dashboard; customers: Customers };
+export type CustomerManagementProps = { card: StaffCard; history: History; actorUserId: string };
+export type CorrectionProps = { card: StaffCard; operation: ManagementController };
+export type HistoryProps = { history: History; operation: ManagementController; onMore: () => Promise<void>; loading: boolean };
+export type IncidentsProps = { initial: Incidents; actorUserId: string };
+export type IncidentEditorProps = { incident: Incident; operation: ManagementController };
+export type ManagedStaff = z.infer<typeof managedStaffSchema>;
+export type ManagedEmployee = ManagedStaff["staff"][number];
+export type StaffPanelProps = { initial: ManagedStaff; actorUserId: string };
+export type StaffEditorProps = { employee: ManagedEmployee; operation: ManagementController };
+export type RecoveryFormProps = { card: StaffCard; history: History; operation: ManagementController };
+export type ManagementFeedbackProps = { operation: ManagementController };
+export type CustomerAdministrationPageProps = { params: Promise<{ id: string }> };
+export type ManagementGuardState = Pick<ManagementController, "ready" | "checked" | "pending" | "journal">;

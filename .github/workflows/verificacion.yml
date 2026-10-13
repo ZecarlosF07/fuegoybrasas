@@ -1,0 +1,39 @@
+name: Verificación de Fuego y Brasas
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: verificacion-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verificacion:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.16.0'
+          cache: yarn
+      - run: corepack enable
+      - run: corepack prepare yarn@1.22.22 --activate
+      - run: yarn install --frozen-lockfile
+      - run: yarn check:repository-secrets
+      - run: yarn test:release
+      - run: yarn db:start
+      - run: yarn env:local
+      - run: yarn db:reset
+      - run: yarn lint
+      - run: yarn typecheck
+      - run: yarn test --maxWorkers=2
+      - run: yarn test:db
+      - run: yarn test:integration
+      - run: yarn playwright install --with-deps chrome
+      - run: yarn test:e2e
+      - run: yarn test:boundary
+      - run: yarn check:secrets
+      - if: always()
+        run: yarn db:stop

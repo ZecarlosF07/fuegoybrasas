@@ -1,0 +1,12 @@
+begin;
+select plan(8);
+select ok((select location_verified and maps_url not like '%fbclid%' from public.business_settings where id=1),'Ubicación confirmada sin rastreo de Facebook');
+select ok((select not schedule_confirmed and jsonb_array_length(opening_periods)=7 from public.business_settings where id=1),'Horario referencial no determina abierto/cerrado');
+select ok((select not ordering_enabled and not loyalty_enabled from public.business_settings where id=1),'Preparar lanzamiento no activa funciones');
+select is((select count(*)::integer from public.payment_methods where enabled or verified),0,'Estimados de pago no son opciones públicas');
+select is(jsonb_array_length(public.read_catalog()->'configuration'->'paymentMethods'),0,'Proyección excluye pagos provisionales');
+select ok((select bool_and(inclusions=array['Arroz chaufa','Papas fritas','Ensalada']::text[] and content_verified) from public.catalog_items where source_ref in ('C21','C22','C23','C24')),'Mostritos conservan inclusiones confirmadas');
+select ok(not exists(select 1 from public.catalog_items where source_ref in ('C05','C06','C12','C13','C14','C15','C16','C17','C18','C19','C20') and publication_status='published'),'Contenido incompleto sigue en borrador');
+select ok(not exists(select 1 from app_private.loyalty_program_versions where reward_cost_cents is not null),'Carta comercial no confirma costo del premio');
+select * from finish();
+rollback;

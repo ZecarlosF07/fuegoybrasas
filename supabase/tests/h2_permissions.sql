@@ -1,0 +1,18 @@
+begin;
+select plan(14);
+select has_table('app_private','staff_accounts','Personal existe');
+select has_table('public','business_settings','Configuración existe');
+select has_table('app_private','operation_receipts','Recibos existen');
+select has_table('app_private','audit_entries','Auditoría existe');
+select ok((select relrowsecurity from pg_class where oid='app_private.staff_accounts'::regclass),'RLS de personal');
+select ok((select relrowsecurity from pg_class where oid='public.business_settings'::regclass),'RLS de configuración');
+select ok(not has_schema_privilege('authenticated','app_private','usage'),'Sin acceso de esquema privado');
+select ok(not has_table_privilege('authenticated','public.business_settings','update'),'Sin UPDATE directo');
+select ok(not has_function_privilege('anon','public.get_admin_config()','execute'),'Anónimo sin configuración');
+select ok(not has_function_privilege('authenticated','app_private.request_claims()','execute'),'Puente de claims no público');
+select ok(not has_function_privilege('service_role','public.update_staff_access(uuid,integer,jsonb,uuid)','execute'),'Service role sin mutación pública');
+select is((select whatsapp_e164 from public.business_settings where id=1),'+51982042493','Contacto oficial');
+select ok((select not ordering_enabled and not loyalty_enabled from public.business_settings where id=1),'Funciones inicialmente pausadas');
+select throws_ok('delete from public.business_settings','P0001','FORBIDDEN','Singleton no se elimina');
+select * from finish();
+rollback;

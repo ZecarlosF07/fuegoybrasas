@@ -1,0 +1,39 @@
+[
+  {
+    "h5": {
+      "catalogReferenceCount": 29,
+      "checkoutDirectAccessDenied": true,
+      "checkoutRls": true,
+      "h5MigrationApplied": true,
+      "internalBaseDenied": true,
+      "loyaltyEnabled": false,
+      "migrationCount": 10,
+      "noOrders": true,
+      "orderingEnabled": false,
+      "ownTables": [
+        "app_private.audit_entries",
+        "app_private.operation_receipts",
+        "app_private.staff_accounts",
+        "public.business_settings",
+        "public.catalog_items",
+        "public.catalog_prices",
+        "public.categories",
+        "public.delivery_zones",
+        "public.option_choices",
+        "public.option_groups",
+        "public.payment_methods",
+        "public.promotions"
+      ],
+      "paymentCount": 0,
+      "projectExpected": "geazxsvjkqpzbghlywbw",
+      "publicProjection": {
+        "paymentCount": 0,
+        "paymentsReady": false,
+        "whatsappE164": "+51982042493",
+        "zoneCount": 0
+      },
+      "zoneCount": 0
+    }
+  }
+]
+

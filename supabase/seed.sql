@@ -1,0 +1,1 @@
+-- H1 no incorpora catálogo ni cuentas reales. Carga comercial a partir de H3.

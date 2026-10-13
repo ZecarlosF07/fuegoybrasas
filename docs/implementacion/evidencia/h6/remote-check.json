@@ -1,0 +1,59 @@
+[
+  {
+    "h6": {
+      "anonymousCreditDenied": true,
+      "authHookPublicDenied": true,
+      "authHookReady": true,
+      "cardCount": 0,
+      "catalogReferenceCount": 29,
+      "customerCount": 0,
+      "directCardMutationDenied": true,
+      "eventCount": 0,
+      "h6Migrations": [
+        "20261008007000",
+        "20261008007100",
+        "20261008007200",
+        "20261008007300"
+      ],
+      "incidentCount": 0,
+      "loyaltyEnabled": false,
+      "loyaltyRls": true,
+      "migrationCount": 14,
+      "noOrders": true,
+      "orderingEnabled": false,
+      "ownTables": [
+        "app_private.audit_entries",
+        "app_private.customers",
+        "app_private.loyalty_cards",
+        "app_private.loyalty_events",
+        "app_private.loyalty_incidents",
+        "app_private.loyalty_program_versions",
+        "app_private.loyalty_rewards",
+        "app_private.operation_receipts",
+        "app_private.staff_accounts",
+        "public.business_settings",
+        "public.catalog_items",
+        "public.catalog_prices",
+        "public.categories",
+        "public.delivery_zones",
+        "public.option_choices",
+        "public.option_groups",
+        "public.payment_methods",
+        "public.promotions"
+      ],
+      "paymentCount": 0,
+      "phoneBridgeDenied": true,
+      "privateSchemaDenied": true,
+      "program": {
+        "available": false,
+        "costKnown": false,
+        "status": "draft",
+        "target": 10,
+        "termsVersion": "fyb-loyalty-v1"
+      },
+      "projectExpected": "geazxsvjkqpzbghlywbw",
+      "rewardCount": 0,
+      "zoneCount": 0
+    }
+  }
+]
