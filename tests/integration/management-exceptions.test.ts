@@ -106,7 +106,8 @@ describe("H7 decisiones aprobadas de negocio", () => {
     await expect(actorQuery(manager, "select public.credit_contingency_stamp($1,$2,'CAIDA-UNICA','Compra pagada y entregada durante caída',true,true,$3)", [value.customerId, when, randomUUID()])).rejects.toThrow("DUPLICATE_VISIT_REFERENCE");
     await expect(actorQuery(attendant, "select public.credit_contingency_stamp($1,$2,'CAIDA-OTRA','Compra pagada y entregada durante caída',true,true,$3)", [value.customerId, when, randomUUID()])).rejects.toThrow("FORBIDDEN");
     await expect(actorQuery(manager, "select public.credit_contingency_stamp($1,now()+interval '1 day','FUTURO','Compra futura no permitida',true,true,$2)", [value.customerId, randomUUID()])).rejects.toThrow("VALIDATION_ERROR");
-    const event = (await staffPool.query("select occurred_at,recorded_at from app_private.loyalty_events where card_id=$1", [value.cardId])).rows[0];
-    expect(new Date(event.occurred_at).toISOString()).toBe(when); expect(new Date(event.recorded_at).getTime()).toBeGreaterThan(new Date(event.occurred_at).getTime());
+    // PostgreSQL conserva microsegundos; Date de JavaScript los trunca y podía igualar ambas fechas en CI.
+    const event = (await staffPool.query("select occurred_at,recorded_at>occurred_at as recorded_later from app_private.loyalty_events where card_id=$1", [value.cardId])).rows[0];
+    expect(new Date(event.occurred_at).toISOString()).toBe(when); expect(event.recorded_later).toBe(true);
   });
 });

@@ -45,6 +45,12 @@ La guía general y H8 se actualizan con este estado. CI está escrito pero su ej
 
 La corrida cargó las rutas anteriores de capturas H2/H4 antes de ajustar esos dos tests: actualizó esas imágenes y se copiaron sus 18 resultados al directorio H8. Los reportes Markdown históricos y capturas H6 sin SMS se conservan; futuras corridas usan el helper común para todos los hitos. No se afirma conservar intactas las imágenes históricas H2/H4.
 
+### Comprobación posterior en GitHub/Vercel
+
+El proyecto se subió a GitHub (`master`, base de publicación `c8e8c42`). La [primera ejecución CI](https://github.com/ZecarlosF07/fuegoybrasas/actions/runs/38327781166) terminó con un fallo de integración: `management-exceptions.test.ts:110` comparaba en JavaScript timestamps PostgreSQL que diferían en microsegundos pero coincidían al truncarlos a milisegundos. Se conserva la comparación estricta, trasladándola a PostgreSQL; seis casos del archivo aprobados en la repetición local. No se modificó lógica de negocio ni SQL de la aplicación. La siguiente ejecución remota aún debe confirmar el resultado completo.
+
+Vercel reportó por separado Yarn global 1.22.19 frente al engine 1.22.22. [Corepack y verificación de comandos](despliegue.md) corrigen ese problema; instalación y build locales aprobados sin alterar el lockfile. Push no implica que Vercel haya terminado correctamente: URL/variables y servicios reales siguen pendientes.
+
 ## Bloqueos conservados
 
 1. Importar GitHub en Vercel y configurar Production: origen HTTPS, secretos, callbacks, CAPTCHA y verificación de SHA/health. Preview no usa el oficial.
