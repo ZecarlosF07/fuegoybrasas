@@ -4,7 +4,11 @@
 
 ## Variables de Vercel
 
-Importar `https://github.com/ZecarlosF07/fuegoybrasas` con la rama publicada. Instalar con Yarn 1.22.22 / Node 22; `vercel.json` contiene los comandos. Configurar **solo Production**, conservar Preview sin claves oficiales. El launcher rechaza ese uso de preview y falla de forma explícita.
+Importar `https://github.com/ZecarlosF07/fuegoybrasas` con la rama publicada `master`. Instalar con Yarn 1.22.22 / Node 22; `vercel.json` invoca `corepack yarn` para instalación, build y desarrollo. Corepack usa `packageManager: yarn@1.22.22` y evita depender de la versión global del hosting. Configurar **solo Production**, conservar Preview sin claves oficiales. El launcher rechaza ese uso de preview y falla de forma explícita.
+
+El primer intento de Vercel reportó Yarn global 1.22.19 incompatible con el engine 1.22.22. La corrección mantiene la versión y lockfile, e invoca Corepack directamente; no modifica el Yarn global de la computadora. Si existe un override manual antiguo en Vercel, eliminarlo o usar los mismos comandos de `vercel.json`. El soporte automático de Corepack también puede habilitarse con `ENABLE_EXPERIMENTAL_COREPACK=1`; [documentación Vercel](https://vercel.com/docs/builds/configure-a-build#corepack) y [ejecución directa de Corepack](https://github.com/nodejs/corepack/blob/main/README.md#corepack-binary-nameversion--args).
+
+Verificación de la corrección: caché Corepack aislada en `.test-fixtures`; `corepack yarn --version` devolvió 1.22.22, instalación `--frozen-lockfile` aprobada (0,27 s) y build remoto aprobado (16,21 s). Lockfile idéntico al commit publicado, SHA-256 normalizado `6c9b69cf4a9433fd39236b85d7e5559ef17674ace3d14229e16d2a466e11d90f`. No demuestra todavía un build en Vercel. El archivo privado `.env.vercel.local` contiene credenciales oficiales verificadas por lecturas, con URL HTTPS y site key CAPTCHA pendientes; `.env.local` se reserva para pruebas y `.env.example` es una plantilla.
 
 | Variable | Valor o procedencia |
 | --- | --- |

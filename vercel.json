@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "installCommand": "yarn install --frozen-lockfile",
-  "buildCommand": "yarn build",
-  "devCommand": "yarn dev"
+  "installCommand": "corepack yarn install --frozen-lockfile",
+  "buildCommand": "corepack yarn build",
+  "devCommand": "corepack yarn dev"
 }
