@@ -16,6 +16,8 @@ Web de la pollería con Next.js y Supabase. H1–H6 incorporan base visual, pers
 
 ## Requisitos
 
+Por decisión DC-20, login/recuperación del personal no usan CAPTCHA ni requieren sus claves. Se conservan correo/contraseña, MFA y autorización por rol; [detalle y comprobación](docs/implementacion/evidencia/h8/acceso-personal-sin-captcha.md).
+
 Para trabajar con la aplicación: Node 22 (versión verificada en `.node-version`) y Yarn **1.22.22**. Supabase CLI **2.119.0** está fijada como dependencia del proyecto: no se necesita instalarla globalmente. Docker Desktop con contenedores Linux se utiliza únicamente para las pruebas aisladas de base de datos/Auth; Chrome para E2E.
 
 Next.js **16.3.8**, React **19.2.8**, TypeScript estricto y Tailwind 4. Las dependencias resueltas están en `yarn.lock`. Usar exclusivamente Yarn.
@@ -41,7 +43,7 @@ yarn env:remote geazxsvjkqpzbghlywbw
 yarn dev
 ```
 
-Las claves se obtienen del proyecto vinculado, no se crean claves nuevas. La clave secreta queda exclusivamente del lado servidor para administración y RPC acotadas de tarjeta. `APP_SITE_URL` permanece en localhost para desarrollo; actualizarlo al dominio confirmado antes del lanzamiento. H2 conserva Auth/MFA del personal; H6 crea tarjeta con nombre/contacto y clave privada, sin SMS. H7 implementa recuperación asistida aprobada. MFA/CAPTCHA productivo, costo y condiciones/privacidad siguen pendientes. La cuenta inicial se creó directamente sin correos por decisión del propietario; invitación/recuperación por email no se consideran operativas sin canal probado. La fidelización permanece pausada; no requiere proveedor SMS.
+Las claves se obtienen del proyecto vinculado, no se crean claves nuevas. La clave secreta queda exclusivamente del lado servidor para administración y RPC acotadas de tarjeta. `APP_SITE_URL` permanece en localhost para desarrollo; actualizarlo al dominio confirmado antes del lanzamiento. H2 conserva Auth/MFA del personal; H6 crea tarjeta con nombre/contacto y clave privada, sin SMS. H7 implementa recuperación asistida aprobada. MFA productivo, costo y condiciones/privacidad siguen pendientes. La cuenta inicial se creó directamente sin correos por decisión del propietario; invitación/recuperación por email no se consideran operativas sin canal probado. La fidelización permanece pausada; no requiere proveedor SMS.
 
 Para compilar/ejecutar el servidor de producción: `yarn build` y `yarn start`. Next incluye las variables públicas durante la compilación; compilar para el entorno que se va a ejecutar. Los scripts de pruebas aisladas **rechazan una URL Supabase remota antes de crear identidades**.
 
@@ -121,6 +123,6 @@ E2E compila explícitamente con `build:local`, inicia con `start:local` en el pu
 
 La entrada `globals.css` únicamente contiene las directivas del compilador Tailwind. No hay selectores CSS personalizados. El tema de ejecución está en `tailwind.config.ts`, conforme al [sistema visual canónico](.agents/brand/sistema-visual.md); no se introducen paletas por componente. Fuentes con `next/font`, sin solicitudes a Google desde el navegador. El logotipo original sigue pendiente: se usa el nombre textual.
 
-H2 aporta DTO de configuración/personal, validación y transacciones comunes. `/personal/acceso` inicia el recorrido privado; `/administracion/configuracion` exige manager y AAL2. `yarn env:h2` prepara los secretos ignorados y `yarn staff:bootstrap:local UUID_VERIFICADO` crea únicamente el primer responsable local. PT-08, PT-11 y PT-13 conservan sus pendientes; no hay personal real provisionado ni SMTP/CAPTCHA productivos validados.
+H2 aporta DTO de configuración/personal, validación y transacciones comunes. `/personal/acceso` inicia el recorrido privado; `/administracion/configuracion` exige manager y AAL2. `yarn env:h2` prepara los secretos ignorados y `yarn staff:bootstrap:local UUID_VERIFICADO` crea únicamente el primer responsable local. PT-08, PT-11 y PT-13 conservan sus pendientes; no hay personal real provisionado ni SMTP productivo validado.
 
 H6 añade `/mi-tarjeta/acceso`, `/mi-tarjeta`, `/mi-tarjeta/telefono` y `/personal/clientes/[id]`. Diez sellos por Mostrito de ⅛; acreditación después de compra presencial pagada y entregada. `/api/me/card` es propio y no-store. La nueva migración conserva solo el hash de clave privada; teléfono no autentica. [Diseño vigente](docs/diseno-tecnico/16-acceso-a-tarjeta-sin-sms.md). Hook Auth preparado para bloquear signup público, sin habilitarlo ni cambiar configuración remota. La revisión cuenta con unitarias/build/lectura remota; integración/pgTAP/navegador quedan pendientes por instrucción del propietario, según [reporte actual](docs/implementacion/evidencia/h6/acceso-sin-sms/README.md).

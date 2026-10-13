@@ -21,5 +21,5 @@ export default async function StaffResetPage() {
     <p className="mb-6">Antes de cambiar la contraseña, verifica el autenticador que ya tiene tu cuenta.</p>
     <MfaForm factorId={existingFactor.id} />
   </>;
-  return <AuthForm kind="password" captcha={null} ready />;
+  return <AuthForm kind="password" />;
 }

@@ -4,6 +4,8 @@
 
 ## Entrega
 
+**Actualización 13/10 — DC-20:** [personal sin CAPTCHA](acceso-personal-sin-captcha.md). Se retira widget/proveedor/tokens y requisito de claves; se conserva contraseña/MFA/permisos/límites. Supabase oficial confirma CAPTCHA deshabilitado. La verificación anterior corresponde a su versión histórica; pruebas de la retirada se registran por separado.
+
 - GitHub/Vercel: configuración de build con Yarn, CI aislado sin claves oficiales, inspección de secretos y validación del destino/versión/origen del despliegue.
 - `/api/health` mínimo, cabeceras de seguridad e instrumentación con allowlist sin cuerpos/PII; robots e indexación pausados por defecto.
 - 23 migraciones oficiales, 18 tablas; carta con 17 referencias confirmadas, 11 pendientes de contenido y C01 fuera de venta web. Maps confirmado sin tracking.
@@ -53,7 +55,7 @@ Vercel reportó por separado Yarn global 1.22.19 frente al engine 1.22.22. [Core
 
 ## Bloqueos conservados
 
-1. Importar GitHub en Vercel y configurar Production: origen HTTPS, secretos, callbacks, CAPTCHA y verificación de SHA/health. Preview no usa el oficial.
+1. Importar GitHub en Vercel y configurar Production: origen HTTPS, secretos, callbacks y verificación de SHA/health. Preview no usa el oficial.
 2. MFA y operación real del administrador; recuperación de autenticador y personas autorizadas. No se enviaron invitaciones/correos.
 3. Confirmar pagos reales y datos comerciales de las once referencias incompletas. Horarios/cargos pueden seguir desconocidos donde el contrato lo permite.
 4. Costo real del premio y aprobación de condiciones/aviso/plazos. Precios de S/15 y S/14,90 no resuelven PT-06.

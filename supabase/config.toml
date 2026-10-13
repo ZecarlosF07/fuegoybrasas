@@ -211,11 +211,9 @@ token_verifications = 30
 # Number of Web3 logins that can be made in a 5 minute interval per IP address.
 web3 = 30
 
-# Configure one of the supported captcha providers: `hcaptcha`, `turnstile`.
-# [auth.captcha]
-# enabled = true
-# provider = "hcaptcha"
-# secret = ""
+# DC-20: acceso del personal sin CAPTCHA; contraseña, MFA y límites Auth se conservan.
+[auth.captcha]
+enabled = false
 
 [auth.email]
 # Allow/disallow new user signups via email to your project.

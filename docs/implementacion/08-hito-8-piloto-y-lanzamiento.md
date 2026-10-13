@@ -11,6 +11,8 @@
 
 ## 1. Descripción del objetivo
 
+**DC-20 (13/10):** [personal sin CAPTCHA](evidencia/h8/acceso-personal-sin-captcha.md). Se retira como requisito técnico/de servicios; MFA y autorización se conservan.
+
 **Actualización del 12/10 — DC-16–19:** [diseño 18](../diseno-tecnico/18-publicacion-y-operacion-h8.md). El propietario usa un solo Supabase oficial y solicita push a GitHub para importarlo en Vercel. CI/reconstrucciones son locales, preview sin credenciales oficiales. Cuenta inicial directa sin correos; MFA se conserva. Ubicación/modalidades confirmadas; horario/pagos estimados sin verificar. Preparación de despliegue no activa funciones ni acredita piloto.
 
 Comprobar el producto completo con el personal y publicarlo con configuración, servicios y datos comerciales confirmados. El hito reúne evidencias de los siete anteriores, verifica los recorridos reales y prepara operación, monitoreo, respaldo y recuperación antes de activar pedidos y fidelización.
@@ -32,7 +34,7 @@ La primera versión prevista incluye pedido invitado y fidelización opcional. E
 | ID | Tarea | Trabajo concreto | Resultado esperado |
 | --- | --- | --- | --- |
 | H8-T01 | Reunir evidencias y bloqueos | Revisar DoD de H1–H7, matriz RF/CA/CT, decisiones y fallos abiertos; identificar qué impide pruebas, despliegue o activación. | Registro de salida con responsables y evidencia faltante. |
-| H8-T02 | Confirmar servicios y entornos | Confirmar cuentas, hosting/dominio/plan Supabase, SMTP/CAPTCHA del personal y enlace privado de tarjeta, callbacks y presupuestos; separar local/staging/producción. | Configuración autorizada y comprobable, sin contratación automática. |
+| H8-T02 | Confirmar servicios y entornos | Confirmar cuentas, hosting/dominio/plan Supabase, SMTP del personal y enlace privado de tarjeta, callbacks y presupuestos; separar local/staging/producción. | Configuración autorizada y comprobable, sin contratación automática. |
 | H8-T03 | Verificar reconstrucción y despliegue | Aplicar migraciones desde cero en entorno aislado, carga controlada y tipos; ejecutar CI/build y ensayar despliegue staging con flags apagados. | Versión candidata reproducible y compatible con esquema. |
 | H8-T04 | Ejecutar aceptación integral | Probar escenarios completos y fallos con identidades separadas, concurrencia real y datos sintéticos; repetir solo lo afectado al corregir defectos. | Cobertura trazable sin casos críticos fallidos o sin ejecutar. |
 | H8-T05 | Revisar dispositivos y accesibilidad | Revisar Android/iOS reales, retorno desde WhatsApp, navegadores integrados, teclado, foco, zoom, lector, tamaños y conexión lenta. | Evidencia manual y automática de uso del producto. |
@@ -59,7 +61,7 @@ Ejecutar H8-T13 antes del piloto T10 y de la activación T11; complementa la rev
 | H8-RT02 | Migraciones reproducibles | Secuencia completa, inventario de tablas, restricciones/grants/RLS y tipos generados verificados. Ensayar actualización desde versión anterior y no depender de cambios manuales ocultos en Dashboard. |
 | H8-RT03 | CI y aplicación | Lint, TypeScript, build y pruebas pertinentes con versiones/lockfile fijados. Consultar AGENTS y guías instaladas antes de ajustes; no renovar stack o agregar backend ajeno al diseño durante lanzamiento. |
 | H8-RT04 | Despliegue compatible | Hosting propuesto sujeto a PT-12; verificar runtime, URLs, SSR/cookies, handlers y límites de imágenes de 3/4 MiB en staging real. Migraciones y release de aplicación deben ser compatibles durante la transición. |
-| H8-RT05 | Acceso real comprobado | SMTP/MFA/CAPTCHA e invitación/recuperación del personal; alta sin SMS, cookie/enlace/QR y cambio de contacto del cliente con tarjeta preservada. Callbacks/dominios por entorno; mocks no prueban servicios reales. |
+| H8-RT05 | Acceso real comprobado | SMTP/MFA e invitación/recuperación del personal; alta sin SMS, cookie/enlace/QR y cambio de contacto del cliente con tarjeta preservada. Callbacks/dominios por entorno; mocks no prueban servicios reales. |
 | H8-RT06 | Secretos y permisos | Claves fuera de Git/bundles/DTO/logs, secreto Auth administrativo solo servidor y permisos revisados contra anon/cliente/atención/manager/AAL1/revocados. Tablas sin CRUD directo y RPC con permisos explícitos. |
 | H8-RT07 | Seguridad de sesión y privacidad | Sin caché compartida privada, filtración tras logout o callback con redirección libre. Logs no contienen direcciones, teléfonos completos, preferencias, OTP/JWT o mensajes completos. Términos/aviso/retención aprobados PT-11. |
 | H8-RT08 | Activación controlada | `ordering_enabled` solo después de configuración comercial y atención listas; fidelización mediante `activate_loyalty_program` y condiciones de H6, sin bypass por patch genérico. Costos/términos/personas/procedimientos reales confirmados antes de habilitar. |
@@ -118,7 +120,7 @@ Todas las condiciones siguientes requieren evidencia real del entorno correspond
 - [x] Migraciones completas reconstruyen esquema/datos controlados y actualización de versión; tipos, grants/RLS/funciones e inventario de tablas son coherentes. Evidencia H8: 23 migraciones, 18 tablas y 132 pgTAP.
 - [ ] Lint, TypeScript, build y pruebas pertinentes pasan en CI/staging; concurrencia se probó contra PostgreSQL real con conexiones distintas.
 - [ ] Android/iOS reales y navegadores previstos se revisan junto con teclado/lector/zoom/foco y tamaño mínimo; problemas críticos de accesibilidad están corregidos.
-- [ ] Enlace/QR entre dispositivos, cambio de contacto, CAPTCHA/MFA del personal y correo de recuperación/invitación se comprobaron con servicios reales de prueba y callbacks autorizados.
+- [ ] Enlace/QR entre dispositivos, cambio de contacto, MFA del personal y correo de recuperación/invitación se comprobaron con servicios reales de prueba y callbacks autorizados.
 - [x] Secretos, caché privada, permisos actuales y logs sanitizados se revisaron; no hay PII real en evidencias compartidas. E2E privado, pruebas de allowlist y 46 recursos estáticos comprobados; datos sintéticos únicamente.
 
 ### Configuración, procedimientos y piloto

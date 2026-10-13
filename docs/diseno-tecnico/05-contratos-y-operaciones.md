@@ -136,8 +136,8 @@ Al superar un límite técnico de URL de 7.000 caracteres codificados, mostrar m
 
 | Server Action | Entrada | RPC/efecto |
 | --- | --- | --- |
-| `signInStaffAction` | Correo, contraseña y CAPTCHA configurado. | Supabase `signInWithPassword`; consulta autorización propia. Cuenta activa AAL1 va a MFA, AAL2 puede entrar; no asigna roles. |
-| `requestPasswordRecoveryAction` | Correo y CAPTCHA configurado. | Supabase `resetPasswordForEmail`, callback fijo; respuesta genérica sin revelar cuentas. Nombre adoptado en H2. |
+| `signInStaffAction` | Correo y contraseña; sin CAPTCHA por DC-20. | Supabase `signInWithPassword`; consulta autorización propia. Cuenta activa AAL1 va a MFA, AAL2 puede entrar; no asigna roles. |
+| `requestPasswordRecoveryAction` | Correo; sin CAPTCHA por DC-20. | Supabase `resetPasswordForEmail`, callback fijo; respuesta genérica sin revelar cuentas. Nombre adoptado en H2. |
 | `GET /auth/confirm` (handler) | `token_hash`, tipo `invite|recovery`; sin destino libre. | Supabase `verifyOtp` y cookies; redirige a restablecer. Error estable si vencido/usado; sin logs de URL sensible. |
 | `completePasswordAction` | Contraseña/confirmación; identidad vigente y cookie firmada de recuperación. | Supabase `updateUser({password})` para cuenta autorizada. Con factor existente se verifica AAL2 antes del cambio; sin factor conduce a enrolar MFA. No altera rol/activo ni elimina factores. Nombre adoptado en H2. |
 | `enrollStaffMfaAction` | Sesión Auth y staff vigente. | Enrola TOTP propio si no hay factor verificado; solo puede limpiar intentos propios no verificados. Clave y QR exclusivamente en memoria durante configuración. |

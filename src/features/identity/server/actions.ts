@@ -5,7 +5,6 @@ import { cookies } from "next/headers";
 import { failure, success } from "@/contracts/services/result";
 import { PRIVATE_CHECKOUT_KEY, RECOVERY_COOKIE } from "@/features/identity/constants";
 import { authFailure } from "@/features/identity/server/auth-error";
-import { captchaAllows } from "@/features/identity/server/captcha";
 import { hasRecoveryPermission, recoveryCookieOptions } from "@/features/identity/server/recovery-marker";
 import { loginSchema, passwordSchema, recoverySchema } from "@/features/identity/validation/schemas";
 import { staffAccessSchema } from "@/features/staff/validation/schemas";
@@ -17,9 +16,8 @@ export async function signInStaffAction(input: unknown) {
   return runServerWork(async (requestId) => {
     const parsed = loginSchema.safeParse(input);
     if (!parsed.success) return invalidInput(parsed.error, requestId);
-    if (!captchaAllows(parsed.data.captchaToken)) return failure({ code: "CONFIG_NOT_READY", message: "Completa la verificación de seguridad; si no aparece, consulta al responsable." }, requestId);
     const client = await createServerSupabaseClient("action");
-    const { error } = await client.auth.signInWithPassword({ ...parsed.data, options: { captchaToken: parsed.data.captchaToken } });
+    const { error } = await client.auth.signInWithPassword(parsed.data);
     if (error) return authFailure(error, requestId);
     const access = rpcResult(await client.rpc("get_staff_access"), staffAccessSchema, requestId);
     if (!access.ok) return access;
@@ -31,10 +29,9 @@ export async function requestPasswordRecoveryAction(input: unknown) {
   return runServerWork(async (requestId) => {
     const parsed = recoverySchema.safeParse(input);
     if (!parsed.success) return invalidInput(parsed.error, requestId);
-    if (!captchaAllows(parsed.data.captchaToken)) return failure({ code: "CONFIG_NOT_READY", message: "Completa la verificación de seguridad para continuar." }, requestId);
     const client = await createServerSupabaseClient("action");
     const { error } = await client.auth.resetPasswordForEmail(parsed.data.email, {
-      redirectTo: new URL("/auth/confirm", getSiteEnvironment().APP_SITE_URL).href, captchaToken: parsed.data.captchaToken,
+      redirectTo: new URL("/auth/confirm", getSiteEnvironment().APP_SITE_URL).href,
     });
     if (error && (error.status === 429 || (error.status ?? 0) >= 500)) return authFailure(error, requestId);
     // Respuesta idéntica para correos existentes, ajenos o desconocidos.

@@ -1,6 +1,6 @@
 # Fuego y Brasas — Diseño técnico
 
-**Versión:** 1.9 · **Fecha:** 12 de octubre de 2026.
+**Versión:** 1.10 · **Fecha:** 13 de octubre de 2026.
 **Estado:** H1–H7 implementados; H8 con preparación técnica, migración oficial y regresión local aprobadas según [evidencia H8](../implementacion/evidencia/h8/README.md). GitHub/Vercel se preparan por solicitud del propietario. Piloto, revisión humana y activación productiva pendientes; ambos flags públicos apagados.
 **Base funcional:** [Análisis del proyecto](../analisis-del-proyecto.md) y [Resumen ejecutivo](../resumen-ejecutivo.md).
 
@@ -60,6 +60,7 @@ Reglas para agentes: [Proyecto](../../.agents/rules/proyecto.md), [UX/UI](../../
 | DC-17 | Administrador inicial confirmado, sin envío de correos. | Alta directa auditada, contraseña privada y MFA obligatorio al entrar. |
 | DC-18 | Maps y modalidades de la carta confirmados; Mostritos con chaufa/papas/ensalada. | 17 referencias completas publicadas; C01/P05 y faltantes conservan sus límites. |
 | DC-19 | Horarios/pagos estimados hasta dato real. | Borradores no verificados, ocultos en DTO público; no activar funciones por estimaciones. |
+| DC-20 | El propietario retira CAPTCHA del personal. | Login/recuperación sin widget ni tokens CAPTCHA; se conservan contraseña, MFA, autorización y límites de Supabase Auth. Variables y requisito de proveedor retirados. [Cambio vigente](../implementacion/evidencia/h8/acceso-personal-sin-captcha.md). |
 
 ## 4. Decisiones técnicas adoptadas
 

@@ -7,6 +7,8 @@
 
 ## 1. Descripción del objetivo
 
+**Actualización DC-20 (13/10):** acceso y recuperación del personal sin CAPTCHA por instrucción del propietario. Se conservan contraseña, MFA, permisos y límites de Auth. [Implementación y comprobación](evidencia/h8/acceso-personal-sin-captcha.md).
+
 Permitir que cada integrante autorizado entre con su propia cuenta y opere únicamente las funciones correspondientes a su rol. El hito establece la autorización efectiva, la segunda verificación MFA y los mecanismos comunes de configuración, auditoría e idempotencia que utilizarán catálogo y fidelización.
 
 El resultado esperado es un acceso privado verificable: una sesión válida no basta si el personal está inactivo, eliminado o carece del nivel MFA requerido. El equipo debe demostrar estas restricciones tanto en navegación como mediante llamadas directas a las operaciones de servidor y de base de datos.

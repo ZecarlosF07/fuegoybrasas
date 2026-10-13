@@ -145,7 +145,7 @@ La entrada normal del público no muestra el panel interno como parte del pedido
 | `/mi-tarjeta/telefono` | `(customer)` | Cliente identificado propio | Cambiar contacto con clave propia y revisión; mismos UUID. Pérdida de acceso/enlace requiere PT-08/H7. |
 | `/personal/acceso` | `(staff-access)` | Público | Login interno; sin fila staff vigente no entra. AAL1 va a MFA, AAL2 autorizado puede ir a personal. |
 | `/personal/mfa` | `(staff-access)` | Identidad y staff vigente; AAL1 permitido para completar MFA | Enrolar/desafiar TOTP; no contiene operaciones de negocio. Recuperar contraseña no retira factor. |
-| `/personal/recuperar` | `(staff-access)` | Público | Solicitud genérica de correo, CAPTCHA/límites; sin revelar cuentas existentes. |
+| `/personal/recuperar` | `(staff-access)` | Público | Solicitud genérica de correo, límites de Auth y sin CAPTCHA por DC-20; sin revelar cuentas existentes. |
 | `/personal/restablecer` | `(staff-access)` | Identidad validada por callback, permiso firmado vigente y staff autorizado | Con factor existente verificar MFA antes del cambio; sin factor, definir contraseña y enrolar MFA. No asigna rol. |
 | `/personal` | `(staff)` | Atención/manager activos, AAL2 | Búsqueda exacta de contacto declarado y confirmación de tarjeta; diferencia ausencia y servicio caído. |
 | `/personal/clientes/[id]` | `(staff)` | Atención/manager activos, AAL2 | Ficha mínima/sello/canje; corrección e historial amplio solo manager. ID no concede acceso. |

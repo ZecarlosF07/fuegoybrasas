@@ -107,7 +107,7 @@
 | 35 | [Excepciones][exceptions] y [Administración][management-e2e] | Perfil por manager con solicitud/revisión/motivo, aprobado. |
 | 36 | Storage media/integración y editor E2E | Asociación separada/versionada/huérfanos, aprobado. |
 | 37 | Tarjeta/loyalty/E2E | Pausa/estados y logout independientes del carrito; baja administrativa excluida por DC-15, no «prueba pendiente» para añadirla. |
-| 38 | Auth-mail local y staff-access E2E | Tokens/MFA/destino reales locales aprobados; SMTP/CAPTCHA productivos y recuperación humana pendientes. Bootstrap inicial sin email por DC-17. |
+| 38 | Auth-mail local y staff-access E2E | Tokens/MFA/destino reales locales aprobados; SMTP productivo y recuperación humana pendientes. Bootstrap inicial sin email por DC-17; CAPTCHA retirado por DC-20. |
 | 39 | Handler unitario/editor E2E | Límite 3 MiB/4 MiB acotado sin Content-Length aprobado local; comportamiento hosting pendiente. |
 
 ## Conservación y soft delete

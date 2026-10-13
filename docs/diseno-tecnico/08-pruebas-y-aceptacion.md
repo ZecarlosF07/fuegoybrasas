@@ -113,7 +113,7 @@ Usar transacciones/conexiones separadas contra PostgreSQL real, no `Promise.all`
 
 Matriz de identidad: anon, cliente A, cliente B, atención AAL1, atención AAL2, responsable AAL2 y personal desactivado. Intentar Data API, RPC, acciones POST y SQL con roles limitados en entorno local. Comprobar ejecución no concedida por `PUBLIC` y que `app_private` no esté expuesto. Las tablas comerciales tampoco tienen grants directos; probar el contenido permitido de `read_catalog`, además de las denegaciones. Los helpers internos no conceden lectura de tablas ni se exponen por comodidad.
 
-Conservar evidencias de resultados y mensajes de fallo, nunca tokens o teléfonos reales en reportes compartidos. Enlace privado entre dispositivos y SMTP/CAPTCHA/MFA del personal requieren prueba controlada; mocks no prueban esos servicios reales.
+Conservar evidencias de resultados y mensajes de fallo, nunca tokens o teléfonos reales en reportes compartidos. Enlace privado entre dispositivos y SMTP/MFA del personal requieren prueba controlada; mocks no prueban esos servicios reales. CAPTCHA retirado por DC-20, sin condición pendiente de activación.
 
 ## 6. Fixtures y dispositivos
 

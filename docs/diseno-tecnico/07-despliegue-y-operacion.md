@@ -33,8 +33,7 @@ No conectar previews públicos a datos de clientes productivos. No restaurar per
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | App por entorno; pública. | SDK sujeto a permisos/RLS. |
 | `SUPABASE_SECRET_KEY` | Secret store del servidor. | Administración aislada de Auth; no operaciones ordinarias. |
 | `APP_SITE_URL` | Servidor. | URL canónica y callbacks permitidos; sin comodines abiertos en producción. |
-| `NEXT_PUBLIC_CAPTCHA_SITE_KEY` | App; pública. | Widget del proveedor CAPTCHA configurado en Auth. |
-| Credenciales SMS/SMTP y secreto CAPTCHA | Dashboard/secrets de Supabase/proveedor. | Verificación y correos reales, sin duplicarlas en catálogo. |
+| Credenciales SMTP | Dashboard/secrets de Supabase/proveedor. | Correos del personal si se habilitan; clientes sin SMS. CAPTCHA retirado por DC-20. |
 | `SUPABASE_ACCESS_TOKEN` y referencia de proyecto | Secretos de CI/operador. | Migraciones y despliegue; nunca variables públicas de la app. |
 
 Validar variables al iniciar; error claro de configuración sin imprimir valores. `.env.example` futuro contiene nombres y placeholders; `.env.local` y credenciales no se versionan. Variables públicas se incorporan al build y se reconstruye cuando cambian.
@@ -45,7 +44,7 @@ Número oficial, horarios, tarifas y métodos de pago son datos comerciales en b
 
 1. Revisar commit/lockfile, documentación, cambios de esquema y tests correspondientes.
 2. Aplicar migraciones a local vacío y staging; comparar esquema/tipos, permisos y seed.
-3. Configurar Auth, CAPTCHA, MFA, SMTP, SMS y redirects del entorno. Verificar con cuentas de prueba.
+3. Configurar Auth, MFA, redirects y SMTP si se usa correo del personal. Verificar con cuentas de prueba; cliente sin SMS y personal sin CAPTCHA por DC-20.
 4. Construir Next.js y ejecutar recorridos completos contra staging, incluyendo concurrencia y reintentos.
 5. Preparar respaldo y migraciones compatibles antes de cambios productivos. Aplicar primero cambios aditivos de base.
 6. Desplegar aplicación compatible con esquema; comprobar salud, catálogo, sesión y una operación controlada.

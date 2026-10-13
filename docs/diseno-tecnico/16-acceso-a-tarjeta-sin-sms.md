@@ -54,7 +54,7 @@ Las cuatro RPC `*_by_key` solo conceden EXECUTE a `service_role`: anon/authentic
 
 Alta: configuración FOR SHARE → bloqueo advisory global de altas → versión FOR SHARE → creación atómica de perfil/tarjeta/auditoría. Repetir la misma clave devuelve la misma tarjeta; un replay no emite otro perfil o sello. La cookie candidata se guarda antes del RPC para reutilizarla tras respuesta perdida. Cambiar contacto comparte el advisory y bloquea el perfil; perfil/contacto exigen revisión y no sobrescriben conflictos.
 
-El límite técnico inicial es **20 altas nuevas por minuto en toda la aplicación**, dentro del bloqueo; no modifica reglas de visitas ni limita sellos por día. `RATE_LIMITED` muestra espera y reintento. No sustituye medición de abuso en el piloto; no se introduce un CAPTCHA obligatorio al cliente. El personal conserva sus controles Auth/CAPTCHA/MFA.
+El límite técnico inicial es **20 altas nuevas por minuto en toda la aplicación**, dentro del bloqueo; no modifica reglas de visitas ni limita sellos por día. `RATE_LIMITED` muestra espera y reintento. No sustituye medición de abuso en el piloto; no se introduce un CAPTCHA obligatorio al cliente. El personal conserva Auth/MFA y límites de proveedor; CAPTCHA retirado por DC-20.
 
 Auditoría propia utiliza el UUID interno de cliente en `actor_user_id` y `actorKind=customer_card`, sin FK a Auth. Registra nombres de campos cambiados, sin valores de contacto, indicaciones o claves. Operaciones de personal siguen identificadas por Auth y staff; los recibos e historial de sellos/canjes no cambian.
 

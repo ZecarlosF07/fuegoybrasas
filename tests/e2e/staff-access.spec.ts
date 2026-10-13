@@ -46,6 +46,8 @@ test("acceso y recuperación adaptables, accesibles y con foco en errores", asyn
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await expect(page.getByLabel("Correo electrónico")).toHaveAttribute("autocomplete", "username");
     await expect(page.getByLabel("Contraseña", { exact: true })).toHaveAttribute("autocomplete", "current-password");
+    await expect(page.getByRole("button", { name: "Ingresar", exact: true })).toBeEnabled();
+    expect(await page.locator('script[src*="turnstile"], script[src*="hcaptcha"]').count()).toBe(0);
     expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze()).violations).toEqual([]);
     await page.screenshot({ path: `${screenshots}/acceso-${width}.png`, fullPage: true });
   }
