@@ -77,7 +77,7 @@ Foco sobre claro: contorno action de 2 px, separado 2 px; sobre carbón: contorn
 
 No trasladar manuscritas de anuncios a navegación/instrucciones/precios ni convertir todo a mayúsculas. Datos esenciales mantienen body. Precios desde céntimos PEN, `S/` y dos decimales; desconocido no es cero. Verificar ñ, tildes y fracciones.
 
-H1 integra `next/font`, variables y `display: swap`, según guía instalada. Google descarga durante build y sirve las fuentes con la aplicación. Si se necesitan archivos locales, obtenerlos de fuente autorizada con licencia. Dos familias como máximo, sin todas las variantes; el tema Tailwind 4 consume variables sin repetir valores por componente.
+Se usa `next/font/local`, variables y `display: swap`, según la guía instalada. Desde la corrección del build del 13/10/2026, Fraunces y Manrope se distribuyen como WOFF2 oficiales versionados con sus licencias en `src/app/fonts`; el build no descarga fuentes de Google. Se conservan las familias, pesos y fallbacks adoptados. La procedencia y hashes están en [recursos tipográficos](../../src/app/fonts/README.md). Dos familias como máximo, sin todas las variantes; el tema Tailwind 4 consume variables sin repetir valores por componente.
 
 ## 4. Espaciado y composición adaptable
 

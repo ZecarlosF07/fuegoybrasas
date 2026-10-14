@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Manrope } from "next/font/google";
+import localFont from "next/font/local";
 
 import { CartProvider } from "@/features/cart/components/cart-provider";
 import { getPublicEnvironment } from "@/lib/env/public";
@@ -7,8 +7,21 @@ import { getSiteEnvironment } from "@/lib/env/server";
 
 import "./globals.css";
 
-const brandFont = Fraunces({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-fraunces", display: "swap" });
-const uiFont = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
+const brandFont = localFont({
+  src: "./fonts/fraunces-latin-variable.woff2",
+  weight: "600 700",
+  variable: "--font-fraunces",
+  display: "swap",
+  fallback: ["Georgia", "serif"],
+  adjustFontFallback: "Times New Roman",
+});
+const uiFont = localFont({
+  src: "./fonts/manrope-latin-variable.woff2",
+  weight: "400 700",
+  variable: "--font-manrope",
+  display: "swap",
+  fallback: ["system-ui", "sans-serif"],
+});
 
 getPublicEnvironment();
 export const metadata: Metadata = {

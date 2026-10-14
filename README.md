@@ -28,13 +28,14 @@ Next.js **16.3.8**, React **19.2.8**, TypeScript estricto y Tailwind 4. Las depe
 
 | Archivo | Uso |
 | --- | --- |
-| `.env.remote.local` | Credenciales del Supabase oficial. Lo usan `yarn dev/build/start`; importar sus variables en Vercel, exclusivamente en **Production**. |
+| `.env.remote.local` | Credenciales del Supabase oficial para `yarn dev/build/start` en la computadora. |
+| `.env.vercel.production` | Archivo privado listo para importar en Vercel, exclusivamente en **Production**, con el dominio confirmado y las credenciales oficiales. |
 | `.env.local` | Supabase local de pruebas aisladas. No importar en Vercel. |
 | `.env.example` | Plantilla versionada sin credenciales reales. No importar en Vercel. |
 
 La copia `.env.vercel.local` se eliminó el 13/10/2026 tras comprobar que sus credenciales coincidían con el archivo remoto. Corepack y las preferencias de diagnóstico/indexación se conservaron en `.env.remote.local`. El desarrollo mantiene `APP_SITE_URL=http://localhost:3000` y `APP_DEPLOYMENT_TARGET=development`.
 
-Después de importar `.env.remote.local`, cambiar **solo en Vercel** `APP_SITE_URL` por `https://fuegoybrasas.vercel.app` (dominio confirmado por el propietario) y `APP_DEPLOYMENT_TARGET` por `production`. Conservar `ENABLE_EXPERIMENTAL_COREPACK=1`, sin claves CAPTCHA. Guardar las variables y generar un nuevo deployment; [guía de publicación y configuración Auth aplicada](docs/implementacion/evidencia/h8/despliegue.md). Los archivos con credenciales permanecen ignorados por Git.
+Por petición posterior del propietario, `.env.vercel.production` reúne las once variables para importar directamente: `APP_SITE_URL=https://fuegoybrasas.vercel.app`, `APP_DEPLOYMENT_TARGET=production` y `ENABLE_EXPERIMENTAL_COREPACK=1` ya están preparados. No requiere sustituir valores ni contiene claves CAPTCHA/MFA. Su nombre evita la carga automática de Next.js durante builds de pruebas locales; Vercel recibe sus variables mediante importación. Guardarlas en Production y generar un nuevo deployment; [guía de publicación y configuración Auth aplicada](docs/implementacion/evidencia/h8/despliegue.md). Los archivos con credenciales permanecen ignorados por Git; cambios posteriores de claves requieren actualizar también esta exportación.
 
 ## Desarrollo habitual con Supabase remoto
 
@@ -135,7 +136,7 @@ E2E compila explícitamente con `build:local`, inicia con `start:local` en el pu
 - `supabase/`: configuración, migraciones, seed, pruebas SQL y comprobaciones de solo lectura.
 - `tests/`: integración, navegador y fixtures; unitarias junto al módulo que verifican.
 
-La entrada `globals.css` únicamente contiene las directivas del compilador Tailwind. No hay selectores CSS personalizados. El tema de ejecución está en `tailwind.config.ts`, conforme al [sistema visual canónico](.agents/brand/sistema-visual.md); no se introducen paletas por componente. Fuentes con `next/font`, sin solicitudes a Google desde el navegador. El logotipo original sigue pendiente: se usa el nombre textual.
+La entrada `globals.css` únicamente contiene las directivas del compilador Tailwind. No hay selectores CSS personalizados. El tema de ejecución está en `tailwind.config.ts`, conforme al [sistema visual canónico](.agents/brand/sistema-visual.md); no se introducen paletas por componente. Fraunces y Manrope se cargan con `next/font/local` desde WOFF2 versionados, con [procedencia y licencias](src/app/fonts/README.md); el build y el navegador no descargan fuentes de Google. El logotipo original sigue pendiente: se usa el nombre textual.
 
 H2 aporta DTO de configuración/personal, validación y transacciones comunes. `/personal/acceso` inicia el recorrido privado; `/administracion/configuracion` exige manager activo. `yarn env:h2` prepara los secretos ignorados y `yarn staff:bootstrap:local UUID_VERIFICADO` crea únicamente el primer responsable local. PT-08, PT-11 y PT-13 conservan sus pendientes; no hay personal real provisionado ni SMTP productivo validado.
 

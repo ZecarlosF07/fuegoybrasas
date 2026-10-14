@@ -9,7 +9,7 @@ function listFiles(directory) {
   });
 }
 
-const secrets = [".env.local", ".env.remote.local"].filter(existsSync).flatMap((path) =>
+const secrets = [".env.local", ".env.remote.local", ".env.vercel.production"].filter(existsSync).flatMap((path) =>
   Object.entries(parseEnv(readFileSync(path, "utf8"))).filter(([key]) => ["SUPABASE_SECRET_KEY","STAFF_AUTH_FLOW_SECRET","SUPABASE_LOCAL_DB_URL"].includes(key)).map(([,value]) => value),
 ).filter(Boolean);
 if (secrets.length === 0) throw new Error("No hay una clave de servidor para comprobar; indicar este caso como no ejecutado.");
