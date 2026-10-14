@@ -1,5 +1,7 @@
 # Hito 1 — Preparar el proyecto
 
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
 **Versión:** 1.3 · **Fecha:** 7 de octubre de 2026.
 **Destinatarios:** equipo de desarrollo y responsable del proyecto.  
 **Estado:** en revisión; base implementada y verificaciones automáticas aprobadas, registradas en el [reporte de H1](evidencia/h1/README.md). Reproducción por otro desarrollador, registro de la entrega en Git, zoom real, lector de pantalla y aceptación del equipo pendientes.
@@ -21,7 +23,7 @@ El repositorio ya utiliza Next.js 16.3.8, React 19.2.8, TypeScript estricto y Ta
 - Clientes SDK por contexto, contratos comunes y manejo seguro de errores.
 - Inicio de la aplicación, comprobación de comunicación y documentación de uso para desarrolladores.
 
-El login/MFA del personal, bootstrap del responsable, tablas comerciales, auditoría de negocio y recibos transaccionales se implementan desde H2 y los hitos funcionales correspondientes. El carrito, WhatsApp, OTP de clientes y reglas de premios se entregan en H5/H6. H1 prepara sus dependencias comunes sin crear pantallas o tablas vacías para todas esas funciones.
+El login/permisos del personal, bootstrap del responsable, tablas comerciales, auditoría de negocio y recibos transaccionales se implementan desde H2 y los hitos funcionales correspondientes. El carrito, WhatsApp, OTP de clientes y reglas de premios se entregan en H5/H6. H1 prepara sus dependencias comunes sin crear pantallas o tablas vacías para todas esas funciones.
 
 ## 2. Tareas del hito
 
@@ -64,7 +66,7 @@ Ejecutar H1-T12 durante T03 y antes del cierre de T10–T11. Su identificador a�
 | H1-RT07 | Migraciones como fuente de verdad | SQL versionado en `supabase/migrations`; aplicación ordenada desde una base local vacía. La migración inicial prepara `app_private` y permisos restrictivos de objetos propios, sin modificar tablas administradas de Auth/Storage. |
 | H1-RT08 | Seguridad desde la creación | `app_private` no se expone por Data API ni recibe acceso directo de visitantes/usuarios. Objetos de aplicación futuros se crean con sus grants/RLS antes de usarlos; no esperar al panel para protegerlos. |
 | H1-RT09 | Tipos derivados del esquema | Documentar y verificar el proceso de generación de tipos contra el esquema local existente. No escribir a mano tipos que aparenten tablas todavía no migradas. Regenerar cuando H2/H3 añadan entidades. |
-| H1-RT10 | Validación de entorno | Validadores separados para variables públicas y del servidor. Las variables de uso diferido se exigen al activar su capacidad, sin bloquear H1 por OTP/MFA que todavía pertenecen a otros hitos. |
+| H1-RT10 | Validación de entorno | Validadores separados para variables públicas y del servidor. Las variables de uso diferido se exigen al activar su capacidad, sin bloquear H1 por OTP/permisos que todavía pertenecen a otros hitos. |
 | H1-RT11 | Clientes SDK diferenciados | Cliente público sin Auth/cookies; SSR server nuevo por petición; browser para Auth permitido; cliente secreto exclusivamente server-only para administración autorizada de Auth posterior. |
 | H1-RT12 | Sesiones y caché | No singleton autenticado compartido entre peticiones. SDK de datos con no-store conforme arquitectura; no caché compartida de sesión y `cacheComponents` deshabilitado inicialmente. Preparar cliente SSR compatible con cookies de la versión instalada. |
 | H1-RT13 | Secretos protegidos | Clave secreta solo servidor, nunca `NEXT_PUBLIC_*`, JSON público, logs o Git. `.env.example` lleva nombres/placeholders; archivos con credenciales quedan ignorados. |
@@ -93,7 +95,7 @@ La prueba de conectividad usa el entorno local y una respuesta esperada del serv
 | H1-RT17 | Errores seguros | Códigos estables y requestId donde corresponda; diagnóstico técnico restringido. No incluir claves, tokens, SQL interno, teléfonos o cuerpos personales en respuestas/logs. |
 | H1-RT18 | Controles automáticos | Mantener lint/build; añadir comprobación TypeScript y scripts de pruebas usados por H1. Configuración/contratos con Vitest; comunicación e aislamiento en integración local; arranque de página mediante comprobación E2E/smoke. |
 
-Los requisitos de autenticación efectiva, rol, MFA, bloqueo e idempotencia de las mutaciones comerciales se verifican en H2/H6. H1 define sus interfaces comunes y separación técnica; no afirma que esos permisos o transacciones de negocio ya funcionen.
+Los requisitos de autenticación efectiva, rol, permisos vigentes, bloqueo e idempotencia de las mutaciones comerciales se verifican en H2/H6. H1 define sus interfaces comunes y separación técnica; no afirma que esos permisos o transacciones de negocio ya funcionen.
 
 ### 3.4. Diseño UX/UI y sistema visual
 
@@ -186,7 +188,7 @@ No se requiere información productiva para demostrar H1. La creación/contratac
 
 Para empezar se necesita acceso al repositorio, diseño disponible y un equipo capaz de ejecutar Node/Docker. El equipo debe verificar las herramientas actuales; este documento no da por instalado lo que todavía se debe comprobar. Cuentas/proyectos remotos y sus credenciales se gestionan por un canal autorizado, fuera del Markdown.
 
-H2 utilizará esta base para añadir personal autorizado, MFA, configuración del negocio, auditoría y recibos de operaciones. Las tablas editables incorporarán desde su creación `deleted_at`, `deleted_by` y `delete_reason` según el documento 10; `staff_accounts` debe existir antes de añadir FKs de borrado que la referencian. Eventos/recibos/auditoría conservan sus reglas especiales de inmutabilidad.
+H2 utilizará esta base para añadir personal autorizado, permisos vigentes, configuración del negocio, auditoría y recibos de operaciones. Las tablas editables incorporarán desde su creación `deleted_at`, `deleted_by` y `delete_reason` según el documento 10; `staff_accounts` debe existir antes de añadir FKs de borrado que la referencian. Eventos/recibos/auditoría conservan sus reglas especiales de inmutabilidad.
 
 PT-13 afecta el tratamiento de un canje sin entrega y no bloquea H1. No se resuelve en infraestructura por medio de una suposición sobre premios.
 

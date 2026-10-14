@@ -52,7 +52,7 @@ export async function backupActorQuery(fixture: BackupFixture, actor: JwtTestAct
   const connection = await fixture.pool.connect();
   try {
     await connection.query("begin");
-    await connection.query("select set_config('request.jwt.claims',$1,true)", [JSON.stringify({ sub: actor.userId, role: "authenticated", aal: "aal2" })]);
+    await connection.query("select set_config('request.jwt.claims',$1,true)", [JSON.stringify({ sub: actor.userId, role: "authenticated", aal: "aal1" })]);
     await connection.query("set local role authenticated");
     const result = await connection.query(sql, values);
     await connection.query("commit");

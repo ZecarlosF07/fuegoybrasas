@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import type { BrowserContext, Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
-import { enrollStaffBrowser } from "./staff-browser";
+import { signInStaffBrowser } from "./staff-browser";
 import { evidenceDirectory } from "./evidence";
 import { cleanupStaffFixtures, createStaffFixture, staffPool } from "../integration/staff-fixture";
 import type { StaffFixture } from "../integration/types/staff-fixture";
@@ -30,7 +30,7 @@ test.beforeAll(async ({ browser }) => {
   await staffPool.query("update public.business_settings set ordering_enabled=true,location_verified=true,address='Ubicación sintética H5',pickup_charges_verified=true,pickup_extra_cents=0 where id=1");
   await staffPool.query("commit");
   const context = await browser.newContext({ baseURL: "http://127.0.0.1:3100" });
-  const page = await context.newPage(); await enrollStaffBrowser(page, manager); cookies = await context.cookies(); await context.close();
+  const page = await context.newPage(); await signInStaffBrowser(page, manager); cookies = await context.cookies(); await context.close();
 });
 test.afterAll(async () => {
   await staffPool.query("update public.business_settings set ordering_enabled=false where id=1");

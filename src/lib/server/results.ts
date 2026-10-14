@@ -12,7 +12,7 @@ import type { OutputSchema, RpcResponse, ServerWork } from "@/lib/server/types/o
 const errorCodeSchema = z.enum(ERROR_CODES);
 const MESSAGES: Partial<Record<ErrorCode, string>> = {
   AUTH_REQUIRED: "Inicia sesión para continuar.", FORBIDDEN: "Esta cuenta no tiene acceso a esta función.",
-  MFA_REQUIRED: "Completa la segunda verificación.", CONFLICT: "El registro cambió. Revisa la versión actual antes de guardar.",
+  CONFLICT: "El registro cambió. Revisa la versión actual antes de guardar.",
   IDEMPOTENCY_CONFLICT: "Este identificador ya se usó con otros datos. Comprueba su resultado.",
   CONFIG_NOT_READY: "Esta función aún no está habilitada.", NOT_FOUND: "No encontramos el registro solicitado.",
   VALIDATION_ERROR: "Revisa los datos indicados.",

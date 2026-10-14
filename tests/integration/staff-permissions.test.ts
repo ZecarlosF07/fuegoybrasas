@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool, testAuthClient, totpCode } from "./staff-fixture";
-import type { StaffFixture } from "./types/staff-fixture";
+import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool, testAuthClient } from "./staff-fixture";
+import type { JwtTestActor, StaffFixture } from "./types/staff-fixture";
 
 const fixtures: StaffFixture[] = [];
 let manager: StaffFixture, attendant: StaffFixture, outsider: StaffFixture;
@@ -31,21 +31,16 @@ describe("H2 autorización real y conservación", () => {
     const own = await actorQuery(attendant, "select public.get_staff_access() data");
     expect(own.rows[0].data.role).toBe("attendant");
   });
-  it("AAL1 obtiene su acceso propio pero no configuración ni mutaciones", async () => {
-    const actor = { userId: manager.userId, aal: "aal1" } satisfies import("./types/staff-fixture").JwtTestActor;
+  it("contraseña AAL1 permite configuración solo con autorización vigente", async () => {
+    const actor: JwtTestActor = { userId: manager.userId, aal: "aal1" };
     expect((await actorQuery(actor, "select public.get_staff_access() data")).rows[0].data.assuranceLevel).toBe("aal1");
-    await expect(actorQuery(actor, "select public.get_admin_config()")).rejects.toMatchObject({ message: "MFA_REQUIRED" });
-    await expect(actorQuery(actor, "select public.update_business_config(1,'{\"displayName\":\"Prueba\"}',$1)", [randomUUID()])).rejects.toMatchObject({ message: "MFA_REQUIRED" });
+    expect((await actorQuery(actor, "select public.get_admin_config() data")).rows[0].data).toBeTruthy();
+    expect((await actorQuery(actor, "select public.has_staff_role('manager') allowed")).rows[0].allowed).toBe(true);
   });
-  it("JWT Auth auténtico cambia de AAL1 a AAL2 al verificar TOTP", async () => {
+  it("JWT Auth de contraseña accede y una baja revoca permisos sin esperar al vencimiento", async () => {
     const client = testAuthClient();
     expect((await client.auth.signInWithPassword({ email: manager.email, password: manager.password })).error).toBeNull();
-    expect((await client.rpc("get_admin_config")).error?.message).toBe("MFA_REQUIRED");
-    const enrolled = await client.auth.mfa.enroll({ factorType: "totp", friendlyName: "Prueba H2" });
-    expect(enrolled.error).toBeNull();
-    if (enrolled.error) throw new Error("No se pudo preparar TOTP sintético.");
-    const verification = await client.auth.mfa.challengeAndVerify({ factorId: enrolled.data.id, code: totpCode(enrolled.data.totp.secret) });
-    expect(verification.error).toBeNull();
+    expect((await client.rpc("get_staff_access")).data).toMatchObject({ assuranceLevel: "aal1" });
     expect((await client.rpc("get_admin_config")).error).toBeNull();
     await staffPool.query("update app_private.staff_accounts set active=false where auth_user_id=$1", [manager.userId]);
     try {

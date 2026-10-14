@@ -1,5 +1,7 @@
 # Hito 4 — Permitir que el responsable actualice la carta
 
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
 **Versión:** 1.2 · **Fecha:** 8 de octubre de 2026.  
 **Destinatarios:** equipo de desarrollo y responsable del negocio.  
 **Estado:** implementado y verificado técnicamente; migraciones aplicadas al remoto. Aceptación manual y habilitación con personal/datos comerciales confirmados pendientes. Ver [evidencia](evidencia/h4/README.md) y [operación](evidencia/h4/operacion.md).  
@@ -33,7 +35,7 @@ La autorización de atención no permite editar catálogo. H4 no define nuevos c
 | H4-T06 | Incorporar disponibilidad | Permitir agotamiento/rehabilitación de artículo y opciones, comprobando grupos obligatorios y dependencias comerciales. | Carta refleja disponibilidad sin ofrecer combinaciones inválidas. |
 | H4-T07 | Implementar fotografías | Crear bucket/políticas y `POST /api/admin/catalog/images`; validar archivo, subir ruta versionada y asociar con mutación de catálogo. | Foto válida persiste y solo se publica tras asociación confirmada. |
 | H4-T08 | Resolver conflictos y reintentos | Mantener UUID/entrada, consultar recibos ante incertidumbre y mostrar conflictos de revisión o asociación de imagen. | Ningún cambio o archivo se da por aplicado por una respuesta incompleta. |
-| H4-T09 | Verificar y presentar | Probar rol/MFA, edición simultánea, publicación, imágenes, retirada/restauración y reflejo público. | Evidencia de mantenimiento completo y trazabilidad. |
+| H4-T09 | Verificar y presentar | Probar rol/permisos, edición simultánea, publicación, imágenes, retirada/restauración y reflejo público. | Evidencia de mantenimiento completo y trazabilidad. |
 | H4-T10 | Diseñar el mantenimiento con la skill | Consultar ui-ux-pro-max y patrones privados antes del editor; revisar campos, publicación, disponibilidad, imágenes, versiones y confirmaciones de retiro/restauración. | Panel comprensible y consistente con acciones de negocio distintas. |
 
 Orden recomendado: T01 → T02–T04 → T05–T07 → T08–T09. La subida y la transacción SQL son efectos separados; no mantener una transacción abierta durante una transferencia de archivo.
@@ -62,7 +64,7 @@ Ejecutar H4-T10 antes y durante T05–T07; comprobar el resultado en T09. Su ide
 | ID | Requerimiento | Criterio técnico |
 | --- | --- | --- |
 | H4-RT11 | Acceso privado a catálogo | DAL `server-only`, proyecciones mínimas y opción de incluir eliminados solo para manager. No permitir lectura directa ni devolver actor/motivo de borrado por el endpoint público. |
-| H4-RT12 | Validación de imágenes | Handler manager/AAL2; JPEG, PNG o WebP por contenido real, máximo 3 MiB y dimensiones hasta 4096×4096. Límite total de petición 4 MiB, comprobado al leer bytes; rechazar tipos falsos y exceso incluso sin Content-Length fiable. |
+| H4-RT12 | Validación de imágenes | Handler manager activo; JPEG, PNG o WebP por contenido real, máximo 3 MiB y dimensiones hasta 4096×4096. Límite total de petición 4 MiB, comprobado al leer bytes; rechazar tipos falsos y exceso incluso sin Content-Length fiable. |
 | H4-RT13 | Storage separado de SQL | Bucket público `catalog-media`, escritura autorizada y ruta `items/{id}/{uuid}.{ext}`. Subida devuelve referencia, no publicación; asociación posterior por revisión/UUID. No incrementar globalmente el límite de Server Actions para subir imágenes. |
 | H4-RT14 | Archivos y reintentos | Antes de repetir una asociación incierta consultar recibo/estado. Limpieza de huérfanos comprueba referencias actuales y recuperables de soft delete; no elimina archivos todavía referenciados ni presume rollback de Storage por fallo SQL. |
 | H4-RT15 | Formularios privados | `/administracion/carta` protegido y no-store; separar componentes de interacción, schemas, dominio y DAL. Conflicto permite revisar datos actuales sin perder silenciosamente el borrador del editor. |
@@ -101,7 +103,7 @@ Los puntos marcados tienen evidencia automática y revisión técnica en el [rep
 
 ### Mantenimiento y seguridad
 
-- [x] Manager con MFA mantiene las seis entidades comerciales mediante operaciones restringidas; atención/cliente/anónimo no pueden editarlas.
+- [x] Manager con autorización vigente mantiene las seis entidades comerciales mediante operaciones restringidas; atención/cliente/anónimo no pueden editarlas.
 - [x] Cada cambio usa revisión y UUID; cambios de hijos actualizan la revisión del artículo y quedan auditados.
 - [x] Precio por modalidad, vigencia, inclusiones y opciones se conservan sin equivalencias inventadas; C01/P05 mantienen sus restricciones.
 - [x] Publicación falla ante precio no verificado, padre retirado o grupo obligatorio inválido, con error accionable.
@@ -111,7 +113,7 @@ Los puntos marcados tienen evidencia automática y revisión técnica en el [rep
 ### Fotografías y conservación
 
 - [x] Subidas verifican contenido, tipo, bytes y dimensiones; pruebas incluyen exceso durante lectura y respuesta segura de límite.
-- [x] Solo manager/AAL2 sube/asocia imágenes; asociación usa revisión y recibo, independientemente del efecto Storage.
+- [x] Solo manager activo sube/asocia imágenes; asociación usa revisión y recibo, independientemente del efecto Storage.
 - [x] Archivo subido pero no asociado no modifica la carta; fallo de asociación tiene recuperación y tratamiento de huérfanos seguro.
 - [x] Eliminación exige motivo, revisión y permisos; conserva claves/FKs y oculta los descendientes mediante filtros.
 - [x] Restauración conserva UUID y deja cada entidad en su estado seguro; restaurar categoría no publica hijos automáticamente.
@@ -141,7 +143,7 @@ La prueba técnica puede realizarse con catálogo sintético. Publicar una modif
 
 ## 6. Dependencias y pendientes
 
-**Requisitos previos:** [H2](02-hito-2-acceso-del-personal.md) para permisos/MFA/recibos/auditoría y [H3](03-hito-3-catalogo-publico.md) para tablas/proyección pública. Las ampliaciones de contrato de categorías/conservación se versionan y enlazan al diseño; no agregan tablas ajenas al inventario de 18.
+**Requisitos previos:** [H2](02-hito-2-acceso-del-personal.md) para permisos/permisos/recibos/auditoría y [H3](03-hito-3-catalogo-publico.md) para tablas/proyección pública. Las ampliaciones de contrato de categorías/conservación se versionan y enlazan al diseño; no agregan tablas ajenas al inventario de 18.
 
 | Pendiente | Trabajo afectado | Condición de cierre o bloqueo |
 | --- | --- | --- |

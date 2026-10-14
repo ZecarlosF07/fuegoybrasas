@@ -1,6 +1,8 @@
 # 07. Despliegue, configuración y operación
 
-**Actualización del 10/10/2026:** [acceso privado sin SMS](16-acceso-a-tarjeta-sin-sms.md) sustituye OTP/phone_change e identidad telefónica del cliente; MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** [acceso privado sin SMS](16-acceso-a-tarjeta-sin-sms.md) sustituye OTP/phone_change e identidad telefónica del cliente; El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.1 · **Fecha:** 3 de octubre de 2026.  
 **Relacionado:** [Seguridad](04-autenticacion-seguridad.md), [Datos](03-modelo-de-datos.md), [Implementación](09-plan-de-implementacion.md).
@@ -20,7 +22,7 @@ Elegir región disponible de Supabase y ejecución de Next.js según latencia me
 | Entorno | Datos | Auth y uso |
 | --- | --- | --- |
 | Local | Supabase CLI y Docker, migraciones/fixtures reproducibles. | Teléfonos y usuarios sintéticos; OTP de prueba exclusivamente local. |
-| Staging | Proyecto Supabase separado del productivo y preview de Next.js. | Equipo de prueba, MFA, OTP real controlado y datos ficticios de pedido. |
+| Staging | Proyecto Supabase separado del productivo y preview de Next.js. | Equipo de prueba, permisos vigentes, OTP real controlado y datos ficticios de pedido. |
 | Producción | Proyecto y claves propios; catálogo confirmado. | Clientes reales, condiciones aprobadas y roles mínimos. |
 
 No conectar previews públicos a datos de clientes productivos. No restaurar perfiles reales en staging sin tratamiento aprobado. Las fixtures nunca incluyen cuentas del propietario o claves reales.
@@ -44,7 +46,7 @@ Número oficial, horarios, tarifas y métodos de pago son datos comerciales en b
 
 1. Revisar commit/lockfile, documentación, cambios de esquema y tests correspondientes.
 2. Aplicar migraciones a local vacío y staging; comparar esquema/tipos, permisos y seed.
-3. Configurar Auth, MFA, redirects y SMTP si se usa correo del personal. Verificar con cuentas de prueba; cliente sin SMS y personal sin CAPTCHA por DC-20.
+3. Configurar Auth, permisos vigentes, redirects y SMTP si se usa correo del personal. Verificar con cuentas de prueba; cliente sin SMS y personal sin CAPTCHA por DC-20.
 4. Construir Next.js y ejecutar recorridos completos contra staging, incluyendo concurrencia y reintentos.
 5. Preparar respaldo y migraciones compatibles antes de cambios productivos. Aplicar primero cambios aditivos de base.
 6. Desplegar aplicación compatible con esquema; comprobar salud, catálogo, sesión y una operación controlada.
@@ -97,7 +99,7 @@ Métricas de fidelización por consulta agregada de eventos, accesible al respon
 | Sello errado | Responsable revisa evento y motivo; corrección o incidencia según impacto en premios. |
 | Cambio de precio/agotado | Responsable modifica panel y comprueba carta pública; no edita contadores desde Dashboard. |
 | Cambio/pérdida de número | Cambio verificado normal; recuperación excepcional solo por procedimiento aprobado. |
-| Baja de empleado | Desactivar autorización y gestionar sesiones/MFA; conservar auditoría. |
+| Baja de empleado | Desactivar autorización y gestionar sesiones/permisos; conservar auditoría. |
 
 Registro de contingencia propuesto: hoja interna restringida con fecha de entrega, referencia, identificador único, cliente identificado y estado de revisión. Evitar listas de teléfonos compartidas públicamente; transferir y retirar copias operativas según PT-11. El canal concreto y el custodio se confirman en PT-08.
 
@@ -107,4 +109,4 @@ Una incidencia de canje registrado sin entrega física se resuelve por **DC-13:*
 
 Revisar cotizaciones vigentes al contratar: hosting, Supabase, almacenamiento/egreso, SMS, SMTP, dominio, respaldos y premio. No usar cifras aproximadas como presupuesto aceptado. Calcular costo por OTP, tasa de reenvío, costo de canjes y tiempo del personal.
 
-Pedidos requieren PT-01/PT-04 y validación de catálogo pertinente; horarios/tarifas desconocidos solo usan los mensajes provisionales definidos. Fidelización requiere costo del regalo, OTP probado, permisos/MFA, condiciones/privacidad y contingencias. No existe fecha de lanzamiento confirmada.
+Pedidos requieren PT-01/PT-04 y validación de catálogo pertinente; horarios/tarifas desconocidos solo usan los mensajes provisionales definidos. Fidelización requiere costo del regalo, OTP probado, permisos/permisos, condiciones/privacidad y contingencias. No existe fecha de lanzamiento confirmada.

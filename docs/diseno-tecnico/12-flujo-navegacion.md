@@ -1,6 +1,8 @@
 # 12. Flujo de navegación, páginas y rutas
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.0 · **Fecha:** 3 de octubre de 2026.  
 **Estado:** mapa objetivo del producto; las seis páginas y callback de H2 están implementadas según su [evidencia](../implementacion/evidencia/h2/README.md). Otras rutas siguen pendientes.  
@@ -11,7 +13,7 @@
 
 DC-12 añade `/administracion` y `/administracion/clientes/[id]` a las veinte páginas y callback de Auth del diseño anterior. Diálogos de opciones, confirmación de sello y canje son componentes dentro de sus páginas. Los endpoints de API son interfaces HTTP, no pantallas.
 
-Los grupos de rutas de Next.js no forman parte de la URL. Acceso de cliente/personal y MFA se ubican fuera de layouts que exijan una sesión completa. Layout, DAL, action, handler y RPC verifican lo que corresponde a cada operación; ver una pantalla o conocer un UUID no concede permisos.
+Los grupos de rutas de Next.js no forman parte de la URL. Acceso de cliente/personal se ubica fuera de layouts que exijan una sesión completa. Layout, DAL, action, handler y RPC verifican lo que corresponde a cada operación; ver una pantalla o conocer un UUID no concede permisos.
 
 ## 2. Mermaid de páginas y navegación
 
@@ -43,9 +45,7 @@ flowchart TD
         STAFF_LOGIN["/personal/acceso — Correo y contraseña"]
         STAFF_RECUPERAR["/personal/recuperar — Solicitar correo"]
         STAFF_RESET["/personal/restablecer — Definir o cambiar contraseña"]
-        RESET_MFA["Autenticador existente dentro de /personal/restablecer"]
-        MFA["/personal/mfa — Enrolamiento o desafío TOTP"]
-        STAFF_GUARD{Staff activo, no eliminado y AAL2}
+        STAFF_GUARD{Staff activo y no eliminado}
         DENEGADO[Acceso denegado o sesión insuficiente]
     end
 
@@ -98,17 +98,13 @@ flowchart TD
     TARJETA -->|Volver a carta| INICIO
     TARJETA -->|Cerrar sesión| INICIO
 
-    STAFF_LOGIN -->|Credenciales válidas y acceso autorizado| MFA
+    STAFF_LOGIN -->|Credenciales válidas y acceso autorizado| STAFF_GUARD
     STAFF_LOGIN --> STAFF_RECUPERAR
     STAFF_RECUPERAR -->|Respuesta genérica| CORREO
     CORREO --> CALLBACK
     CALLBACK -->|Token válido y sesión establecida| STAFF_RESET
     CALLBACK -->|Vencido o usado| STAFF_RECUPERAR
-    STAFF_RESET -->|Factor existente y sesión AAL1| RESET_MFA
-    RESET_MFA -->|Código válido, AAL2| STAFF_RESET
-    STAFF_RESET -->|Contraseña definida sin factor| MFA
-    STAFF_RESET -->|Contraseña cambiada con AAL2| STAFF_GUARD
-    MFA --> STAFF_GUARD
+    STAFF_RESET -->|Contraseña definida o cambiada| STAFF_GUARD
     STAFF_GUARD -->|Sí| STAFF_HOME
     STAFF_GUARD -->|No| DENEGADO
     DENEGADO --> STAFF_LOGIN
@@ -127,7 +123,7 @@ flowchart TD
     STAFF_HOME -->|Cerrar sesión| STAFF_LOGIN
 ```
 
-La entrada normal del público no muestra el panel interno como parte del pedido. Personal accede por su URL conocida. Una sesión staff ya válida AAL2 puede ir directamente a `/personal`; no necesita repetir MFA en cada navegación. Una identidad puede tener perfil cliente y autorización staff de forma independiente.
+La entrada normal del público no muestra el panel interno como parte del pedido. Personal accede por su URL conocida. Una sesión staff ya autorizada puede ir directamente a `/personal`; no necesita repetir MFA en cada navegación. Una identidad puede tener perfil cliente y autorización staff de forma independiente.
 
 ## 3. Inventario de páginas
 
@@ -143,18 +139,18 @@ La entrada normal del público no muestra el panel interno como parte del pedido
 | `/mi-tarjeta/acceso` | `(customer-access)` | Público y cliente en alta | Nombre/contacto/términos o enlace privado; sin SMS; si ya existe acceso vigente, ofrece volver a la tarjeta; un enlace distinto exige apertura expresa. Perfil cerrado requiere revisión. |
 | `/mi-tarjeta` | `(customer)` | Cliente con clave privada válida | Propia tarjeta/indicaciones; sin perfil conduce a activación. Suspendida se consulta con estado; closed/deleted requiere revisión. |
 | `/mi-tarjeta/telefono` | `(customer)` | Cliente identificado propio | Cambiar contacto con clave propia y revisión; mismos UUID. Pérdida de acceso/enlace requiere PT-08/H7. |
-| `/personal/acceso` | `(staff-access)` | Público | Login interno; sin fila staff vigente no entra. AAL1 va a MFA, AAL2 autorizado puede ir a personal. |
-| `/personal/mfa` | `(staff-access)` | Identidad y staff vigente; AAL1 permitido para completar MFA | Enrolar/desafiar TOTP; no contiene operaciones de negocio. Recuperar contraseña no retira factor. |
+| `/personal/acceso` | `(staff-access)` | Público | Login interno; sin fila staff vigente no entra. Cuenta autorizada va directamente a personal. |
+| `/personal/mfa` | `(staff-access)` | Alias antiguo | Redirige a `/personal`, que aplica autenticación y autorización actual. Sin enrolamiento ni desafío. |
 | `/personal/recuperar` | `(staff-access)` | Público | Solicitud genérica de correo, límites de Auth y sin CAPTCHA por DC-20; sin revelar cuentas existentes. |
-| `/personal/restablecer` | `(staff-access)` | Identidad validada por callback, permiso firmado vigente y staff autorizado | Con factor existente verificar MFA antes del cambio; sin factor, definir contraseña y enrolar MFA. No asigna rol. |
-| `/personal` | `(staff)` | Atención/manager activos, AAL2 | Búsqueda exacta de contacto declarado y confirmación de tarjeta; diferencia ausencia y servicio caído. |
-| `/personal/clientes/[id]` | `(staff)` | Atención/manager activos, AAL2 | Ficha mínima/sello/canje; corrección e historial amplio solo manager. ID no concede acceso. |
-| `/administracion/carta` | `(admin)` | Manager activo, AAL2 | Edición y conservación comercial; conflictos de revisión no sobrescriben. |
-| `/administracion` | `(admin)` | Manager activo, AAL2 | Indicadores, periodo y listado paginado con filtros de progreso/premios. |
-| `/administracion/clientes/[id]` | `(admin)` | Manager activo, AAL2 | Historial, corrección/reversión, recuperación presencial y conciliación de contingencia. |
-| `/administracion/configuracion` | `(admin)` | Manager activo, AAL2 | Datos verificados, flags y premio/costo; sin editor de metas/campañas. |
-| `/administracion/incidencias` | `(admin)` | Manager activo, AAL2 | Revisar/cerrar; no ocultar abiertas ni implementar restitución pendiente PT-13. |
-| `/administracion/personal` | `(admin)` | Manager activo, AAL2 | Invitaciones/roles/baja/restauración; último manager protegido. |
+| `/personal/restablecer` | `(staff-access)` | Identidad validada por callback, permiso firmado vigente y staff autorizado | Definir contraseña con permiso temporal firmado; no asigna rol ni exige segundo factor. |
+| `/personal` | `(staff)` | Atención/manager activos | Búsqueda exacta de contacto declarado y confirmación de tarjeta; diferencia ausencia y servicio caído. |
+| `/personal/clientes/[id]` | `(staff)` | Atención/manager activos | Ficha mínima/sello/canje; corrección e historial amplio solo manager. ID no concede acceso. |
+| `/administracion/carta` | `(admin)` | Manager activo | Edición y conservación comercial; conflictos de revisión no sobrescriben. |
+| `/administracion` | `(admin)` | Manager activo | Indicadores, periodo y listado paginado con filtros de progreso/premios. |
+| `/administracion/clientes/[id]` | `(admin)` | Manager activo | Historial, corrección/reversión, recuperación presencial y conciliación de contingencia. |
+| `/administracion/configuracion` | `(admin)` | Manager activo | Datos verificados, flags y premio/costo; sin editor de metas/campañas. |
+| `/administracion/incidencias` | `(admin)` | Manager activo | Revisar/cerrar; no ocultar abiertas ni implementar restitución pendiente PT-13. |
+| `/administracion/personal` | `(admin)` | Manager activo | Invitaciones/roles/baja/restauración; último manager protegido. |
 
 DC-12 admite listado privado paginado del responsable, sin exportación masiva ni página pública de recuperación. DC-14 aprueba recuperación presencial con comprobante/historial; DC-15 excluye baja de clientes/tarjetas. [Reglas vigentes](17-administracion-y-operacion-h7.md).
 
@@ -166,7 +162,7 @@ DC-12 admite listado privado paginado del responsable, sin exportación masiva n
 | `GET /api/catalog` | Navegador público | Proyección `read_catalog`; no sesión, no-store y filtros de borrado/padres. |
 | `POST /api/cart/validate` | Checkout invitado | Valida IDs/precios/opciones y devuelve datos canónicos, sin guardar solicitud. |
 | `GET /api/me/card` | Cliente identificado | Propia tarjeta; identidad de sesión, nunca userId arbitrario. |
-| `POST /api/admin/catalog/images` | Editor manager | Subida validada con JWT manager/AAL2; asociación posterior por action. |
+| `POST /api/admin/catalog/images` | Editor manager | Subida validada con JWT manager activo; asociación posterior por action. |
 | `GET /api/health` | Operación/monitoreo | Salud mínima sin secretos, PII ni detalles SQL; no es dashboard ni catálogo. |
 
 ```mermaid
@@ -220,6 +216,6 @@ Cliente y staff no comparten stores de perfiles. Una nueva identidad no recupera
 
 ## 7. Comprobaciones previstas
 
-Revisar que las 20 páginas aparezcan tanto en el Mermaid como en el árbol de carpetas. Probar entrada directa sin sesión, AAL1 hacia MFA, sesión eliminada, rol insuficiente, callback inválido y teléfono cambiado. Verificar que acceso/MFA/recuperación no entren en bucles por sus layouts y que APIs/Server Actions no dependan de haber abierto previamente una página.
+Revisar que las 20 páginas aparezcan tanto en el Mermaid como en el árbol de carpetas. Probar entrada directa sin sesión, AAL1 hacia MFA, sesión eliminada, rol insuficiente, callback inválido y teléfono cambiado. Verificar que acceso/permisos/recuperación no entren en bucles por sus layouts y que APIs/Server Actions no dependan de haber abierto previamente una página.
 
 La navegación pública debe funcionar sin Auth y permitir retorno desde WhatsApp. Las páginas privadas usan noindex; SEO público se restringe a información confirmada. Estos recorridos se implementarán y probarán según [Pruebas](08-pruebas-y-aceptacion.md); la presente revisión comprueba documentación y no acredita una aplicación operativa.

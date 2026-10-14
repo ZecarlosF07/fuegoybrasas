@@ -24,7 +24,7 @@ export async function inviteStaffAction(input: unknown) {
     if (!parsed.success) return invalidInput(parsed.error, requestId);
     const access = await getStaffAccess();
     if (!access.ok) return access;
-    if (access.data.role !== "manager" || access.data.assuranceLevel !== "aal2") return failure({ code: "FORBIDDEN", message: "Solo el responsable con MFA puede invitar personal." }, requestId);
+    if (access.data.role !== "manager") return failure({ code: "FORBIDDEN", message: "Solo el responsable puede invitar personal." }, requestId);
     const value = parsed.data;
     const client = await createServerSupabaseClient("action");
     const args = { p_email: value.email, p_role: value.role, p_operation_id: value.operationId };

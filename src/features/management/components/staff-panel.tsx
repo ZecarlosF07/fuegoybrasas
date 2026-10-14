@@ -34,7 +34,7 @@ export function StaffPanel({ initial, actorUserId }: StaffPanelProps) {
   }
   const selected = staff.find((employee) => employee.id === selectedId);
   return <div className="space-y-6">
-    <h1 className="font-brand text-3xl font-bold">Personal y permisos</h1><p>Usa cuentas individuales. Cada empleado completa su contraseña y MFA antes de operar.</p>
+    <h1 className="font-brand text-3xl font-bold">Personal y permisos</h1><p>Usa cuentas individuales. Cada empleado ingresa con su correo y contraseña.</p>
     <ManagementFeedback operation={operation} />
     <form method="post" onSubmit={invite} noValidate className="space-y-4 rounded-card border border-brand-border bg-brand-surface p-4 md:p-6">
       <h2 className="text-xl font-bold">Invitar personal</h2><p>Si el correo o la asignación quedan incompletos, conserva esta referencia y comprueba la misma invitación. Nunca se activa una cuenta pendiente.</p>
@@ -45,7 +45,7 @@ export function StaffPanel({ initial, actorUserId }: StaffPanelProps) {
       <SubmitButton label={operation.journal?.kind === "invite" ? "Conciliar la misma invitación" : "Enviar invitación"} pendingLabel="Preparando y verificando invitación…" pending={operation.pending && operation.journal?.kind === "invite"} disabled={managementBlocked(operation, "invite")} />
     </form>
     <ul className="grid gap-4 lg:grid-cols-2">{staff.map((employee) => <li key={employee.id} className="space-y-3 rounded-card border border-brand-border bg-brand-surface p-4">
-      <h2 className="break-all text-xl font-bold">{employee.email ?? employee.id}</h2><p>{employee.role === "manager" ? "Responsable" : "Atención"} · {employee.deleted ? "Retirado" : employee.active ? "Acceso autorizado; requiere MFA" : "Acceso desactivado"}</p>
+      <h2 className="break-all text-xl font-bold">{employee.email ?? employee.id}</h2><p>{employee.role === "manager" ? "Responsable" : "Atención"} · {employee.deleted ? "Retirado" : employee.active ? "Acceso autorizado" : "Acceso desactivado"}</p>
       {employee.invitationStatus === "pending" && <p>Invitación incompleta. Sin acceso activo; conciliar con la misma referencia.</p>}
       {employee.invitationStatus === "sent" && <p>Invitación enviada; el empleado debe completar su acceso.</p>}
       <Button variant="secondary" disabled={operation.pending || operation.journal !== null} onClick={() => setSelectedId(employee.id)}>Administrar permisos</Button>

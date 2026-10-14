@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-10-14T01:03:31.724Z",
+  "decision": "DC-22",
+  "baselineCommit": "b738d90bd7356e01806b752ff10dacd139139a32",
+  "workingTreeChanges": true,
+  "migration": "supabase/migrations/20261014000000_staff_access_without_mfa.sql",
+  "sha256": "f8a7d1f9602ef56245489d21e8f5f800b4a79ed466c11af62f3dd42399a53925",
+  "tests": {
+    "unit": {
+      "files": 28,
+      "passed": 128
+    },
+    "database": {
+      "files": 9,
+      "passed": 132
+    },
+    "integration": {
+      "files": 17,
+      "passed": 113,
+      "note": "16 archivos aprobados en la suite; Storage tuvo una expectativa AAL1 obsoleta, corregida y repetida con sus cinco casos aprobados."
+    },
+    "browser": {
+      "passed": 50,
+      "durationSeconds": 229.16,
+      "environment": "Supabase local aislado y Chrome"
+    },
+    "lint": {
+      "passed": true,
+      "durationSeconds": 141.48
+    },
+    "buildLocal": {
+      "passed": true,
+      "durationSeconds": 42.79
+    },
+    "buildRemote": {
+      "passed": true,
+      "durationSeconds": 28.43
+    },
+    "serverBoundary": {
+      "passed": true,
+      "durationSeconds": 69.12
+    },
+    "schemaTypes": {
+      "regeneratedFrom": "geazxsvjkqpzbghlywbw"
+    },
+    "preflight": {
+      "ready": true,
+      "configurationProblems": [],
+      "launchProblems": [
+        "PAYMENTS",
+        "REWARD_COST",
+        "LOYALTY_DOCUMENTS"
+      ]
+    }
+  },
+  "limitations": [
+    "No acredita deployment Vercel, SMTP real, revisión humana, piloto o activación pública.",
+    "Primer runner unitario restringido falló por archivos temporales; repetición fuera del entorno restringido aprobada."
+  ]
+}

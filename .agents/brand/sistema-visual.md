@@ -123,7 +123,7 @@ Encabezado compacto: sello/nombre, carta y acceso secundario a tarjeta. Paneles 
 | Carrito | Cantidades, opciones e indicaciones por línea; cambios sin retiro silencioso. Dock solo con artículos y altura según contenido reservada en página. |
 | Revisión | Campos mínimos y condicionales; productos/cargos separados; pendiente no equivale a «gratis». |
 | WhatsApp | Revisar/enviar en chat, abrir/copiar y volver. Sin indicador de venta confirmada. |
-| Acceso | Labels, OTP pegable/autocompletado, espera/error y salida hacia carta. Staff mantiene contraseña/MFA establecidos. |
+| Acceso | Labels, OTP pegable/autocompletado, espera/error y salida hacia carta. Staff accede con correo/contraseña y permisos vigentes, sin CAPTCHA ni segundo factor por DC-20/DC-22. |
 | Sellos | Diez posiciones, 5 × 2; conteo «X de 10», premio separado. Acreditados action, vacíos control-border; posiciones sin interacción. |
 | Premio | Nombre/contenido, estado e instrucciones; distinguir ciclo nuevo con premio de tarjeta nueva. Sin vencimiento o compra extra inventados. |
 | Operación staff | Cliente, confirmaciones requeridas, efecto previsto y resultado real. Incertidumbre visible, sin saldo optimista. |

@@ -28,7 +28,7 @@ export function StaffEditor({ employee, operation }: StaffEditorProps) {
   const conserveKind = employee.deleted ? "restore" : "delete";
   return <section className="space-y-4 rounded-card border border-brand-control-border bg-brand-surface p-4 md:p-6">
     <h2 className="break-all text-xl font-bold">Administrar acceso de {employee.email ?? "esta cuenta"}</h2>
-    <p>El último responsable activo está protegido. Restaurar deja el acceso desactivado; necesita autorización posterior y MFA.</p>
+    <p>El último responsable activo está protegido. Restaurar deja el acceso desactivado; necesita autorización posterior.</p>
     {!employee.deleted && <form method="post" onSubmit={save} noValidate className="space-y-4">
       <fieldset disabled={managementBlocked(operation, "staff") || employee.invitationStatus === "pending"} className="space-y-4">
         <SelectField id="role" name="role" label="Rol autorizado" defaultValue={employee.role}><option value="attendant">Atención</option><option value="manager">Responsable</option></SelectField>

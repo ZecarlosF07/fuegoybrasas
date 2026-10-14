@@ -35,10 +35,9 @@ async function save(key: "paymentMethods" | "deliveryZones", id: string, revisio
 async function readCatalog() { return catalogSchema.parse((await staffPool.query("select public.read_catalog() data")).rows[0].data); }
 
 describe("H5 configuración remota reproducible: pruebas locales aisladas", () => {
-  it("manager/AAL2 crea condiciones pendientes; AAL1, personal y CRUD directo se deniegan", async () => {
+  it("manager con contraseña crea condiciones pendientes; atención y CRUD directo se deniegan", async () => {
     const patch = { paymentMethods: [{ id: payment, expectedRevision: 0, fields: { code, label: "Pago sintético H5" } }] };
     await expect(actorQuery(attendant, "select public.update_business_config($1,$2,$3)", [await configRevision(), JSON.stringify(patch), randomUUID()])).rejects.toMatchObject({ message: "FORBIDDEN" });
-    await expect(actorQuery({ ...manager, aal: "aal1" }, "select public.update_business_config($1,$2,$3)", [await configRevision(), JSON.stringify(patch), randomUUID()])).rejects.toMatchObject({ message: "MFA_REQUIRED" });
     await save("paymentMethods", payment, 0, { code, label: "Pago sintético H5" });
     await save("deliveryZones", zone, 0, { name: "Zona sintética H5", coverage: "allowed" });
     expect((await readCatalog()).configuration.paymentMethods).toEqual([]);

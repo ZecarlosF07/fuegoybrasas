@@ -2,6 +2,8 @@
 
 **Estado:** configuración del repositorio preparada; comprobar publicación y URL real en el [reporte](README.md). No se ha aprobado activar pedidos/programa.
 
+**DC-22:** [personal sin MFA](../../../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) y [evidencia](personal-sin-mfa/README.md). La migración oficial y Auth ya retiran segundo factor; los párrafos anteriores de preparación describen su fecha.
+
 ## Dominio confirmado
 
 El propietario confirmó el 13/10/2026 **[https://fuegoybrasas.vercel.app](https://fuegoybrasas.vercel.app)** como origen de producción. En Vercel, exclusivamente en Production:
@@ -13,13 +15,13 @@ APP_DEPLOYMENT_TARGET=production
 
 El archivo `.env.remote.local` de desarrollo conserva `http://localhost:3000` y `development`; importar sus credenciales y sustituir estas dos entradas en el hosting. No se crea otra copia del archivo de secretos. `ENABLE_EXPERIMENTAL_COREPACK=1` ya está incluido. Las variables de Vercel aún debe guardarlas el propietario; no se dispone de un proyecto Vercel autenticado en este entorno.
 
-**Supabase Auth aplicado y verificado:** Site URL `https://fuegoybrasas.vercel.app`, callback exacto `https://fuegoybrasas.vercel.app/auth/confirm` y callbacks exactos de desarrollo `http://localhost:3000/auth/confirm` / `http://127.0.0.1:3000/auth/confirm`. CLI 2.119.0 documenta que un perfil parcial solo aplica propiedades declaradas. Se comparó un perfil privado mínimo, se verificaron las dos diferencias declaradas y se aplicó al proyecto oficial `geazxsvjkqpzbghlywbw`; la comparación posterior confirma las URLs y conserva diez propiedades remotas no declaradas. No se aplicó el `supabase/config.toml` local completo, no se cambió MFA/CAPTCHA/SMTP y no se enviaron correos. Snapshots bajo `.test-fixtures`, ignorados por Git.
+**Supabase Auth aplicado y verificado:** Site URL `https://fuegoybrasas.vercel.app`, callback exacto `https://fuegoybrasas.vercel.app/auth/confirm` y callbacks exactos de desarrollo `http://localhost:3000/auth/confirm` / `http://127.0.0.1:3000/auth/confirm`. CLI 2.119.0 documenta que un perfil parcial solo aplica propiedades declaradas. Se comparó un perfil privado mínimo, se verificaron las dos diferencias declaradas y se aplicó al proyecto oficial `geazxsvjkqpzbghlywbw`; la comparación posterior confirma las URLs y conserva diez propiedades remotas no declaradas. No se aplicó el `supabase/config.toml` local completo, en ese ajuste de URLs no se cambió MFA/CAPTCHA/SMTP; DC-22 retira MFA posteriormente y no se enviaron correos. Snapshots bajo `.test-fixtures`, ignorados por Git.
 
-`yarn release:check` con este origen y el SHA real `bb546c4` completo: `ready=true`, sin problemas de configuración. Continúan pendientes de lanzamiento `PAYMENTS`, `ADMINISTRATOR_MFA`, `REWARD_COST` y `LOYALTY_DOCUMENTS`; el comando solo lee y no activa funciones. La consulta pública a `/api/health` devolvió HTTP 404 antes del nuevo deployment: aún no acredita una aplicación publicada correctamente. Guardar variables y hacer Redeploy; comprobar después los recorridos públicos y la salud del nuevo deployment.
+`yarn release:check` con este origen y el SHA real `bb546c4` completo: `ready=true`, sin problemas de configuración. Continúan pendientes de lanzamiento `PAYMENTS`, `REWARD_COST` y `LOYALTY_DOCUMENTS`; el comando solo lee y no activa funciones. La consulta pública a `/api/health` devolvió HTTP 404 antes del nuevo deployment: aún no acredita una aplicación publicada correctamente. Guardar variables y hacer Redeploy; comprobar después los recorridos públicos y la salud del nuevo deployment.
 
 ## Variables de Vercel
 
-**DC-20, 13/10:** [CAPTCHA retirado](acceso-personal-sin-captcha.md) por el propietario. No importar claves de ese proveedor; el acceso del personal mantiene contraseña/MFA. Supabase oficial tiene CAPTCHA deshabilitado, comprobado mediante lectura de configuración.
+**DC-20, 13/10:** [CAPTCHA retirado](acceso-personal-sin-captcha.md) por el propietario. No importar claves de ese proveedor; el acceso del personal mantiene contraseña y rol vigente. Supabase oficial tiene CAPTCHA deshabilitado, comprobado mediante lectura de configuración.
 
 Importar `https://github.com/ZecarlosF07/fuegoybrasas` con la rama publicada `master`. Instalar con Yarn 1.22.22 / Node 22; `vercel.json` invoca `corepack yarn` para instalación, build y desarrollo. Corepack usa `packageManager: yarn@1.22.22` y evita depender de la versión global del hosting. Configurar **solo Production**, conservar Preview sin claves oficiales. El launcher rechaza ese uso de preview y falla de forma explícita.
 
@@ -56,13 +58,13 @@ No subir archivos `.env`, contraseñas iniciales, `.test-fixtures`, claves de CL
 2. Ejecutar las pruebas aisladas e inspecciones de secretos. CI no carga variables de producción.
 3. Supabase Auth ya usa Site URL y callbacks exactos del apartado «Dominio confirmado». Comprobarlos de nuevo si cambia el dominio. No aceptar destinos externos manipulados ni comodines generales.
 4. Ejecutar `yarn release:check` con `APP_SITE_URL` y SHA reales en el entorno del comando. Leer códigos y [preflight](preflight-remoto.json); esta consulta no activa flags.
-5. En Vercel comprobar SHA, logs sanitizados, `/api/health`, `/api/catalog`, robots, carta, acceso y MFA del administrador. No usar clientes reales como fixtures.
+5. En Vercel comprobar SHA, logs sanitizados, `/api/health`, `/api/catalog`, robots, carta, acceso con contraseña y rol del administrador. No usar clientes reales como fixtures.
 
 El preflight en desarrollo devuelve `SITE_URL` / `RELEASE_ID` porque el entorno habitual conserva localhost. Es un resultado esperado de preparación incompleta, no una autorización de lanzamiento ni un fallo ignorado.
 
 ## Primera cuenta
 
-La cuenta inicial ya fue creada sin correo por petición del propietario. Su contraseña aleatoria se guarda en `.test-fixtures/initial-administrator.json`, ignorado por Git. El propietario debe abrirlo localmente, entrar a `/personal/acceso`, configurar su propio TOTP y conservar la recuperación del autenticador en un lugar seguro. No compartir capturas de contraseña/QR. No configurar un factor real desde las pruebas.
+La cuenta inicial ya fue creada sin correo por petición del propietario. Su contraseña aleatoria se guarda en `.test-fixtures/initial-administrator.json`, ignorado por Git. El propietario debe abrirlo localmente, entrar a `/personal/acceso`, entrar con su contraseña. No compartir capturas de la contraseña ni utilizar la cuenta real como fixture.
 
 `yarn staff:bootstrap:official correo-confirmado@example.test` es una herramienta excepcional de operador: exige destino oficial y ausencia de otro administrador activo. Guarda diario antes del alta, no toma cuentas existentes y permite conciliar reintentos. No ejecutarla en CI/hosting ni usarla para altas ordinarias.
 
@@ -70,7 +72,7 @@ Sin SMTP no se envía ninguna invitación. Las pantallas existentes de recuperac
 
 ## Activación y reversión
 
-Tras completar el [piloto](piloto-y-aceptacion.md), confirmar pagos reales, personas/MFA, costo del premio y textos de privacidad/condiciones. `yarn release:check --launch` añade controles de estos datos; no demuestra piloto ni envía solicitudes a WhatsApp.
+Tras completar el [piloto](piloto-y-aceptacion.md), confirmar pagos reales, personas autorizadas, costo del premio y textos de privacidad/condiciones. `yarn release:check --launch` añade controles de estos datos; no demuestra piloto ni envía solicitudes a WhatsApp.
 
 El administrador puede habilitar pedido desde configuración comercial cuando estén confirmados sus requisitos. El programa se activa mediante su operación transaccional con costo y confirmaciones, no mediante escritura directa de `loyalty_enabled`. Aprobar también disponibilidad de cocina.
 

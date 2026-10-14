@@ -14,8 +14,8 @@ import type { AuthFormProps, AuthFormResult } from "@/features/identity/types/au
 
 const COPY = {
   login: { title: "Bienvenido de nuevo", help: "Ingresa con tu cuenta personal para atender o administrar el local.", button: "Ingresar", pending: "Verificando acceso…" },
-  recovery: { title: "Recuperar contraseña", help: "Te enviaremos instrucciones si la cuenta puede recuperar su acceso. El autenticador seguirá siendo necesario.", button: "Enviar instrucciones", pending: "Solicitando instrucciones…" },
-  password: { title: "Nueva contraseña", help: "Usa al menos 12 caracteres. La recuperación conserva tu autenticador y tus permisos actuales.", button: "Guardar contraseña", pending: "Guardando contraseña…" },
+  recovery: { title: "Recuperar contraseña", help: "Te enviaremos instrucciones si la cuenta puede recuperar su acceso.", button: "Enviar instrucciones", pending: "Solicitando instrucciones…" },
+  password: { title: "Nueva contraseña", help: "Usa al menos 12 caracteres. La recuperación conserva tus permisos actuales.", button: "Guardar contraseña", pending: "Guardando contraseña…" },
 };
 export function AuthForm({ kind }: AuthFormProps) {
   const work = useServerWork<AuthFormResult>();

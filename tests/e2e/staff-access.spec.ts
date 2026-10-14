@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
 import { evidenceDirectory } from "./evidence";
-import { actorQuery, cleanupStaffFixtures, createInvitationFixture, createStaffFixture, staffAdmin, staffPool, totpCode } from "../integration/staff-fixture";
+import { actorQuery, cleanupStaffFixtures, createInvitationFixture, createStaffFixture, staffAdmin, staffPool } from "../integration/staff-fixture";
 import type { StaffFixture } from "../integration/types/staff-fixture";
 
 test.describe.configure({ mode: "serial", timeout: 90000 });
@@ -12,7 +12,6 @@ const identities: StaffFixture[] = [];
 const screenshots = evidenceDirectory("h2/capturas");
 let manager: StaffFixture, attendant: StaffFixture, outsider: StaffFixture;
 let originalName: string, originalRevision: number;
-let managerSecret: string, lastManagerCode: string;
 test.beforeAll(async () => {
   manager = await createStaffFixture("manager"); identities.push(manager);
   attendant = await createStaffFixture("attendant", manager.staffId ?? undefined); identities.push(attendant);
@@ -61,27 +60,21 @@ test("acceso y recuperación adaptables, accesibles y con foco en errores", asyn
 
 test("URLs privadas, callback libre y reset sin permiso están protegidos", async ({ page }) => {
   await page.goto("/personal"); await expect(page).toHaveURL(/\/personal\/acceso$/);
+  await page.goto("/personal/mfa"); await expect(page).toHaveURL(/\/personal\/acceso$/);
   await page.goto("/administracion/configuracion"); await expect(page).toHaveURL(/\/personal\/acceso$/);
   await page.goto("/auth/confirm?token_hash=invalid-synthetic-token&next=https://example.org&type=recovery");
   await expect(page).toHaveURL(/\/personal\/acceso\?estado=enlace-invalido$/);
   await page.goto("/personal/restablecer"); await expect(page.getByRole("heading", { name: "Solicita un nuevo enlace" })).toBeVisible();
 });
 
-test("login, enrolamiento MFA, configuración real, conflicto y logout", async ({ page }) => {
+test("login con contraseña, configuración real, conflicto y logout", async ({ page }) => {
   await page.goto("/personal/acceso");
+  await page.getByLabel("Correo electrónico").fill(manager.email);
+  await page.getByLabel("Contraseña", { exact: true }).fill(manager.password + "-incorrecta");
+  await page.getByRole("button", { name: "Ingresar", exact: true }).click();
+  await expect(page.locator("main").getByRole("alert")).toContainText("Revisa tus datos");
   await page.getByLabel("Correo electrónico").fill(manager.email); await page.getByLabel("Contraseña", { exact: true }).fill(manager.password);
   await page.getByRole("button", { name: "Ingresar", exact: true }).click();
-  await expect(page).toHaveURL(/\/personal\/mfa$/);
-  await page.getByRole("button", { name: "Configurar autenticador" }).click();
-  await expect(page.getByAltText("Código QR para vincular tu autenticador")).toBeVisible();
-  await page.getByText("Usar clave manual", { exact: true }).click();
-  const secret = await page.locator("details p").innerText();
-  managerSecret = secret;
-  const code = page.getByLabel("Código de seis dígitos");
-  await code.fill("111111"); await page.getByRole("button", { name: "Verificar e ingresar" }).click();
-  await expect(page.locator("main").getByRole("alert")).toContainText("No pudimos verificar el código");
-  lastManagerCode = totpCode(secret);
-  await code.fill(lastManagerCode); await page.getByRole("button", { name: "Verificar e ingresar" }).click();
   await expect(page).toHaveURL(/\/personal$/);
   await page.getByRole("link", { name: "Configuración", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Configuración del local" })).toBeVisible();
@@ -118,18 +111,14 @@ test("login, enrolamiento MFA, configuración real, conflicto y logout", async (
   await page.goto("/personal"); await expect(page).toHaveURL(/\/personal\/acceso$/);
 });
 
-test("recuperación consume enlace, conserva MFA y exige código antes de entrar", async ({ page }) => {
+test("recuperación consume enlace y permite ingresar con la nueva contraseña", async ({ page }) => {
   const link = await staffAdmin.generateLink({ type: "recovery", email: manager.email, options: { redirectTo: "http://127.0.0.1:3100/auth/confirm" } });
   if (link.error) throw new Error("No se pudo preparar el enlace sintético de recuperación.");
   const url = `http://127.0.0.1:3100/auth/confirm?token_hash=${encodeURIComponent(link.data.properties.hashed_token)}&type=recovery`;
   await page.goto(url);
   await expect(page).toHaveURL(/\/personal\/restablecer$/);
-  await expect(page.getByLabel("Código de seis dígitos")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Configurar autenticador" })).toHaveCount(0);
-  await page.screenshot({ path: `${screenshots}/mfa-recuperacion.png`, fullPage: true });
-  while (totpCode(managerSecret) === lastManagerCode) await page.waitForTimeout(1000);
-  await page.getByLabel("Código de seis dígitos").fill(totpCode(managerSecret));
-  await page.getByRole("button", { name: "Verificar e ingresar" }).click();
+  await expect(page.getByLabel("Código de seis dígitos")).toHaveCount(0);
+  await page.screenshot({ path: `${screenshots}/recuperacion.png`, fullPage: true });
   await expect(page.getByRole("heading", { name: "Nueva contraseña" })).toBeVisible();
   await page.getByLabel("Nueva contraseña", { exact: true }).fill(`${manager.password}N`);
   await page.getByLabel("Repite la contraseña").fill(`${manager.password}N`);
@@ -138,7 +127,7 @@ test("recuperación consume enlace, conserva MFA y exige código antes de entrar
   await page.getByRole("button", { name: "Cerrar sesión" }).click();
   await page.getByLabel("Correo electrónico").fill(manager.email); await page.getByLabel("Contraseña", { exact: true }).fill(`${manager.password}N`);
   await page.getByRole("button", { name: "Ingresar", exact: true }).click();
-  await expect(page).toHaveURL(/\/personal\/mfa$/);
+  await expect(page).toHaveURL(/\/personal$/);
   await page.goto(url); await expect(page).toHaveURL(/estado=enlace-invalido/);
 });
 
@@ -153,7 +142,7 @@ test("usuario Auth sin personal ve denegación y puede cerrar su sesión", async
   await expect(page).toHaveURL(/\/personal\/acceso$/);
 });
 
-test("invitación válida conduce a contraseña y MFA; atención no entra a administración", async ({ page }) => {
+test("invitación válida conduce a contraseña; atención no entra a administración", async ({ page }) => {
   if (!manager.staffId) throw new Error("Falta el responsable de prueba.");
   const invitation = await createInvitationFixture(manager.staffId);
   identities.push(invitation.fixture);
@@ -162,12 +151,6 @@ test("invitación válida conduce a contraseña y MFA; atención no entra a admi
   await page.getByLabel("Nueva contraseña", { exact: true }).fill("Synthetic-password-H2-2026!");
   await page.getByLabel("Repite la contraseña").fill("Synthetic-password-H2-2026!");
   await page.getByRole("button", { name: "Guardar contraseña" }).click();
-  await expect(page).toHaveURL(/\/personal\/mfa$/);
-  await page.getByRole("button", { name: "Configurar autenticador" }).click();
-  await page.getByText("Usar clave manual", { exact: true }).click();
-  const secret = await page.locator("details p").innerText();
-  await page.getByLabel("Código de seis dígitos").fill(totpCode(secret));
-  await page.getByRole("button", { name: "Verificar e ingresar" }).click();
   await expect(page).toHaveURL(/\/personal$/);
   await expect(page.getByRole("link", { name: "Configuración", exact: true })).toHaveCount(0);
   await page.goto("/administracion/configuracion");

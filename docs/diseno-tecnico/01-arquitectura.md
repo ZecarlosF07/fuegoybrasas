@@ -1,6 +1,8 @@
 # 01. Arquitectura de la aplicación
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.1 · **Fecha:** 3 de octubre de 2026.  
 **Relacionado:** [Índice y decisiones](README.md), [Datos](03-modelo-de-datos.md), [Contratos](05-contratos-y-operaciones.md).
@@ -40,7 +42,7 @@ Las conexiones a Data API usan HTTPS. El navegador puede conocer la URL y la cla
 | Route Handlers | Lecturas JSON y validación pública del borrador. | Respuestas limitadas, sin guardar pedidos ni registrar sus cuerpos. |
 | Servicios de dominio | Validadores Zod, DTO y reglas de catálogo, importes y mensaje. | No duplican contadores de fidelización que pertenecen a SQL. |
 | PostgreSQL/RPC | Integridad, permisos, historial, bloqueo e idempotencia. | No conoce la entrega física: depende de la validación del empleado autorizado. |
-| Supabase Auth | Identidad, OTP, sesión y MFA. | Una identidad existente no convierte a alguien en personal. |
+| Supabase Auth | Identidad, OTP, sesión y permisos vigentes. | Una identidad existente no convierte a alguien en personal. |
 | Storage | Fotografías públicas oficiales del catálogo. | No almacena comprobantes, OTP ni fotos de clientes en el MVP. |
 
 ## 4. Módulos y organización propuesta
@@ -74,7 +76,7 @@ Se distinguen cuatro clientes:
 
 1. **Público sin sesión:** clave publicable, sin cookies; ejecuta `read_catalog()` para obtener la proyección publicable. No tiene lectura directa de tablas comerciales.
 2. **Servidor por petición:** `@supabase/ssr`, cookies de esa petición y JWT del usuario; RPC bajo su identidad.
-3. **Navegador:** `@supabase/ssr` para los casos de Auth/MFA que requieran SDK. Ninguna clave privilegiada.
+3. **Navegador:** `@supabase/ssr` para los casos de Auth/permisos que requieran SDK. Ninguna clave privilegiada.
 4. **Administración de Auth:** cliente aislado `server-only`, clave secreta, únicamente altas/invitaciones/bajas autorizadas de cuentas. No se usa para acreditar sellos ni leer todas las tarjetas.
 
 El cliente autenticado no es un singleton global: una petición nunca hereda la sesión de otra. Proxy se limita a renovar sesiones en rutas privadas y endpoints asociados; cada servicio valida identidad otra vez. El catálogo público no lee cookies ni renueva sesiones.
@@ -87,9 +89,9 @@ La proyección pública es una frontera de publicación: excluye precios fuente,
 
 **Cliente:** OTP real → sesión → activación opcional del perfil con condiciones aceptadas → RPC de tarjeta propia → edición de indicaciones. El teléfono de Auth, ya verificado, es fuente de identidad; el cuerpo de una petición no puede elegir el propietario.
 
-**Personal:** acceso con MFA → búsqueda exacta de teléfono → ficha mínima → confirma compra pagada y entrega → RPC transaccional de sello → resultado real. El canje tiene su operación y no implica compra.
+**Personal:** acceso con autorización vigente → búsqueda exacta de teléfono → ficha mínima → confirma compra pagada y entrega → RPC transaccional de sello → resultado real. El canje tiene su operación y no implica compra.
 
-**Responsable:** acceso con MFA → cambia precio/disponibilidad con revisión de versión → RPC con auditoría → vuelve a consultar catálogo. No se proporciona un editor de SQL ni una gestión comercial completa.
+**Responsable:** acceso con autorización vigente → cambia precio/disponibilidad con revisión de versión → RPC con auditoría → vuelve a consultar catálogo. No se proporciona un editor de SQL ni una gestión comercial completa.
 
 ## 7. Rendimiento, caché y fallos
 

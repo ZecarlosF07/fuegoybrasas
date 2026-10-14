@@ -45,7 +45,6 @@ export async function saveCatalogEntityAction(input: unknown) {
 async function managerAccess(requestId: string) {
   const access = await getStaffAccess();
   if (!access.ok) return failure(access.error, requestId);
-  if (access.data.assuranceLevel !== "aal2") return failure({ code: "MFA_REQUIRED", message: "Completa la segunda verificación." }, requestId);
   if (access.data.role !== "manager") return failure({ code: "FORBIDDEN", message: "Solo el responsable puede modificar la carta." }, requestId);
   return null;
 }

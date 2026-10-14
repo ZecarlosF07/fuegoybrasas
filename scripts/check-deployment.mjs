@@ -13,7 +13,7 @@ if (!data) throw new Error("No se pudo comprobar el estado de publicación.");
 const configuration = deploymentProblems(environment);
 const launchProblems = [
   ...(!data.confirmedPayments ? ["PAYMENTS"] : []), ...(!data.activeManagers ? ["ADMINISTRATOR"] : []),
-  ...(!data.managersWithMfa ? ["ADMINISTRATOR_MFA"] : []), ...(!data.locationVerified ? ["LOCATION"] : []),
+  ...(!data.locationVerified ? ["LOCATION"] : []),
   ...(data.rewardCostCents === null ? ["REWARD_COST"] : []),
   ...(environment.LOYALTY_TERMS_APPROVED !== "true" || environment.LOYALTY_PRIVACY_APPROVED !== "true" ? ["LOYALTY_DOCUMENTS"] : []),
 ];

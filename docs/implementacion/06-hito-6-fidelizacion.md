@@ -1,6 +1,8 @@
 # Hito 6 — Implementar la tarjeta de fidelización
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](../diseno-tecnico/16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](../diseno-tecnico/16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.4 · **Fecha:** 11 de octubre de 2026.  
 **Destinatarios:** equipo de desarrollo y responsable del negocio.  
@@ -75,7 +77,7 @@ Ejecutar H6-T12 antes de construir las pantallas de cliente/personal; comprobar 
 | H6-RT14 | Atomicidad e idempotencia | Cambio de contador/premio, eventos, auditoría y recibo en una transacción. Actor/UUID único y hash; replay devuelve efecto original más estado actual autorizado. Dos visitas distintas se suman; dos canjes del mismo premio producen un solo efecto. |
 | H6-RT15 | Referencia de visita | Normalizar/validar hasta 80 caracteres; referencia repetida con acreditación vigente en esa tarjeta bloquea duplicación. No imponer límite por día; UUID no demuestra por sí solo una visita real. Personal confirma el hecho presencial. |
 | H6-RT16 | Activación/stock/costo | `activateLoyaltyProgramAction` → `activate_loyalty_program` comprueba versión draft, revisión, costo y términos confirmados; habilitación atómica. `set_reward_availability` y `update_reward_cost` cambian campos operativos permitidos, con revisión/auditoría/UUID. |
-| H6-RT17 | Búsqueda mínima autorizada | `lookup_customer` exige personal/MFA, contacto exacto; no directorio por prefijo. Confirmar tarjeta/nombre/movimientos antes de operar. |
+| H6-RT17 | Búsqueda mínima autorizada | `lookup_customer` exige personal/permisos, contacto exacto; no directorio por prefijo. Confirmar tarjeta/nombre/movimientos antes de operar. |
 | H6-RT18 | Diario de operaciones | `fyb.staff-operations.v1` en sessionStorage guarda antes del envío actor/UUID/tipo/IDs/hash/inicio, sin tokens, teléfono, preferencias o motivos. Si no puede persistir, no emitir escritura de fidelización; seguir contingencia autorizada. |
 | H6-RT19 | Incertidumbre y logout | Consultar primario vía `get_operation`; ausencia de recibo no permite UUID nuevo. Reintentar solo misma entrada reconstruida/comprobada; otra identidad o permiso degradado no recupera operación. Sin actualización optimista de saldo; logout limpia estado privado y conserva carrito no sensible. |
 | H6-RT20 | Incidencia sin resolución implícita | `openIncidentAction` → `open_incident` registra fallo de entrega/registro autorizado; no devuelve automáticamente el premio a available ni modifica sello. La resolución del premio fallido depende de PT-13/H7. |

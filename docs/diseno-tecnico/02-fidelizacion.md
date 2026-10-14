@@ -1,6 +1,8 @@
 # 02. Fidelización, sellos y recompensas
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.1 · **Fecha:** 3 de octubre de 2026.  
 **Relacionado:** [Decisiones](README.md), [Modelo](03-modelo-de-datos.md), [Operaciones](05-contratos-y-operaciones.md).
@@ -66,7 +68,7 @@ La RPC comprueba que el premio sigue disponible y que la operación no es la acr
 
 Si el producto está agotado, el premio permanece disponible. Un canje solo no suma sello. Si hay una nueva compra pagada y entregada en esa visita, se acredita mediante otra operación explícita. El programa no exige esa compra para entregar el regalo.
 
-La confirmación digital y la entrega física no forman una transacción distribuida. Si el canje quedó registrado y cocina no entrega el producto, se abre incidencia. **DC-13 aprobada el 11/10/2026 resuelve PT-13:** solo administrador con MFA confirma no entrega y motivo; restituye el mismo premio sin sumar sellos ni borrar el canje original, y cierra el caso en una transacción. No existe botón del mozo para deshacer canjes. [Contratos y límites H7](17-administracion-y-operacion-h7.md).
+La confirmación digital y la entrega física no forman una transacción distribuida. Si el canje quedó registrado y cocina no entrega el producto, se abre incidencia. **DC-13 aprobada el 11/10/2026 resuelve PT-13:** solo administrador con autorización vigente confirma no entrega y motivo; restituye el mismo premio sin sumar sellos ni borrar el canje original, y cierra el caso en una transacción. No existe botón del mozo para deshacer canjes. [Contratos y límites H7](17-administracion-y-operacion-h7.md).
 
 ## 5. Correcciones e incidencias
 

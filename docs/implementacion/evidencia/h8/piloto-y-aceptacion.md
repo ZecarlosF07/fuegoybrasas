@@ -1,10 +1,12 @@
 # Piloto pendiente de ejecución
 
+**Actualización DC-22:** [personal sin MFA](personal-sin-mfa/README.md) sustituye la exigencia de segundo factor. Evidencia previa conserva su fecha; el preflight actual ya no exige ADMINISTRATOR_MFA.
+
 **Estado:** guía preparada; ninguna casilla de este piloto se considera ejecutada. Usar datos sintéticos locales o un entorno productivo controlado expresamente autorizado, nunca reset/seed sintético sobre el Supabase oficial.
 
 ## Participantes y preparación
 
-Propietario como administrador; una persona de atención con cuenta propia/MFA; Roberto recibe solicitudes en WhatsApp; cliente participante. Técnico observa y registra versión/origen, fecha, dispositivo/navegador, pasos, tiempo, resultado y defectos sin PII. El propietario define quién cubrirá alertas y recuperación de autenticador.
+Propietario como administrador; una persona de atención con cuenta propia; Roberto recibe solicitudes en WhatsApp; cliente participante. Técnico observa y registra versión/origen, fecha, dispositivo/navegador, pasos, tiempo, resultado y defectos sin PII. El propietario define quién cubrirá alertas y recuperación de acceso.
 
 Metas propuestas: encontrar/agregar producto en 30 s y preparar pedido simple en 2 min. Son metas de evaluación; no resultados demostrados ni límites que generen una operación nueva al vencer.
 
@@ -25,7 +27,7 @@ Usar Android/iOS físicos y navegador integrado previsto; registrar cuáles efec
 
 ## Accesibilidad humana
 
-- [ ] Recorrer con teclado: salto al contenido, orden de foco, etiquetas, errores, diálogo, carrito/dock, acceso/MFA, tarjeta y panel. Foco completamente visible.
+- [ ] Recorrer con teclado: salto al contenido, orden de foco, etiquetas, errores, diálogo, carrito/dock, acceso, tarjeta y panel. Foco completamente visible.
 - [ ] Zoom **real del navegador** 200 % y 400 %; acciones alcanzables sin pérdida de texto. Capturas de reflujo a 320 px son complementarias.
 - [ ] Narrador u otro lector: anunciar etiqueta/ayuda/error/resumen, carga y resultado autorizado; conteo y premio independientes. QR no es la única forma de acceder.
 - [ ] Revisar contraste renderizado, movimiento reducido, objetivos táctiles y lectura clara. Originales de logo/fotos pendientes usan fallback textual.
@@ -40,7 +42,7 @@ La revisión automática usa UI/UX Pro Max y sistema canónico; los resultados d
 | Participantes autorizados / dispositivos | Pendiente; omitir datos privados en acta compartida |
 | Recorridos y tiempos observados | Pendiente |
 | Defectos, severidad y comprobación de correcciones | Pendiente |
-| Privacidad/términos/costo real/pagos/MFA | Pendiente |
+| Privacidad/términos/costo real/pagos/acceso | Pendiente |
 | Copia externa y restauración productiva controlada | Pendiente |
 | Recepción WhatsApp y capacitación | Pendiente |
 | Aceptación del propietario y alcance a activar | Pendiente |

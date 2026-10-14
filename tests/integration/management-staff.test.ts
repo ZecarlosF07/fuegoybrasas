@@ -36,7 +36,7 @@ describe("H7 invitaciones y conciliación con Auth real local", () => {
     await expect(actorQuery(prepared.fixture, "select public.get_staff_access()")).rejects.toThrow("FORBIDDEN");
     await expect(actorQuery(manager, "select public.complete_staff_invitation($1,'attendant',$2,$3)", [value.email, value.operationId, randomUUID()])).rejects.toThrow("CONFIG_NOT_READY");
   });
-  it("invitación envía correo, concilia respuesta perdida y permite completar MFA", async () => {
+  it("invitación envía correo, concilia respuesta perdida y autoriza acceso con contraseña", async () => {
     const value = await reservation(`h7-${randomUUID()}@example.test`); const prepared = await stage(value);
     const sent = await staffAdmin.inviteUserByEmail(value.email, { redirectTo: "http://127.0.0.1:3100/auth/confirm" });
     expect(sent.error).toBeNull(); expect(sent.data.user?.id).toBe(prepared.fixture.userId);
@@ -49,7 +49,7 @@ describe("H7 invitaciones y conciliación con Auth real local", () => {
     expect(receipt.result.outcome).toBe("applied"); expect(receipt.currentState.state).toBe("sent");
     const access = (await actorQuery({ ...prepared.fixture, aal: "aal1" }, "select public.get_staff_access() data")).rows[0].data;
     expect(access.assuranceLevel).toBe("aal1");
-    await expect(actorQuery({ ...prepared.fixture, aal: "aal1" }, "select public.lookup_customer('+51999000001')")).rejects.toThrow("MFA_REQUIRED");
+    expect((await actorQuery(prepared.fixture, "select public.has_staff_role('attendant') allowed")).rows[0].allowed).toBe(true);
   });
   it("no reutiliza una identidad existente ajena ni confía en metadata del usuario", async () => {
     const value = await reservation(attendant.email);

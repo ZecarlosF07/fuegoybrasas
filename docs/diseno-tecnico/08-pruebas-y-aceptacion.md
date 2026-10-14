@@ -1,6 +1,8 @@
 # 08. Pruebas, trazabilidad y aceptación
 
-**Actualización del 10/10/2026:** [acceso privado sin SMS](16-acceso-a-tarjeta-sin-sms.md) sustituye OTP/phone_change e identidad telefónica del cliente; MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** [acceso privado sin SMS](16-acceso-a-tarjeta-sin-sms.md) sustituye OTP/phone_change e identidad telefónica del cliente; El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.1 · **Fecha:** 3 de octubre de 2026.  
 **Estado:** plan de pruebas para futura implementación; ninguna prueba de negocio se declara ejecutada.  
@@ -56,7 +58,7 @@ DC-09 amplía CA-26: la autorización por sí sola no basta; acreditar exige com
 | CA-21 y CA-22 | Regresar, recargar, copiar con éxito/fallo y enlace que no abre. No mostrar confirmación de recepción, venta o pago. |
 | CA-23 y CA-24 | Fallar clave/tarjeta sin bloquear invitado; cliente A no lee tarjeta B ni llama a sello/canje. |
 | CA-25 | Preferencia solo cambia con guardado propio; observaciones del pedido no alteran perfil; aplicar preferencia es explícito. |
-| CA-26 y CA-27 | Atención activa/AAL2 y entrega pagada; 9→10 emite premio y 0/10; 10→11 conserva premio y 1/10. |
+| CA-26 y CA-27 | Atención activa y entrega pagada; 9→10 emite premio y 0/10; 10→11 conserva premio y 1/10. |
 | CA-28 y CA-29 | Misma operación repetida emite una vez; dos operaciones de visitas distintas concurrentes suman ambas. |
 | CA-30 y CA-31 | Dos empleados compiten por mismo premio: un solo canje; regalo sin compra nueva no acredita sello. |
 | CA-32 y CA-33 | Agotado conserva premio; canje conserva progreso. Reversión añade motivo/actor; premio entregado queda como incidencia, sin borrar canje. |
@@ -104,7 +106,7 @@ DC-09 amplía CA-26: la autorización por sí sola no basta; acreditar exige com
 | CT-35 | Atención modifica perfil; responsable corrige por solicitud expresa usando revisión vieja/actual. | Atención denegada; conflicto conservado; corrección autorizada audita campos/motivo sin texto personal en logs/auditoría. |
 | CT-36 | Subir imagen y fallar asociación; repetir asociación o cambiar precio/contenido comparado. | Subida no publica por sí sola; revisión/idempotencia evitan sobrescritura; comparación necesita confirmación renovada; huérfano identificado para limpieza. |
 | CT-37 | Perfil cerrado, tarjeta suspendida, programa pausado y logout con contenido privado precargado. | Estados diferenciados, sin reactivación/sello/canje indebido ni datos privados visibles después de salir; pedido invitado sigue independiente. |
-| CT-38 | Invitación/recuperación real, token caducado/usado y destino externo manipulado. | Sesión solo tras Auth, contraseña propia sin cambiar rol/factor, MFA obligatorio; destino fijo, error recuperable y tokens ausentes de logs/referrers. |
+| CT-38 | Invitación/recuperación real, token caducado/usado y destino externo manipulado. | Sesión solo tras Auth, contraseña propia sin cambiar rol/factor, permisos vigentes obligatorio; destino fijo, error recuperable y tokens ausentes de logs/referrers. |
 | CT-39 | Foto dentro/fuera de límites de bytes/dimensiones y petición multipart sin `Content-Length`. | Carga acotada durante lectura, archivo máximo 3 MiB/cuerpo 4 MiB; 413/error útil; comportamiento comprobado en staging y sin ampliar Server Actions globalmente. |
 
 ## 5. Pruebas de concurrencia y seguridad
@@ -113,7 +115,7 @@ Usar transacciones/conexiones separadas contra PostgreSQL real, no `Promise.all`
 
 Matriz de identidad: anon, cliente A, cliente B, atención AAL1, atención AAL2, responsable AAL2 y personal desactivado. Intentar Data API, RPC, acciones POST y SQL con roles limitados en entorno local. Comprobar ejecución no concedida por `PUBLIC` y que `app_private` no esté expuesto. Las tablas comerciales tampoco tienen grants directos; probar el contenido permitido de `read_catalog`, además de las denegaciones. Los helpers internos no conceden lectura de tablas ni se exponen por comodidad.
 
-Conservar evidencias de resultados y mensajes de fallo, nunca tokens o teléfonos reales en reportes compartidos. Enlace privado entre dispositivos y SMTP/MFA del personal requieren prueba controlada; mocks no prueban esos servicios reales. CAPTCHA retirado por DC-20, sin condición pendiente de activación.
+Conservar evidencias de resultados y mensajes de fallo, nunca tokens o teléfonos reales en reportes compartidos. Enlace privado entre dispositivos y SMTP/permisos del personal requieren prueba controlada; mocks no prueban esos servicios reales. CAPTCHA retirado por DC-20, sin condición pendiente de activación.
 
 ## 6. Fixtures y dispositivos
 
@@ -127,6 +129,6 @@ Metas UX iniciales del análisis: primer agregado en treinta segundos y pedido s
 
 Durante implementación añadir scripts `test:unit`, `test:db`, `test:integration` y `test:e2e`; mantener `lint`, chequeo TypeScript y build existentes. CI ejecuta niveles apropiados, con migración desde cero y sin acceso a producción. No instalar herramientas ni escribir tests durante la etapa documental.
 
-Cada etapa conserva commit, entorno, casos ejecutados, resultado y fallos abiertos. Para publicar: todos los casos críticos de precio/permiso/sello/canje pasan, datos comerciales están verificados, acceso privado del cliente y MFA real del personal funcionan y piloto con el personal valida atención/contingencia.
+Cada etapa conserva commit, entorno, casos ejecutados, resultado y fallos abiertos. Para publicar: todos los casos críticos de precio/permiso/sello/canje pasan, datos comerciales están verificados, acceso privado del cliente y permisos vigentes real del personal funcionan y piloto con el personal valida atención/contingencia.
 
 Esta entrega documental solo puede comprobar enlaces, cobertura de IDs y consistencia de definiciones. La aceptación funcional requiere implementación y evidencia futura; no se sustituye por leer este documento.

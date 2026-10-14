@@ -17,9 +17,9 @@ beforeEach(() => {
 });
 afterEach(() => vi.unstubAllEnvs());
 
-it("accede en origen HTTPS sin variables o token CAPTCHA y conserva MFA", async () => {
+it("accede en origen HTTPS sin variables o token CAPTCHA y continúa sin segundo factor", async () => {
   vi.stubEnv("AUTH_CAPTCHA_PROVIDER", ""); vi.stubEnv("NEXT_PUBLIC_CAPTCHA_SITE_KEY", "");
-  expect(await signInStaffAction(credentials)).toMatchObject({ ok: true, data: { destination: "/personal/mfa" } });
+  expect(await signInStaffAction(credentials)).toMatchObject({ ok: true, data: { destination: "/personal" } });
   expect(mocks.login).toHaveBeenCalledWith(credentials);
   expect(mocks.rpc).toHaveBeenCalledWith("get_staff_access");
 });

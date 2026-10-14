@@ -5,7 +5,6 @@ select jsonb_build_object(
   'draftProducts',(select count(*) from public.catalog_items where publication_status='draft' and source_ref<>'C01' and deleted_at is null),
   'confirmedPayments',(select count(*) from public.payment_methods where enabled and verified and deleted_at is null),
   'activeManagers',(select count(*) from app_private.staff_accounts where role='manager' and active and deleted_at is null),
-  'managersWithMfa',(select count(distinct s.id) from app_private.staff_accounts s join auth.mfa_factors f on f.user_id=s.auth_user_id and f.status='verified' where s.role='manager' and s.active and s.deleted_at is null),
   'locationVerified',(select location_verified from public.business_settings where id=1),
   'scheduleConfirmed',(select schedule_confirmed from public.business_settings where id=1),
   'orderingEnabled',(select ordering_enabled from public.business_settings where id=1),

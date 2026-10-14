@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import type { BrowserContext, Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
-import { enrollStaffBrowser } from "./staff-browser";
+import { signInStaffBrowser } from "./staff-browser";
 import { evidenceDirectory } from "./evidence";
 import { cleanupLoyaltyFixtures, testLaunchChecks, testProgramId } from "../integration/loyalty-fixture";
 import { createPrivateCustomerFixture } from "../integration/private-card-fixture";
@@ -26,7 +26,7 @@ test.beforeAll(async ({ browser }) => {
   near = await createPrivateCustomerFixture(); ready = await createPrivateCustomerFixture();
   for (const [customer, stamps] of [[near, 8], [ready, 10]] as const) for (let index = 0; index < stamps; index += 1) await actorQuery(manager, "select public.credit_stamp($1,$2,true,true,$3)", [customer.customerId, randomUUID(), "H7-VISITA-" + index]);
   const context = await browser.newContext({ baseURL: "http://127.0.0.1:3100" });
-  await enrollStaffBrowser(await context.newPage(), manager); cookies = await context.cookies(); await context.close();
+  await signInStaffBrowser(await context.newPage(), manager); cookies = await context.cookies(); await context.close();
 });
 test.afterAll(async () => {
   const rows = (await staffPool.query("select s.id,s.auth_user_id from app_private.staff_accounts s join auth.users u on u.id=s.auth_user_id where u.email=$1", [invitationEmail])).rows;
@@ -89,7 +89,7 @@ test("incidencia cerrada se retira/restaura sin cambio de saldo", async ({ page,
 test("invita mediante Auth local y revoca/restaura acceso sin reactivar", async ({ page, context }) => {
   await context.addCookies(cookies); await page.goto("/administracion/personal");
   await page.getByLabel("Correo del empleado").fill(invitationEmail); await page.getByRole("button", { name: "Enviar invitación", exact: true }).click();
-  await expect(page.getByText("Invitación enviada y acceso asignado. El empleado debe completar contraseña y MFA.", { exact: true })).toBeVisible();
+  await expect(page.getByText("Invitación enviada y acceso asignado. El empleado debe definir su contraseña.", { exact: true })).toBeVisible();
   const employee = page.getByRole("listitem").filter({ has: page.getByRole("heading", { name: invitationEmail, exact: true }) });
   await employee.getByRole("button", { name: "Administrar permisos" }).click();
   await page.getByLabel("Motivo del retiro o restauración").fill("Retirar permiso por prueba de operación"); await page.getByRole("button", { name: "Retirar acceso de esta cuenta" }).click();
@@ -97,8 +97,8 @@ test("invita mediante Auth local y revoca/restaura acceso sin reactivar", async 
   await expect(employee.getByText("Atención · Acceso desactivado", { exact: true })).toBeVisible();
   await layout(page, "personal");
 });
-test("mozo con MFA no consulta resumen, clientes ni herramientas administrativas", async ({ page }) => {
-  await enrollStaffBrowser(page, attendant);
+test("mozo con contraseña no consulta resumen, clientes ni herramientas administrativas", async ({ page }) => {
+  await signInStaffBrowser(page, attendant);
   await expect(page.getByRole("link", { name: "Resumen de fidelización" })).toHaveCount(0);
   for (const path of ["/administracion", "/administracion/personal", "/administracion/incidencias", "/administracion/clientes/" + near.customerId]) {
     await page.goto(path); await expect(page.getByRole("heading", { name: "Acceso no disponible" })).toBeVisible();

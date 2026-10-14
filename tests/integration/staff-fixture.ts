@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { createHmac, randomBytes, randomUUID } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import { Pool } from "pg";
 
 import type { JwtTestActor, StaffFixture } from "./types/staff-fixture";
@@ -43,7 +43,7 @@ export async function actorQuery<T extends import("pg").QueryResultRow>(actor: J
   const client = await staffPool.connect();
   try {
     await client.query("begin");
-    await client.query("select set_config('request.jwt.claims',$1,true)", [JSON.stringify({ sub: actor.userId, role: "authenticated", aal: actor.aal ?? "aal2", user_metadata: { role: "manager" } })]);
+    await client.query("select set_config('request.jwt.claims',$1,true)", [JSON.stringify({ sub: actor.userId, role: "authenticated", aal: actor.aal ?? "aal1", user_metadata: { role: "manager" } })]);
     await client.query("set local role authenticated");
     const result = await client.query<T>(sql, values);
     await client.query("commit");
@@ -74,14 +74,4 @@ export async function cleanupStaffFixtures(fixtures: StaffFixture[]) {
     const removed = await staffAdmin.deleteUser(fixture.userId);
     if (removed.error) throw new Error("No se pudo retirar una identidad sintética.");
   }
-}
-export function totpCode(secret: string, now = Date.now()) {
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-  const bits = [...secret.toUpperCase().replace(/=+$/, "")].map((letter) => alphabet.indexOf(letter).toString(2).padStart(5, "0")).join("");
-  const bytes = bits.match(/.{8}/g)?.map((byte) => parseInt(byte, 2)) ?? [];
-  const counter = Buffer.alloc(8);
-  counter.writeBigUInt64BE(BigInt(Math.floor(now / 30000)));
-  const hash = createHmac("sha1", Buffer.from(bytes)).update(counter).digest();
-  const offset = hash[hash.length - 1] & 15;
-  return ((hash.readUInt32BE(offset) & 0x7fffffff) % 1000000).toString().padStart(6, "0");
 }

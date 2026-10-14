@@ -47,7 +47,6 @@ async function authorizeMediaRequest(request: Request) {
   const response = await client.rpc("get_staff_access");
   const access = staffAccessSchema.safeParse(response.data);
   if (!access.success || access.data.role !== "manager") throw new MediaError(403, "Solo el responsable puede gestionar fotografías.", "FORBIDDEN");
-  if (access.data.assuranceLevel !== "aal2") throw new MediaError(403, "Completa la segunda verificación.", "MFA_REQUIRED");
   return client;
 }
 export async function uploadCatalogMedia(request: Request) {

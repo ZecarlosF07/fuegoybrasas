@@ -1,6 +1,8 @@
 # 14. Identidad visual y sistema UI
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.0 · **Fecha:** 3 de octubre de 2026.  
 **Estado:** diseño documentado; interfaz y pruebas pendientes de implementación.  
@@ -44,7 +46,7 @@ Las rutas proceden de [Navegación](12-flujo-navegacion.md); los wireframes de [
 | `/condiciones-tarjeta`, `/privacidad` | Lectura clara, versión vigente y regreso; contenido real pendiente antes de lanzamiento. | Documento disponible/no disponible; no publicar texto legal inventado. |
 | `/mi-tarjeta/acceso` | Explicar participación opcional, teléfono, OTP y activación válida. | Espera, código inválido/vencido, límites y servicio no disponible. |
 | `/mi-tarjeta`, `/mi-tarjeta/telefono` | Progreso y premio separados, indicaciones guardadas expresamente y cambio verificado de identidad. | Perfil no activo, tarjeta pausada, premio pendiente, verificación fallida/conflicto. |
-| `/personal/acceso`, `/personal/mfa`, `/personal/recuperar`, `/personal/restablecer` | Formularios claros, recuperación/MFA separados y salidas autorizadas. | No autorizado, sesión insuficiente, credencial inválida, token vencido y espera. |
+| `/personal/acceso`, `/personal/mfa`, `/personal/recuperar`, `/personal/restablecer` | Formularios claros, recuperación/permisos separados y salidas autorizadas. | No autorizado, sesión insuficiente, credencial inválida, token vencido y espera. |
 | `/personal`, `/personal/clientes/[id]` | Búsqueda exacta, ficha mínima y confirmación de sello/canje como componentes de la ficha. | Sin coincidencia, premio agotado/canjeado, operación pendiente/incierta y permiso revocado. |
 | `/administracion/carta` | Listado/editor y separación de guardado, publicación y disponibilidad. | Foto subida no asociada, revisión antigua, retiro, restauración sin publicación. |
 | `/administracion/configuracion` | Campos/flags permitidos, efecto y estado actuales; activación de programa conserva su contrato específico. | Datos pendientes, conflicto, guardado incierto, función pausada. |
@@ -66,7 +68,7 @@ No se elige una biblioteca completa de componentes ni un motor de animación en 
 | Hito | Resultado visual que debe demostrar |
 | --- | --- |
 | H1 | Base reutilizable del sistema sin construir por anticipado pantallas comerciales. |
-| H2 | Acceso, MFA y recuperación privados legibles y accesibles. |
+| H2 | Acceso, permisos vigentes y recuperación privados legibles y accesibles. |
 | H3 | Carta/detalle reconocibles y claros en móvil. |
 | H4 | Editor que diferencia guardar/publicar/asociar/restaurar. |
 | H5 | Pedido invitado conservado y continuidad comercial bien explicada. |

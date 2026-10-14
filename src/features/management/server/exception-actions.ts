@@ -24,7 +24,7 @@ export async function recoverCardAccessAction(input: unknown) {
     if (!parsed.success) return invalidInput(parsed.error, requestId);
     const access = await getStaffAccess();
     if (!access.ok) return access;
-    if (access.data.role !== "manager" || access.data.assuranceLevel !== "aal2") return failure({ code: "FORBIDDEN", message: "Solo el responsable con MFA recupera tarjetas presencialmente." }, requestId);
+    if (access.data.role !== "manager") return failure({ code: "FORBIDDEN", message: "Solo el responsable recupera tarjetas presencialmente." }, requestId);
     const value = parsed.data;
     const key = deriveRecoveredCardKey(access.data.authUserId, value.customerId, value.operationId);
     const client = await createServerSupabaseClient("action");

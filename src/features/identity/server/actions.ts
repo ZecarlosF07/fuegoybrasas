@@ -21,7 +21,7 @@ export async function signInStaffAction(input: unknown) {
     if (error) return authFailure(error, requestId);
     const access = rpcResult(await client.rpc("get_staff_access"), staffAccessSchema, requestId);
     if (!access.ok) return access;
-    return success({ destination: access.data.assuranceLevel === "aal2" ? "/personal" : "/personal/mfa" }, requestId);
+    return success({ destination: "/personal" }, requestId);
   });
 }
 
@@ -51,7 +51,7 @@ export async function completePasswordAction(input: unknown) {
     const changed = await client.auth.updateUser({ password: parsed.data.password });
     if (changed.error) return authFailure(changed.error, requestId);
     (await cookies()).set(RECOVERY_COOKIE, "", { ...recoveryCookieOptions(), maxAge: 0 });
-    return success({ destination: access.data.assuranceLevel === "aal2" ? "/personal" : "/personal/mfa" }, requestId);
+    return success({ destination: "/personal" }, requestId);
   });
 }
 

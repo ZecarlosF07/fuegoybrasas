@@ -1,6 +1,8 @@
 # 03. Modelo de datos y migraciones
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.1 · **Fecha:** 3 de octubre de 2026.  
 **Relacionado:** [Fidelización](02-fidelizacion.md), [Permisos](04-autenticacion-seguridad.md), [Contratos](05-contratos-y-operaciones.md).
@@ -87,7 +89,7 @@ Para recojo, `pickup_extra_cents` solo se usa si `pickup_charges_verified=true`;
 | `app_private.staff_accounts` | `id`, `auth_user_id`, `role=attendant|manager`, `active`, `created_by`, `revision`, fechas. | Auth único; FK `ON DELETE RESTRICT`; no borrar personal con historial, desactivar. |
 | `app_private.loyalty_program_versions` | `id`, `code`, `target_stamps`, `reward_name`, `reward_contents text[]`, `reward_cost_cents` nullable, `reward_available`, `terms_version`, `status=draft|active|retired`, `revision`, fechas. | Código único; costo >= 0; versión inicial meta 10. Meta/contenido inmutables tras activación; disponibilidad y costo operativo pueden revisarse por responsable. Solo una versión activa para altas nuevas. |
 
-El alta actual obtiene la clave del servidor y envía solo su hash a `ensure_card_by_key`. El teléfono declarado no autoriza consulta: `get_card_by_key` y edición propia solo pueden ejecutarse desde servidor con clave validada. `lookup_customer` exige personal/MFA; cambio de contacto conserva UUID y exige revisión. [Definición completa](16-acceso-a-tarjeta-sin-sms.md).
+El alta actual obtiene la clave del servidor y envía solo su hash a `ensure_card_by_key`. El teléfono declarado no autoriza consulta: `get_card_by_key` y edición propia solo pueden ejecutarse desde servidor con clave validada. `lookup_customer` exige personal/permisos; cambio de contacto conserva UUID y exige revisión. [Definición completa](16-acceso-a-tarjeta-sin-sms.md).
 
 La baja cierra perfil y tarjeta y elimina nombre/indicaciones antes de una eventual desvinculación o eliminación de Auth. El teléfono se retira de Auth mediante su procedimiento administrado, sin afectar una identidad que también sea personal activo. Las referencias pseudónimas necesarias para auditoría se conservan hasta definir la retención. No se promete anonimato absoluto ni se borra una cadena de canjes mediante `CASCADE`. La política real y el tratamiento de una identidad con ambos usos son PT-11; un perfil cerrado no se reactiva automáticamente al iniciar sesión.
 

@@ -1,8 +1,10 @@
 # Operación diaria y contingencias
 
+**Actualización DC-22:** [personal sin MFA](personal-sin-mfa/README.md) sustituye la exigencia de segundo factor. Evidencia previa conserva su fecha; el preflight actual ya no exige ADMINISTRATOR_MFA.
+
 ## Personas y acceso
 
-Responsable inicial: propietario, cuenta confirmada y creada sin email; su MFA/entrenamiento deben comprobarse. Atención de WhatsApp: **Roberto Fuentes**, número **982 042 493**. El nombramiento no acredita recepción de un pedido ni uso del panel. No conceder rol de administrador a todo el personal por conveniencia.
+Responsable inicial: propietario, cuenta confirmada y creada sin email; su acceso/entrenamiento deben comprobarse. Atención de WhatsApp: **Roberto Fuentes**, número **982 042 493**. El nombramiento no acredita recepción de un pedido ni uso del panel. No conceder rol de administrador a todo el personal por conveniencia.
 
 - Atención entra a `/personal`, identifica la tarjeta y registra visita/canje.
 - Administrador entra a `/administracion`: clientes, proximidad al premio, pendientes, incidencias e historial; también carta/configuración/personal.
@@ -38,7 +40,7 @@ Agotamiento conserva premio. Pausa conserva consulta/progreso/derechos según el
 
 El equipo técnico revisa `/api/health` (configuración/proceso) y `/api/catalog` (Data API y respuesta `ok`). Un health verde no garantiza Auth, WhatsApp o recepción humana. En hosting configurar un monitor acordado para 503/tiempos elevados; el repositorio no contrata ni instala alertas externas. Guardar UUID/código/hora, nunca teléfono, dirección, URL privada, JWT o cuerpo del pedido en logs compartidos.
 
-Si el catálogo no se valida, la web conserva borrador y explica fallo. La caída de fidelización no impide solicitud invitada cuando carta y configuración están disponibles. Alertar al responsable técnico; no desactivar MFA/RLS para recuperar servicio.
+Si el catálogo no se valida, la web conserva borrador y explica fallo. La caída de fidelización no impide solicitud invitada cuando carta y configuración están disponibles. Alertar al responsable técnico; no desactivar permisos/RLS para recuperar servicio.
 
 ## Respaldo y recuperación
 

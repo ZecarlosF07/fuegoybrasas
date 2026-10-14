@@ -1,11 +1,10 @@
 {
-  "checkedAt": "2026-10-14T00:22:37.556Z",
+  "checkedAt": "2026-10-14T01:00:28.269Z",
   "projectRef": "geazxsvjkqpzbghlywbw",
   "mode": "deployment",
   "configurationProblems": [],
   "launchProblems": [
     "PAYMENTS",
-    "ADMINISTRATOR_MFA",
     "REWARD_COST",
     "LOYALTY_DOCUMENTS"
   ],
@@ -17,8 +16,7 @@
     "draftProducts": 11,
     "locationVerified": true,
     "loyaltyEnabled": false,
-    "managersWithMfa": 0,
-    "migrations": 23,
+    "migrations": 24,
     "orderingEnabled": false,
     "publicProducts": 17,
     "rewardCostCents": null,

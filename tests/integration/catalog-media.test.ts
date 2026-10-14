@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import sharp from "sharp";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
-import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool, testAuthClient, totpCode } from "./staff-fixture";
+import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool, testAuthClient } from "./staff-fixture";
 import type { StaffFixture } from "./types/staff-fixture";
 
 let manager: StaffFixture, attendant: StaffFixture;
@@ -15,10 +15,7 @@ const paths: string[] = [];
 beforeAll(async () => {
   manager = await createStaffFixture("manager"); identities.push(manager);
   attendant = await createStaffFixture("attendant"); identities.push(attendant);
-  await client.auth.signInWithPassword({ email: manager.email, password: manager.password });
-  const factor = await client.auth.mfa.enroll({ factorType: "totp", friendlyName: `h4-media-${randomUUID()}` });
-  if (factor.error || factor.data.type !== "totp") throw new Error("MFA sintético falló.");
-  expect((await client.auth.mfa.challengeAndVerify({ factorId: factor.data.id, code: totpCode(factor.data.totp.secret) })).error).toBeNull();
+  expect((await client.auth.signInWithPassword({ email: manager.email, password: manager.password })).error).toBeNull();
   bytes = await sharp({ create: { width: 80, height: 60, channels: 3, background: "white" } }).png().toBuffer();
 });
 beforeEach(async () => {
@@ -48,7 +45,7 @@ async function associate(targetPath = path) { return actorQuery(manager, "select
 async function upload() { expect((await client.storage.from("catalog-media").upload(path, bytes, { contentType: "image/png", upsert: false })).error).toBeNull(); }
 
 describe("H4 Storage real: permisos, asociación y limpieza", () => {
-  it("MFA autoriza subida; archivo subido no modifica carta hasta asociarlo", async () => {
+  it("rol manager autoriza subida; archivo subido no modifica carta hasta asociarlo", async () => {
     await upload();
     expect((await client.rpc("get_catalog_image_upload", { p_image_path: path })).data).toBe(true);
     expect((await staffPool.query("select image_path from public.catalog_items where id=$1", [item])).rows[0].image_path).toBeNull();
@@ -56,15 +53,14 @@ describe("H4 Storage real: permisos, asociación y limpieza", () => {
     expect(result.rows[0].data.entityType).toBe("catalog_item");
     expect((await staffPool.query("select image_path from public.catalog_items where id=$1", [item])).rows[0].image_path).toBe(path);
   });
-  it("atención, AAL1, padre retirado y sobrescritura no pueden escribir objetos", async () => {
+  it("manager con contraseña sube; atención, padre retirado y sobrescritura se deniegan", async () => {
     const denied = testAuthClient();
     await denied.auth.signInWithPassword({ email: attendant.email, password: attendant.password });
     expect((await denied.storage.from("catalog-media").upload(path, bytes, { contentType: "image/png" })).error).not.toBeNull();
     await denied.auth.signOut();
     await denied.auth.signInWithPassword({ email: manager.email, password: manager.password });
-    expect((await denied.storage.from("catalog-media").upload(path, bytes, { contentType: "image/png" })).error).not.toBeNull();
+    expect((await denied.storage.from("catalog-media").upload(path, bytes, { contentType: "image/png" })).error).toBeNull();
     await denied.auth.signOut();
-    await upload();
     expect((await client.storage.from("catalog-media").upload(path, bytes, { contentType: "image/png", upsert: true })).error).not.toBeNull();
     await actorQuery(manager, "select public.soft_delete_entity('category',$1,1,'Motivo sintético de retiro',$2)", [category, randomUUID()]);
     expect((await client.rpc("catalog_media_upload_allowed", { p_path: `items/${item}/${randomUUID()}.png` })).data).toBe(false);

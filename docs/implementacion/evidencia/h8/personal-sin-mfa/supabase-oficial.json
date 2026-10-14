@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-14T00:55:29.829Z",
+  "projectRef": "geazxsvjkqpzbghlywbw",
+  "changedAuthProperties": 2,
+  "otherSettingsPreserved": 10,
+  "totpDisabled": true,
+  "phoneMfaDisabled": true,
+  "staffAccounts": 1,
+  "removedFactors": 0,
+  "remainingStaffFactors": 0,
+  "verification": {
+    "anonymousStaffRpc": false,
+    "authenticatedPrivateSchema": false,
+    "guardRequiresMfa": false,
+    "migrationRecorded": true,
+    "migrations": 24
+  }
+}

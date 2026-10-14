@@ -1,6 +1,8 @@
 # 06. Frontend, rutas y estado
 
-**Actualización del 10/10/2026:** [acceso privado sin SMS](16-acceso-a-tarjeta-sin-sms.md) sustituye OTP/phone_change e identidad telefónica del cliente; MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** [acceso privado sin SMS](16-acceso-a-tarjeta-sin-sms.md) sustituye OTP/phone_change e identidad telefónica del cliente; El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.2 · **Fecha:** 3 de octubre de 2026.
 **Relacionado:** [Arquitectura](01-arquitectura.md), [Contratos](05-contratos-y-operaciones.md), [Wireframes funcionales](../analisis-del-proyecto.md).
@@ -103,7 +105,7 @@ No vaciar el carrito al abrir WhatsApp. Volver conserva líneas y formularios; o
 
 Cada confirmación del personal sigue `idle → validating → submitting → applied | review_required | failed | uncertain`. Botón deshabilitado durante envío, pero la base sigue evitando duplicados. En `uncertain` conservar `operationId`, consultar estado y permitir reintento del mismo; no incrementar contador optimistamente.
 
-Antes del POST se guarda el diario mínimo de operación. Al recargar, comprobar identidad/rol/MFA y consultar `get_operation` para las entradas pendientes antes de permitir otra acreditación/canje sobre esa tarjeta. Resultado registrado recupera su efecto y estado actual. Sin recibo confirmado, no generar otro UUID: repetir el mismo y la misma entrada si aún está en memoria; si falta, reconstruirla conscientemente y comprobar su huella, o remitir la referencia al responsable. No guardar textos libres solo para poder reintentar automáticamente.
+Antes del POST se guarda el diario mínimo de operación. Al recargar, comprobar identidad/rol/permisos y consultar `get_operation` para las entradas pendientes antes de permitir otra acreditación/canje sobre esa tarjeta. Resultado registrado recupera su efecto y estado actual. Sin recibo confirmado, no generar otro UUID: repetir el mismo y la misma entrada si aún está en memoria; si falta, reconstruirla conscientemente y comprobar su huella, o remitir la referencia al responsable. No guardar textos libres solo para poder reintentar automáticamente.
 
 Si falla la escritura del diario, impedir ese sello/canje y usar contingencia; no se simula protección frente a recargas. El diario no garantiza continuidad al cerrar la pestaña o cambiar de equipo: esas situaciones requieren revisión de movimientos/referencias por el responsable. Cerrar sesión sigue disponible y limpia datos; si hay resultados inciertos, ofrecer conservar sus referencias en el registro interno antes de salir. Otra cuenta nunca recupera automáticamente el resultado privado del actor anterior.
 

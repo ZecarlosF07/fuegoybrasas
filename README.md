@@ -1,6 +1,6 @@
 # Fuego y Brasas
 
-Web de la pollería con Next.js y Supabase. H1–H6 incorporan base visual, personal/MFA, carta, mantenimiento, pedido invitado por WhatsApp y tarjeta sin SMS. H7 añade indicadores de administrador, correcciones, incidencias y recuperación presencial. H8 prepara GitHub/Vercel, CI, salud, diagnóstico y operación, con pruebas integrales locales aprobadas. Piloto y activación pública siguen pendientes; pedidos y fidelización reales permanecen pausados.
+Web de la pollería con Next.js y Supabase. H1–H6 incorporan base visual, personal/permisos, carta, mantenimiento, pedido invitado por WhatsApp y tarjeta sin SMS. H7 añade indicadores de administrador, correcciones, incidencias y recuperación presencial. H8 prepara GitHub/Vercel, CI, salud, diagnóstico y operación, con pruebas integrales locales aprobadas. Piloto y activación pública siguen pendientes; pedidos y fidelización reales permanecen pausados.
 
 - [Hitos y alcance](docs/implementacion/hitos-del-proyecto.md).
 - [Especificación de H1](docs/implementacion/01-hito-1-preparacion-del-proyecto.md).
@@ -16,7 +16,9 @@ Web de la pollería con Next.js y Supabase. H1–H6 incorporan base visual, pers
 
 ## Requisitos
 
-Por decisión DC-20, login/recuperación del personal no usan CAPTCHA ni requieren sus claves. Se conservan correo/contraseña, MFA y autorización por rol; [detalle y comprobación](docs/implementacion/evidencia/h8/acceso-personal-sin-captcha.md).
+Por decisión DC-20, login/recuperación del personal no usan CAPTCHA ni requieren sus claves. Se conservan correo/contraseña, permisos vigentes y autorización por rol; [detalle y comprobación](docs/implementacion/evidencia/h8/acceso-personal-sin-captcha.md).
+
+**DC-22:** personal con correo y contraseña, sin MFA; [diseño vigente](docs/diseno-tecnico/19-acceso-del-personal-sin-mfa.md) y [pruebas/aplicación oficial](docs/implementacion/evidencia/h8/personal-sin-mfa/README.md).
 
 Para trabajar con la aplicación: Node 22 (versión verificada en `.node-version`) y Yarn **1.22.22**. Supabase CLI **2.119.0** está fijada como dependencia del proyecto: no se necesita instalarla globalmente. Docker Desktop con contenedores Linux se utiliza únicamente para las pruebas aisladas de base de datos/Auth; Chrome para E2E.
 
@@ -45,7 +47,7 @@ yarn dev
 
 Abrir `http://localhost:3000`. **Localhost describe dónde corre Next.js; la base de datos es remota.** `yarn dev`, `yarn build` y `yarn start` cargan `.env.remote.local` y verifican el proyecto autorizado antes de iniciar Next. En hosting aceptan variables inyectadas sin necesitar ese archivo. Los nombres `dev:remote`, `build:remote` y `start:remote` siguen disponibles por compatibilidad.
 
-Las 23 migraciones H1–H8 están aplicadas en el oficial; [preflight](docs/implementacion/evidencia/h8/preflight-remoto.json). Hay 18 tablas propias (nueve públicas y nueve privadas), 29 referencias y bucket público `catalog-media`. Diecisiete referencias tienen precio y contenido publicables; once esperan contenido completo y C01 está excluido de venta web. Ubicación Maps confirmada. Horario y tres medios de pago estimados permanecen sin verificar; cargos/zonas pendientes. Pedidos y fidelización están pausados; programa draft, costo desconocido y disponibilidad false. Cuenta real inicial creada sin email, MFA pendiente. El administrador con MFA entra a `/administracion` y sus herramientas; atención no puede editar catálogo ni consultar métricas.
+Las 24 migraciones H1–H8/DC-22 están aplicadas en el oficial; [preflight](docs/implementacion/evidencia/h8/preflight-remoto.json). Hay 18 tablas propias (nueve públicas y nueve privadas), 29 referencias y bucket público `catalog-media`. Diecisiete referencias tienen precio y contenido publicables; once esperan contenido completo y C01 está excluido de venta web. Ubicación Maps confirmada. Horario y tres medios de pago estimados permanecen sin verificar; cargos/zonas pendientes. Pedidos y fidelización están pausados; programa draft, costo desconocido y disponibilidad false. Cuenta real inicial creada sin email, permisos vigentes pendiente. El administrador con autorización vigente entra a `/administracion` y sus herramientas; atención no puede editar catálogo ni consultar métricas.
 
 `.env.remote.local` está ignorado por Git. Para preparar un equipo autorizado, después de autenticarse en la CLI:
 
@@ -55,7 +57,7 @@ yarn env:remote geazxsvjkqpzbghlywbw
 yarn dev
 ```
 
-Las claves se obtienen del proyecto vinculado, no se crean claves nuevas. La clave secreta queda exclusivamente del lado servidor para administración y RPC acotadas de tarjeta. `APP_SITE_URL` permanece en localhost para desarrollo; actualizarlo al dominio confirmado antes del lanzamiento. H2 conserva Auth/MFA del personal; H6 crea tarjeta con nombre/contacto y clave privada, sin SMS. H7 implementa recuperación asistida aprobada. MFA productivo, costo y condiciones/privacidad siguen pendientes. La cuenta inicial se creó directamente sin correos por decisión del propietario; invitación/recuperación por email no se consideran operativas sin canal probado. La fidelización permanece pausada; no requiere proveedor SMS.
+Las claves se obtienen del proyecto vinculado, no se crean claves nuevas. La clave secreta queda exclusivamente del lado servidor para administración y RPC acotadas de tarjeta. `APP_SITE_URL` permanece en localhost para desarrollo; actualizarlo al dominio confirmado antes del lanzamiento. H2 conserva Auth/permisos del personal; H6 crea tarjeta con nombre/contacto y clave privada, sin SMS. H7 implementa recuperación asistida aprobada. Costo y condiciones/privacidad siguen pendientes; DC-22 retira el segundo factor del personal. La cuenta inicial se creó directamente sin correos por decisión del propietario; invitación/recuperación por email no se consideran operativas sin canal probado. La fidelización permanece pausada; no requiere proveedor SMS.
 
 Para compilar/ejecutar el servidor de producción: `yarn build` y `yarn start`. Next incluye las variables públicas durante la compilación; compilar para el entorno que se va a ejecutar. Los scripts de pruebas aisladas **rechazan una URL Supabase remota antes de crear identidades**.
 
@@ -135,6 +137,6 @@ E2E compila explícitamente con `build:local`, inicia con `start:local` en el pu
 
 La entrada `globals.css` únicamente contiene las directivas del compilador Tailwind. No hay selectores CSS personalizados. El tema de ejecución está en `tailwind.config.ts`, conforme al [sistema visual canónico](.agents/brand/sistema-visual.md); no se introducen paletas por componente. Fuentes con `next/font`, sin solicitudes a Google desde el navegador. El logotipo original sigue pendiente: se usa el nombre textual.
 
-H2 aporta DTO de configuración/personal, validación y transacciones comunes. `/personal/acceso` inicia el recorrido privado; `/administracion/configuracion` exige manager y AAL2. `yarn env:h2` prepara los secretos ignorados y `yarn staff:bootstrap:local UUID_VERIFICADO` crea únicamente el primer responsable local. PT-08, PT-11 y PT-13 conservan sus pendientes; no hay personal real provisionado ni SMTP productivo validado.
+H2 aporta DTO de configuración/personal, validación y transacciones comunes. `/personal/acceso` inicia el recorrido privado; `/administracion/configuracion` exige manager activo. `yarn env:h2` prepara los secretos ignorados y `yarn staff:bootstrap:local UUID_VERIFICADO` crea únicamente el primer responsable local. PT-08, PT-11 y PT-13 conservan sus pendientes; no hay personal real provisionado ni SMTP productivo validado.
 
 H6 añade `/mi-tarjeta/acceso`, `/mi-tarjeta`, `/mi-tarjeta/telefono` y `/personal/clientes/[id]`. Diez sellos por Mostrito de ⅛; acreditación después de compra presencial pagada y entregada. `/api/me/card` es propio y no-store. La nueva migración conserva solo el hash de clave privada; teléfono no autentica. [Diseño vigente](docs/diseno-tecnico/16-acceso-a-tarjeta-sin-sms.md). Hook Auth preparado para bloquear signup público, sin habilitarlo ni cambiar configuración remota. La revisión cuenta con unitarias/build/lectura remota; integración/pgTAP/navegador quedan pendientes por instrucción del propietario, según [reporte actual](docs/implementacion/evidencia/h6/acceso-sin-sms/README.md).

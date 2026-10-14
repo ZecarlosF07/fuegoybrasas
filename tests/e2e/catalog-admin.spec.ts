@@ -6,7 +6,7 @@ import { randomUUID } from "node:crypto";
 import sharp from "sharp";
 
 import { evidenceDirectory } from "./evidence";
-import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool, totpCode } from "../integration/staff-fixture";
+import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool } from "../integration/staff-fixture";
 import type { StaffFixture } from "../integration/types/staff-fixture";
 
 test.describe.configure({ mode: "serial", timeout: 90000 });
@@ -25,10 +25,6 @@ test.beforeAll(async ({ browser }) => {
   photo = await sharp({ create: { width: 80, height: 60, channels: 3, background: "white" } }).png().toBuffer();
   const context = await browser.newContext({ baseURL: root }); const page = await context.newPage();
   await page.goto("/personal/acceso"); await page.getByLabel("Correo electrónico").fill(manager.email); await page.getByLabel("Contraseña", { exact: true }).fill(manager.password); await page.getByRole("button", { name: "Ingresar", exact: true }).click();
-  await expect(page).toHaveURL(/\/personal\/mfa$/);
-  await page.getByRole("button", { name: "Configurar autenticador" }).click(); await page.getByText("Usar clave manual", { exact: true }).click();
-  const secret = await page.locator("details p").innerText();
-  await page.getByLabel("Código de seis dígitos").fill(totpCode(secret)); await page.getByRole("button", { name: "Verificar e ingresar" }).click();
   await expect(page).toHaveURL(/\/personal$/); cookies = await context.cookies(); await context.close();
 });
 test.beforeEach(async ({ context, page }) => { await context.addCookies(cookies); await page.goto("/administracion/carta"); await expect(page.getByRole("heading", { name: "Administrar carta" })).toBeVisible(); });

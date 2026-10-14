@@ -4,7 +4,7 @@ import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { setTimeout } from "node:timers/promises";
 
-import { enrollStaffBrowser } from "../e2e/staff-browser";
+import { signInStaffBrowser } from "../e2e/staff-browser";
 import { cleanupLoyaltyFixtures, testLaunchChecks, testProgramId } from "../integration/loyalty-fixture";
 import { createPrivateCustomerFixture } from "../integration/private-card-fixture";
 import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool } from "../integration/staff-fixture";
@@ -36,8 +36,8 @@ test("preparar entorno local para revisión humana de H6 y restaurarlo al finali
 
     const staffContext = await browser.newContext({ baseURL: "http://127.0.0.1:3100", viewport: null });
     const staffPage = await staffContext.newPage();
-    console.info("Preparando sesión de personal local con MFA.");
-    await enrollStaffBrowser(staffPage, manager);
+    console.info("Preparando sesión de personal local con contraseña.");
+    await signInStaffBrowser(staffPage, manager);
     await staffPage.goto("/personal/clientes/" + customer.customerId);
     await expect(staffPage.getByText("9 de 10 sellos", { exact: true })).toBeVisible();
     const customerContext = await browser.newContext({ baseURL: "http://127.0.0.1:3100", viewport: null });

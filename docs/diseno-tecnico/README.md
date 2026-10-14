@@ -1,6 +1,8 @@
 # Fuego y Brasas — Diseño técnico
 
-**Versión:** 1.11 · **Fecha:** 13 de octubre de 2026.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Versión:** 1.12 · **Fecha:** 13 de octubre de 2026.
 **Estado:** H1–H7 implementados; H8 con preparación técnica, migración oficial y regresión local aprobadas según [evidencia H8](../implementacion/evidencia/h8/README.md). GitHub/Vercel se preparan por solicitud del propietario. Piloto, revisión humana y activación productiva pendientes; ambos flags públicos apagados.
 **Base funcional:** [Análisis del proyecto](../analisis-del-proyecto.md) y [Resumen ejecutivo](../resumen-ejecutivo.md).
 
@@ -33,6 +35,7 @@ Los tipos, nombres de tablas y contratos son definiciones adoptadas para la impl
 | 16 | [Acceso a tarjeta sin SMS](16-acceso-a-tarjeta-sin-sms.md) | Alta por nombre/contacto, clave privada, permisos y actualización de expectativas anteriores. | Decisión actual del propietario; sustituye identidad telefónica previa. |
 | 17 | [Administración y operación H7](17-administracion-y-operacion-h7.md) | Indicadores/clientes, correcciones, restitución, recuperación, contingencia e invitaciones. | DC-12–15 y permisos MFA; amplía contratos y datos. |
 | 18 | [Publicación y operación H8](18-publicacion-y-operacion-h8.md) | GitHub/Vercel, CI, salud, diagnóstico y datos comerciales. | DC-16–19; preparación diferenciada de piloto/activación. |
+| 19 | [Personal sin MFA](19-acceso-del-personal-sin-mfa.md) | Login con contraseña, rol vigente, recuperación y ajuste Auth/SQL compatible. | DC-22; sustituye segundo factor en todos los hitos. |
 
 Reglas para agentes: [Proyecto](../../.agents/rules/proyecto.md), [UX/UI](../../.agents/rules/ux-ui.md) y [Sistema visual](../../.agents/brand/sistema-visual.md), enlazadas desde [AGENTS.md](../../AGENTS.md). Los valores visuales se mantienen únicamente en el sistema canónico; [MASTER](../../design-system/fuego-y-brasas/MASTER.md) permite recuperarlo mediante la skill. La ejecución se organiza en los [ocho hitos](../implementacion/hitos-del-proyecto.md).
 
@@ -54,19 +57,20 @@ Reglas para agentes: [Proyecto](../../.agents/rules/proyecto.md), [UX/UI](../../
 | DC-10 | Retirar la leyenda «Solo delivery» de P05, conservando la restricción de modalidad. | P05 solo se admite en entrega a domicilio, con validación temprana. |
 
 | DC-11 | El propietario elimina SMS y elige alta web con nombre y teléfono. | Acceso por enlace privado/QR; teléfono de contacto no autentica. Recuperación asistida continúa en PT-08/H7. |
-| DC-12 | El administrador consulta registros, clientes próximos a premio e indicadores. | Panel privado paginado exclusivo manager/AAL2; sin ventas o exportación masiva. |
+| DC-12 | El administrador consulta registros, clientes próximos a premio e indicadores. | Panel privado paginado exclusivo manager activo; sin ventas o exportación masiva. |
 | DC-13 | Restituir el premio después de confirmar que no se entregó, con historial y motivo. | Mismo premio disponible, canje original inmutable, saldo intacto y resolución única. Resuelve PT-13. |
 | DC-14 | Administrador recupera tarjeta presencialmente con comprobante/historial y concilia compras por caídas con fecha/referencia. | Teléfono solo no prueba titularidad; rota clave sin duplicar tarjetas. Procedimientos aprobados de PT-08. |
 | DC-15 | No dar de baja clientes. | Baja/restauración customer/card denegadas; identidad, progreso, premios y metadatos históricos conservados. |
 | DC-16 | Subir a GitHub para importar en Vercel; Supabase oficial único. | CI/fixtures locales; preview sin credenciales oficiales, sin segundo proyecto. |
-| DC-17 | Administrador inicial confirmado, sin envío de correos. | Alta directa auditada, contraseña privada y MFA obligatorio al entrar. |
+| DC-17 | Administrador inicial confirmado, sin envío de correos. | Alta directa auditada, contraseña privada y permisos vigentes obligatorio al entrar. |
 | DC-18 | Maps y modalidades de la carta confirmados; Mostritos con chaufa/papas/ensalada. | 17 referencias completas publicadas; C01/P05 y faltantes conservan sus límites. |
 | DC-19 | Horarios/pagos estimados hasta dato real. | Borradores no verificados, ocultos en DTO público; no activar funciones por estimaciones. |
-| DC-20 | El propietario retira CAPTCHA del personal. | Login/recuperación sin widget ni tokens CAPTCHA; se conservan contraseña, MFA, autorización y límites de Supabase Auth. Variables y requisito de proveedor retirados. [Cambio vigente](../implementacion/evidencia/h8/acceso-personal-sin-captcha.md). |
+| DC-20 | El propietario retira CAPTCHA del personal. | Login/recuperación sin widget ni tokens CAPTCHA; se conservan contraseña, permisos vigentes, autorización y límites de Supabase Auth. Variables y requisito de proveedor retirados. [Cambio vigente](../implementacion/evidencia/h8/acceso-personal-sin-captcha.md). |
+| DC-22 | El propietario retira MFA del personal. | Correo/contraseña y rol vigente; SQL sin AAL2 y Auth sin TOTP. [Diseño vigente](19-acceso-del-personal-sin-mfa.md) y evidencia de retirada. |
 
 ## 4. Decisiones técnicas adoptadas
 
-**Ampliación del propietario del 11/10 — DC-12–15:** [Administración y operación H7](17-administracion-y-operacion-h7.md) sustituye la exclusión anterior de listado interno y baja/restauración de clientes. Recuperación, contingencia y restitución aprobadas y probadas; PT-08 conserva preparación real del personal/MFA y PT-11 textos/plazos de lanzamiento.
+**Ampliación del propietario del 11/10 — DC-12–15:** [Administración y operación H7](17-administracion-y-operacion-h7.md) sustituye la exclusión anterior de listado interno y baja/restauración de clientes. Recuperación, contingencia y restitución aprobadas y probadas; PT-08 conserva preparación real del personal/permisos y PT-11 textos/plazos de lanzamiento.
 
 | ID | Decisión y razón | Fuente principal |
 | --- | --- | --- |
@@ -79,7 +83,7 @@ Reglas para agentes: [Proyecto](../../.agents/rules/proyecto.md), [UX/UI](../../
 | DT-07 | Borrador persistente no sensible en `localStorage`; datos de contacto y dirección en `sessionStorage`. | Frontend. |
 | DT-08 | MVP sin caché compartida de datos de aplicación; imágenes versionadas sí pueden usar CDN. `cacheComponents` no se habilita inicialmente. | Arquitectura y frontend. |
 | DT-09 | **Sustituida por DC-11/DT-31.** Se retira OTP/SMS del cliente; no requiere proveedor SMS ni presupuesto de mensajes. | [Actualización vigente](16-acceso-a-tarjeta-sin-sms.md). |
-| DT-10 | Personal con correo y contraseña; cuentas individuales, acceso por rol en tabla protegida y MFA TOTP para operaciones internas. | Seguridad. |
+| DT-10 | Personal con correo y contraseña; cuentas individuales, acceso por rol en tabla protegida y autorización por rol para operaciones internas. | Seguridad. |
 | DT-11 | Hosting de Next.js propuesto en Vercel y Supabase administrado; contratación y cuentas pendientes. | Operación. |
 | DT-12 | Sin ORM, Realtime, Edge Functions, cola ni POS en el MVP. SDK y funciones SQL cubren los casos actuales. | Arquitectura. |
 | DT-13 | Catálogo público solo por proyección `read_catalog`, sin grants directos sobre tablas comerciales. Evita publicar campos sin verificar mediante Data API. | Seguridad y contratos; revisión de 3/10/2026. |
@@ -92,7 +96,7 @@ Reglas para agentes: [Proyecto](../../.agents/rules/proyecto.md), [UX/UI](../../
 | DT-20 | Yarn exclusivo, tipos separados, componentes de hasta 170 líneas, Tailwind sin selectores CSS personalizados y Proxy sin middleware. | Instrucción del propietario del 4/10/2026 y [reglas de código](../../.agents/rules/codigo.md). |
 | DT-21 | Propietario `app_owner` NOLOGIN para objetos privados y defaults restrictivos, sin cambiar defaults de propietarios administrados. Migraciones de ese esquema usan SET LOCAL ROLE app_owner. | [Migración de H1](../../supabase/migrations/20261004000000_private_schema.sql) y [evidencia](../implementacion/evidencia/h1/README.md). |
 | DT-22 | Puente privado mínimo `request_claims()` de `postgres`, invocable solo por `app_owner`, para leer uid/AAL sin modificar permisos administrados de Auth. Resto de objetos bajo `app_owner`. | [Operación H2](../implementacion/evidencia/h2/operacion.md), migración y pruebas de permisos. |
-| DT-23 | Recuperación/invitación con callback fijo, cookie HttpOnly firmada por identidad durante diez minutos y sin redirección libre. Si existe MFA, verificarlo antes de actualizar contraseña por la exigencia AAL2 de Auth; sin factor, enrolar antes de acceso privado. | [Operación H2](../implementacion/evidencia/h2/operacion.md) y E2E con Auth real. |
+| DT-23 | Callback fijo, cookie HttpOnly firmada por identidad durante diez minutos y sin redirección libre. DC-22 retira segundo factor también en recuperación; contraseña nueva conserva autorización. | [Contrato sin MFA](19-acceso-del-personal-sin-mfa.md). |
 | DT-24 | Confirmación comercial `content_verified` para porción/inclusiones, invalidada por cambios de contenido o restauración. Precios y composición de opciones editados requieren reconfirmación explícita. Editor interno con campos snake_case estrictos; catálogo público conserva camelCase. | [Contratos H4](../implementacion/evidencia/h4/operacion.md) y [diccionario](10-tablas-db.md). |
 | DT-25 | Asociación y reserva de limpieza de imágenes comparten bloqueo de configuración. La reserva auditada impide reutilizar la ruta y conserva referencias retiradas recuperables; eliminación Storage sucede fuera de SQL y permite reintento del mismo UUID. | [Operación H4](../implementacion/evidencia/h4/operacion.md), migraciones y pruebas reales locales de Storage. |
 
@@ -103,7 +107,7 @@ Reglas para agentes: [Proyecto](../../.agents/rules/proyecto.md), [UX/UI](../../
 | DT-30 | Diario compartido interno evita sobrescritura/UUID nuevo ante incertidumbre. Alta por clave conserva cookie candidata para replay; cambio de contacto exige clave propia y revisión. | [Diseño 16](16-acceso-a-tarjeta-sin-sms.md) y evidencia histórica de operaciones internas. |
 
 | DT-31 | Clave aleatoria de 256 bits, hash persistido, cookie HttpOnly y enlace con fragmento; cuatro RPC solo servidor. Registro sin SMS, cero sellos y teléfono no autenticante. | [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md); migración 20261010000000. |
-| DT-32 | H7: indicadores/clientes solo manager/AAL2; reversión/restitución auditadas, invitación Auth por etapas, recuperación presencial con clave derivada HMAC por UUID y contingencia transaccional. Clientes sin baja por DC-15. | [Contratos H7](17-administracion-y-operacion-h7.md). |
+| DT-32 | H7: indicadores/clientes solo manager activo; reversión/restitución auditadas, invitación Auth por etapas, recuperación presencial con clave derivada HMAC por UUID y contingencia transaccional. Clientes sin baja por DC-15. | [Contratos H7](17-administracion-y-operacion-h7.md). |
 
 DT-11 permite preparar la implementación, pero no autorizan contratar servicios ni afirman que sus cuentas estén disponibles. Las versiones nuevas de dependencias se fijarán en el lockfile al instalarlas y se comprobarán con la versión existente de Next.js.
 
@@ -118,7 +122,7 @@ DT-11 permite preparar la implementación, pero no autorizan contratar servicios
 | PT-05 | Precios/modalidades confirmados en H8, Mostritos con inclusiones. Once referencias aún sin contenido completo. | Datos, contratos, catálogo. | Solo esas referencias/opciones incompletas permanecen en borrador; 17 publicables. |
 | PT-06 | Costo completo del premio; PD-10. | Fidelización, operación. | Activar públicamente fidelización; no bloquea construirla. |
 | PT-07 | **Comprobación automática cerrada el 11/10:** migración remota y reconstrucción, integración/pgTAP/navegador aislados aprobados. Proveedor/presupuesto SMS retirados por DC-11. [Evidencia](../implementacion/evidencia/h6/acceso-sin-sms/README.md). | Seguridad, operación y pruebas. | Acceso privado automáticamente probado; aceptación H6 todavía exige revisión humana de Narrador/zoom. |
-| PT-08 | Personas reales autorizadas y recuperación del autenticador del personal pendientes. Recuperación de tarjeta presencial y contingencia aprobadas por DC-14, implementadas/probadas. | Seguridad y operación; diseños 16/17 y evidencia H7. | Preparación para operación pública; teléfono solo sigue sin ser prueba. |
+| PT-08 | Personas reales autorizadas y procedimientos de recuperación de acceso del personal pendientes. Recuperación de tarjeta presencial y contingencia aprobadas por DC-14, implementadas/probadas. | Seguridad y operación; diseños 16/17 y evidencia H7. | Preparación para operación pública; teléfono solo sigue sin ser prueba. |
 | PT-09 | Facebook oficial confirmado por el propietario; siguen pendientes originales de logo/fotos, variantes aprobadas y procedencia/autorización de recursos; PD-13 parcialmente aclarado. | Frontend, Storage, identidad visual. | Presentación definitiva de marca; las fotos ausentes tienen fallback. La paleta de interfaz es una propuesta, no un manual oficial entregado. |
 | PT-10 | Roberto Fuentes designado para WhatsApp; recepción/atención real pendiente de piloto. | Operación. | No inferir recepción/venta desde apertura del enlace. |
 | PT-11 | Condiciones del programa, aviso de datos y plazos de conservación; DC-15 excluye baja de clientes. | Seguridad y operación. | Lanzamiento de fidelización. No se fijan plazos legales ni purgas por suposición. |
@@ -148,7 +152,7 @@ Se revisaron los diez documentos frente al análisis funcional, la aclaración d
 | Corrección de perfil, ficha por ID y consulta de eventos carecían de contrato explícito. | RPC y permisos acotados; seguridad/contratos/frontend. | CT-24, CT-35. |
 | Subir foto se confundía con asociarla al producto. | Dos efectos separados con revisión/idempotencia para asociación; contratos/operación. | CT-20, CT-36. |
 | Cierre, suspensión y pausa se confundían con caída/alta nueva. | DTO y estados diferenciados; datos/contratos/frontend. | CT-37. |
-| Invitación/recuperación carecían de rutas y callback SSR concretos. | Sesión, contraseña, destinos fijos y MFA; seguridad/contratos/frontend/operación. | CT-38. |
+| Invitación/recuperación carecían de rutas y callback SSR concretos. | Sesión, contraseña, destinos fijos y permisos vigentes; seguridad/contratos/frontend/operación. | CT-38. |
 | Foto de 5 MiB superaba límites del flujo y hosting propuestos. | Handler acotado, límite 3 MiB y revisión en staging; seguridad/contratos/operación. | CT-39. |
 
 Las pruebas CT-01 a CT-39 son especificaciones futuras. En esta etapa solo se ejecutan comprobaciones documentales: inventario, enlaces, referencias y consistencia de nombres/reglas. No se instalan dependencias, se escriben migraciones ni se modifica la aplicación.

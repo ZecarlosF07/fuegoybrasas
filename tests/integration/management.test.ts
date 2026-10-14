@@ -116,7 +116,7 @@ describe("H7 administración real y transacciones locales", () => {
     const metrics = dashboardSchema.parse((await actorQuery(manager, "select public.get_loyalty_dashboard(current_date-1,current_date+1) data")).rows[0].data);
     expect(metrics.nearReward).toBeGreaterThan(0); expect(metrics.availableRewards).toBeGreaterThan(0);
     await expect(actorQuery(attendant, "select public.get_loyalty_dashboard(current_date,current_date)")).rejects.toThrow("FORBIDDEN");
-    await expect(actorQuery({ ...manager, aal: "aal1" }, "select public.get_admin_customers()")).rejects.toThrow("MFA_REQUIRED");
+    expect((await actorQuery(manager, "select public.get_admin_customers() data")).rows[0].data).toBeTruthy();
     await expect(actorQuery(manager, "select public.get_admin_customers('all',null,500)")).rejects.toThrow("VALIDATION_ERROR");
     const incidents = incidentsSchema.parse((await actorQuery(manager, "select public.get_loyalty_incidents('all') data")).rows[0].data);
     expect(incidents.incidents.length).toBeGreaterThan(0);

@@ -1,6 +1,8 @@
 # 15. Investigación de identidad y referentes UX/UI
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.0 · **Fecha de consulta:** 3 de octubre de 2026.  
 **Estado:** evidencia pública e interpretación de diseño; sin métricas de conversión propias ni pruebas de usuarios ejecutadas.
@@ -61,7 +63,7 @@ Skill leída: `ui-ux-pro-max`, disponible en este entorno en `C:/Users/ZeCarlos/
 | `Fraunces warm serif` · `--domain google-fonts` | Familia Fraunces, variable y subconjuntos latinos. | Verificación individual de la familia elegida. |
 | `Manrope interface legibility` · `--domain google-fonts` | Familia Manrope, variable y subconjuntos latinos. | Verificación individual; su combinación con Fraunces es recomendación de diseño propia adoptada por el plan. |
 | `focus not obscured` · `--domain ux` | Distingue mínimo AA y visibilidad completa reforzada. | Control enfocado completamente visible como criterio del producto; no atribuirlo literalmente al mínimo AA. |
-| `accessible authentication` · `--domain ux` | Gestores de contraseña y pegado de códigos. | Aplicar a contraseña/MFA/OTP existentes, sin añadir passkeys u OAuth. |
+| `accessible authentication` · `--domain ux` | Gestores de contraseña y pegado de códigos. | Aplicar a contraseña/rol vigente/OTP existentes, sin añadir passkeys u OAuth. |
 | `error summary validation` · `--domain ux` | Resumen enlazado y errores asociados. | Al enviar enfocar resumen cuando existe; en otro caso primer campo inválido. Sin foco automático por blur. |
 | `images fonts mobile` · `--stack nextjs` | Fuentes e imágenes optimizadas, con consejo de `priority` desactualizado. | Guías del Next.js instalado prevalecen; no copiar esa API deprecada. |
 

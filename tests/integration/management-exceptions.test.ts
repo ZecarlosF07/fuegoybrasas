@@ -80,7 +80,7 @@ describe("H7 decisiones aprobadas de negocio", () => {
     const connection = await staffPool.connect();
     try {
       await connection.query("begin");
-      await connection.query("select set_config('request.jwt.claims',$1,true)", [JSON.stringify({ sub: manager.userId, role: "authenticated", aal: "aal2" })]);
+      await connection.query("select set_config('request.jwt.claims',$1,true)", [JSON.stringify({ sub: manager.userId, role: "authenticated", aal: "aal1" })]);
       await connection.query("set local role authenticated");
       await connection.query("select public.redeem_reward($1,$2,$3,true,true)", [value.customerId, reward.id, randomUUID()]);
       const first = (await connection.query("select public.open_incident($1,'reward_delivery_failed','Entrega inicial sintética no realizada',$2,$3) data", [value.customerId, randomUUID(), reward.id])).rows[0].data;

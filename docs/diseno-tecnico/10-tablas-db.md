@@ -1,6 +1,8 @@
 # 10. Tablas de base de datos, E-R y soft delete
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.3 · **Fecha:** 11 de octubre de 2026.  
 **Estado:** 18 tablas propias aplicadas en H1–H7; diccionario actualizado con contacto/clave privada, invitaciones y restitución supervisada. Alcance y resultados en [evidencia H7](../implementacion/evidencia/h7/README.md).
@@ -401,7 +403,7 @@ erDiagram
 
 Todas tienen RLS habilitado y carecen de grants CRUD directos para `anon`/`authenticated`. `app_private` tampoco recibe USAGE de Data API ni se expone como esquema. Las lecturas comerciales salen de `public.read_catalog()`; las privadas, de RPC estrechas. El propietario controlado de una función `SECURITY DEFINER` puede eludir RLS: cada función debe verificar explícitamente permisos y `deleted_at`, incluidos padres. La política RLS no reemplaza esos filtros.
 
-Personal exige identidad vigente, `staff_accounts.active=true`, `deleted_at IS NULL`, rol adecuado y AAL2 para operaciones de negocio. `get_staff_access` es la excepción de lectura propia AAL1 que conduce a MFA. El cliente exige identidad telefónica confirmada y vínculo propio; jamás modifica sellos o canjes. Eliminación/restauración administrativa es exclusiva de responsable activo con MFA, revisión esperada, UUID de operación y motivo. La excepción acotada es restaurar el ordinal de un premio mediante una nueva acreditación válida: `credit_stamp` también puede hacerlo con rol atención/AAL2, dentro de su transacción y sin un botón de restauración libre.
+Personal exige identidad vigente, `staff_accounts.active=true`, `deleted_at IS NULL`, rol adecuado y AAL2 para operaciones de negocio. `get_staff_access` es la excepción de lectura propia AAL1 que conduce a MFA. El cliente exige identidad telefónica confirmada y vínculo propio; jamás modifica sellos o canjes. Eliminación/restauración administrativa es exclusiva de responsable activo con autorización vigente, revisión esperada, UUID de operación y motivo. La excepción acotada es restaurar el ordinal de un premio mediante una nueva acreditación válida: `credit_stamp` también puede hacerlo con rol atención/AAL2, dentro de su transacción y sin un botón de restauración libre.
 
 ## 5. Diccionario de tablas comerciales
 
@@ -660,7 +662,7 @@ Perfil con contacto declarado y clave privada; `auth_user_id` nullable conserva 
 
 **Integridad e índices:** UNIQUE Auth y hash globales; índice único parcial contacto no nulo, incluidos registros históricos retirados. Activo exige nombre y Auth histórica o contacto/hash/vigencia completos. Hash/vigencia pareados. Restricciones históricas conservadas, pero DC-15 deniega nuevas bajas/restauraciones de clientes. Las RPC comprueban estado/vigencia de clave y revisión. Teléfono no autentica.
 
-**Operaciones:** `ensure_card_by_key`, `get_card_by_key`, `update_card_profile_by_key` y `update_card_phone_by_key` solo service_role con clave validada por servidor. `lookup_customer` exige staff/MFA; contacto exacto, sin listado por prefijo. Colisión pide revisión. RPC Auth históricas siguen protegidas y fuera del recorrido actual. Recuperación/rotación excepcional PT-08/H7.
+**Operaciones:** `ensure_card_by_key`, `get_card_by_key`, `update_card_profile_by_key` y `update_card_phone_by_key` solo service_role con clave validada por servidor. `lookup_customer` exige personal autorizado; contacto exacto, sin listado por prefijo. Colisión pide revisión. RPC Auth históricas siguen protegidas y fuera del recorrido actual. Recuperación/rotación excepcional PT-08/H7.
 
 **Conservación vigente DC-15:** no hay baja de cliente/tarjeta, purga ni baja Auth desde el producto. Metadatos SQL e identidades históricas se conservan. Recuperación presencial DC-14 rota únicamente el hash/vigencia, sin cerrar la tarjeta ni cambiar saldo/premios. Términos/aviso/plazos siguen pendientes PT-11; no se inventa anonimización ni se reconstruyen datos desde auditoría.
 
@@ -686,7 +688,7 @@ Autorización interna separada de ser cliente.
 
 **Integridad e índices:** borrado exige `active=false`; `invitation_status='pending'` exige cuenta inactiva. UNIQUE Auth continúa reservando identidad. Parcial `(role,id) WHERE deleted_at IS NULL AND active` para responsables activos. Cambio de rol/activo/borrado toma bloqueo global de administración antes de contar: no dejar cero managers activos no eliminados. Los actores del historial no se borran físicamente. Reservas en recibos e identidad Auth interna impiden apropiación o invitación repetida con otro rol.
 
-**Operaciones:** `get_staff_access` solo identidad propia; invitación Auth aislada y asignación controlada; `update_staff_access`, baja/restauración por manager/AAL2. JWT vigente no evita comprobar fila en cada operación. Restaurar deja `active=false`; reautorizar es un acto explícito auditado. Recuperar contraseña o MFA no restaura rol automáticamente.
+**Operaciones:** `get_staff_access` solo identidad propia; invitación Auth aislada y asignación controlada; `update_staff_access`, baja/restauración por manager activo. JWT vigente no evita comprobar fila en cada operación. Restaurar deja `active=false`; reautorizar es un acto explícito auditado. Recuperar contraseña o MFA no restaura rol automáticamente.
 
 ### 6.3. `app_private.loyalty_program_versions`
 
@@ -712,7 +714,7 @@ Regla fija de cada tarjeta, con disponibilidad y costo operativo revisables.
 
 **Integridad e índices:** UNIQUE `code`; índice único parcial sobre `status WHERE status='active' AND deleted_at IS NULL` asegura como máximo una activa. Activación exige costo/términos confirmados. Trigger/RPC impide cambiar meta, nombre, contenido o versión de términos después de salir de draft. Variar costo/disponibilidad no cambia derechos ganados.
 
-**Operaciones:** `activate_loyalty_program`, `set_reward_availability`, `update_reward_cost` por manager/AAL2. No se incorpora editor de campañas/meta. Versión activa o referenciada por tarjetas/premios, incluso eliminados, no se borra lógicamente: se retira. Restaurar versión no usada la devuelve a draft y no activa el programa.
+**Operaciones:** `activate_loyalty_program`, `set_reward_availability`, `update_reward_cost` por manager activo. No se incorpora editor de campañas/meta. Versión activa o referenciada por tarjetas/premios, incluso eliminados, no se borra lógicamente: se retira. Restaurar versión no usada la devuelve a draft y no activa el programa.
 
 ### 6.4. `app_private.loyalty_cards`
 
@@ -868,13 +870,13 @@ Trazabilidad de cambios y autorizaciones. **Append-only, sin soft delete.**
 
 ### Supabase Auth
 
-`auth.users.id` identifica al personal y a perfiles históricos opcionales. El cliente nuevo usa clave privada sin crear Auth; funciones de compatibilidad leen los campos mínimos de Auth para perfiles antiguos. Supabase gestiona correo, credenciales, sesiones y MFA; no se reproducen en tablas de la aplicación. Normalizar teléfono para mostrar/buscar en E.164, comprobar almacenamiento efectivo y unicidad mediante integración. No crear un índice o trigger comercial dentro del esquema Auth.
+`auth.users.id` identifica al personal y a perfiles históricos opcionales. El cliente nuevo usa clave privada sin crear Auth; funciones de compatibilidad leen los campos mínimos de Auth para perfiles antiguos. Supabase gestiona correo, credenciales, sesiones y permisos vigentes; no se reproducen en tablas de la aplicación. Normalizar teléfono para mostrar/buscar en E.164, comprobar almacenamiento efectivo y unicidad mediante integración. No crear un índice o trigger comercial dentro del esquema Auth.
 
 No conceder lectura directa de Auth a Data API. Una eliminación administrada de Auth debe cerrar/desidentificar primero el perfil cliente. La FK SET NULL conserva customer; si el usuario también tiene staff, RESTRICT impide retirar esa identidad sin un procedimiento de conservación aprobado. Soft delete de staff no elimina la cuenta Auth ni elimina MFA.
 
 ### Supabase Storage
 
-Bucket `catalog-media`, público solo para fotografías aprobadas. Ruta `items/<itemId>/<uuid>.<ext>`; JPEG/PNG/WebP, archivo <= 3 MiB y hasta 4096×4096, handler con cuerpo <= 4 MiB. El objeto se sube con JWT de manager/AAL2 y después se asocia mediante mutación revisionada del item. Un upload no publica la foto.
+Bucket `catalog-media`, público solo para fotografías aprobadas. Ruta `items/<itemId>/<uuid>.<ext>`; JPEG/PNG/WebP, archivo <= 3 MiB y hasta 4096×4096, handler con cuerpo <= 4 MiB. El objeto se sube con JWT de manager activo y después se asocia mediante mutación revisionada del item. Un upload no publica la foto.
 
 Borrar lógicamente un item conserva la ruta y el objeto para restaurar; no ejecutar cascada a Storage. Los huérfanos se revisan aparte, excluyendo referencias vigentes **y eliminadas recuperables**. Respaldo SQL no equivale a respaldo de los bytes. Una foto pública que ya se descargó no se vuelve privada mediante soft delete.
 
@@ -917,7 +919,7 @@ Se amplían contratos de implementación, sin añadir páginas o APIs HTTP nueva
 
 | Operación propuesta | Entrada/resultado | Autorización y límites |
 | --- | --- | --- |
-| `softDeleteEntityAction` → `soft_delete_entity` | `entityType`, `entityId`, `expectedRevision`, `reason`, `operationId`; devuelve `MutationMeta`, ID/revisión/estado de conservación. | Manager activo/AAL2. Lista cerrada; customer/card denegados por DC-15. Versión/premio/incidencia tienen restricciones anteriores. |
+| `softDeleteEntityAction` → `soft_delete_entity` | `entityType`, `entityId`, `expectedRevision`, `reason`, `operationId`; devuelve `MutationMeta`, ID/revisión/estado de conservación. | Manager activo. Lista cerrada; customer/card denegados por DC-15. Versión/premio/incidencia tienen restricciones anteriores. |
 | `restoreEntityAction` → `restore_entity` | Mismos campos y motivo; devuelve revisión y estado seguro restaurado. | Manager/AAL2; excluye premios, cuya restauración pertenece a `credit_stamp`. |
 | Lecturas administrativas existentes | Filtro explícito `includeDeleted` opcional, falso por defecto, en entidades que esas lecturas ya permiten consultar. | Solo manager; devolver metadatos de conservación mínimos, no ampliar búsqueda pública ni exponer eventos a clientes. |
 
@@ -948,7 +950,7 @@ No abrir transacciones mientras se pide OTP, se sube imagen o se espera interacc
 | Total | Subtotal más cargo confirmado; NULL si cargo/cobertura aún pendiente. |
 | Abierto/cerrado | Horario confirmado más hora servidor/zona; sin confirmar = unknown. |
 | Vigencia | Activación, límites de tiempo y días ISO en zona negocio; sin vencimiento conocido, manual. |
-| Teléfono | Contacto declarado en customers; máscara propia y completo solo para personal/MFA. Auth histórica opcional. Nunca autoriza recuperar tarjeta. |
+| Teléfono | Contacto declarado en customers; máscara propia y completo solo para personal/permisos. Auth histórica opcional. Nunca autoriza recuperar tarjeta. |
 
 `read_catalog` y validación de carrito excluyen filas eliminadas, sus padres eliminados y configuración no confirmada. No exponen `deleted_by`/motivos ni campos de costo. Las RPC de movimientos deben consultar premios ocultos anulados al determinar restauración del ordinal, para conservar su UUID; no utilizar el filtro de proyección pública para lógica contable.
 

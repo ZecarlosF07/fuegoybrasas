@@ -1,6 +1,8 @@
 # 05. Contratos, validaciones y operaciones
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.2 · **Fecha:** 8 de octubre de 2026.  
 **Relacionado:** [Datos](03-modelo-de-datos.md), [Seguridad](04-autenticacion-seguridad.md), [Frontend](06-frontend-y-estado.md).
@@ -37,7 +39,7 @@ type ConflictState =
 
 `ErrorCode` es un conjunto cerrado en implementación: `VALIDATION_ERROR`, `AUTH_REQUIRED`, `FORBIDDEN`, `MFA_REQUIRED`, `OTP_INVALID`, `OTP_EXPIRED`, `RATE_LIMITED`, `CONFIG_NOT_READY`, `ORDERING_PAUSED`, `BUSINESS_CLOSED`, `ITEM_UNAVAILABLE`, `MODE_NOT_ALLOWED`, `OPTION_UNAVAILABLE`, `COVERAGE_EXCLUDED`, `MINIMUM_NOT_MET`, `CATALOG_CHANGED`, `CONFLICT`, `NOT_FOUND`, `CUSTOMER_RECOVERY_REVIEW`, `IDENTITY_MISMATCH`, `TERMS_CHANGED`, `LOYALTY_PAUSED`, `CARD_UNAVAILABLE`, `DUPLICATE_VISIT_REFERENCE`, `IDEMPOTENCY_CONFLICT`, `REWARD_UNAVAILABLE`, `REWARD_ALREADY_REDEEMED`, `LATER_VISIT_REQUIRED`, `CORRECTION_ALREADY_APPLIED`, `SERVICE_UNAVAILABLE`, `OPERATION_UNCERTAIN` e `INTERNAL_ERROR`. Nuevos códigos se añaden a contratos, UI y tests juntos.
 
-HTTP: 400 entrada inválida, 401 sin identidad, 403 permiso/MFA, 404 entidad privada no accesible, 409 conflicto, 422 incompatibilidad funcional, 429 límite y 503 dependencia caída. Server Actions devuelven `Result`, no códigos HTTP de negocio al consumidor. Un flujo que crea incidencia devuelve éxito de registro con `outcome=review_required`, no corrección aplicada.
+HTTP: 400 entrada inválida, 401 sin identidad, 403 permiso/permisos, 404 entidad privada no accesible, 409 conflicto, 422 incompatibilidad funcional, 429 límite y 503 dependencia caída. Server Actions devuelven `Result`, no códigos HTTP de negocio al consumidor. Un flujo que crea incidencia devuelve éxito de registro con `outcome=review_required`, no corrección aplicada.
 
 `currentState` solo acompaña conflictos en entidades que el caller sigue autorizado a consultar. No aparece al denegar permiso ni revela otra tarjeta. Catálogo/configuración devuelven la revisión y permiten recargar el editor; perfil/card usan su proyección mínima. Esto permite mostrar un canje ya consumido con estado real sin fingir una mutación exitosa. Motivos administrativos exigen 10–500 caracteres; en corrección de perfil la confirmación de solicitud es `customerRequestConfirmed=true`.
 
@@ -48,15 +50,15 @@ HTTP: 400 entrada inválida, 401 sin identidad, 403 permiso/MFA, 404 entidad pri
 | `GET /api/catalog` | Público; no-store. | `read_catalog()` → categorías/items publicables, precios por modalidad, opciones, promociones, configuración segura y `serverNow`. |
 | `POST /api/cart/validate` | Público; no-store. | Una lectura fresca `read_catalog()` y validador de dominio; ninguna escritura de pedido. |
 | `GET /api/me/card` | Cliente identificado. | `get_my_card()` → perfil propio, progreso, premios y últimos movimientos sin actores/referencias internas. |
-| `lookupCustomerAction` | Atención/responsable, MFA. | `lookup_customer(phone)` → coincidencia exacta o ausencia, ficha mínima y último movimiento. |
-| Ficha interna SSR | Atención/responsable, MFA. | `get_staff_customer(customerId)` → ficha mínima autorizada y últimos diez movimientos; el ID de la ruta no concede acceso. |
-| Historial para corregir | Responsable, MFA. | `get_customer_history(customerId,cursor,limit)` → eventos, referencias y actores para revisar el original; límite 20, máximo 50. |
+| `lookupCustomerAction` | Atención/responsable, permisos vigentes. | `lookup_customer(phone)` → coincidencia exacta o ausencia, ficha mínima y último movimiento. |
+| Ficha interna SSR | Atención/responsable, permisos vigentes. | `get_staff_customer(customerId)` → ficha mínima autorizada y últimos diez movimientos; el ID de la ruta no concede acceso. |
+| Historial para corregir | Responsable, permisos vigentes. | `get_customer_history(customerId,cursor,limit)` → eventos, referencias y actores para revisar el original; límite 20, máximo 50. |
 | `getOperationAction` | Actor de la operación con permiso vigente. | `get_operation(operationId)` → estado conocido o ausencia de recibo y lectura actual pertinente. |
-| Páginas administrativas SSR | Responsable, MFA. | `get_admin_catalog()` y `get_admin_config()` → borradores y versiones para editar. |
-| Incidencias/listado de personal | Responsable, MFA. | `get_open_incidents()` y `get_staff_accounts()` paginados; no listado de clientes. |
-| `POST /api/admin/catalog/images` | Responsable, MFA; mismo origen. | Valida item, archivo <=3 MiB y cuerpo <=4 MiB; subida con JWT del responsable → `imagePath`. No publica ni asocia el objeto. |
-| `GET /api/admin/catalog/images` | Responsable, MFA; `imagePath` validado. | Consulta existencia de una subida por su misma referencia; no anuncia asociación ni publicación. |
-| `DELETE /api/admin/catalog/images` | Responsable, MFA; mismo origen, `imagePath` y `operationId`. | Reserva SQL sin referencias, incluidas las retiradas recuperables; elimina por Storage API fuera de la transacción. Reintento conserva UUID/ruta. |
+| Páginas administrativas SSR | Responsable, permisos vigentes. | `get_admin_catalog()` y `get_admin_config()` → borradores y versiones para editar. |
+| Incidencias/listado de personal | Responsable, permisos vigentes. | `get_open_incidents()` y `get_staff_accounts()` paginados; no listado de clientes. |
+| `POST /api/admin/catalog/images` | Responsable, permisos vigentes; mismo origen. | Valida item, archivo <=3 MiB y cuerpo <=4 MiB; subida con JWT del responsable → `imagePath`. No publica ni asocia el objeto. |
+| `GET /api/admin/catalog/images` | Responsable, permisos vigentes; `imagePath` validado. | Consulta existencia de una subida por su misma referencia; no anuncia asociación ni publicación. |
+| `DELETE /api/admin/catalog/images` | Responsable, permisos vigentes; mismo origen, `imagePath` y `operationId`. | Reserva SQL sin referencias, incluidas las retiradas recuperables; elimina por Storage API fuera de la transacción. Reintento conserva UUID/ruta. |
 
 `read_catalog()` es función SQL `STABLE`, `SECURITY DEFINER`, `search_path=''`, sin parámetros, con proyección JSON en una única sentencia para leer un snapshot consistente. Filtra explícitamente filas y campos; no concede lectura directa de tablas a visitantes. No incluye precios fuente, costos del premio, roles ni perfiles. Se obtiene tiempo del servidor en esa lectura para evaluar horarios/vigencias. Datos públicos no dependen de cookies.
 
@@ -151,7 +153,7 @@ Al superar un límite técnico de URL de 7.000 caracteres codificados, mostrar m
 | `correctCustomerProfileAction` | Cliente, nombre/indicaciones, `expectedRevision`, confirmación de solicitud expresa, motivo y `operationId`. | `correct_customer_profile`; solo responsable/AAL2, auditoría de campos modificados sin copiar el texto personal. No cambia teléfono ni saldo. |
 | `forgetCardAction` | Sin UUID. | Olvida cookie de tarjeta, limpia estado privado; no revoca enlace ni cierra sesión staff. |
 | `updateCatalogItemAction` | ID, `expectedRevision`, patch validado y `operationId`. | `update_catalog_item`; bloquea rama, cambia campos del artículo, valida publicación y audita. Precios/grupos/opciones tienen RPC propias y avanzan también revisión del padre. |
-| `getAdminCatalogAction` | `includeDeleted` booleano; manager/AAL2. | `get_admin_catalog`; snapshot privado de las seis entidades comerciales, validado antes de entregar al editor. |
+| `getAdminCatalogAction` | `includeDeleted` booleano; manager activo. | `get_admin_catalog`; snapshot privado de las seis entidades comerciales, validado antes de entregar al editor. |
 | `saveCatalogEntityAction` | Tipo cerrado, ID, `expectedRevision`, patch y `operationId`. | Edición por seis RPC acotadas; revisión cero conduce a `create_catalog_entity` con UUID estable y campos de creación. No admite tabla, actor, columna libre ni modificación del precio fuente. |
 | `updateBusinessConfigAction` | `expectedRevision`, patch de configuración/pagos/zonas y `operationId`. | `update_business_config`; bloquea singleton, valida y audita. No permite cambiar secretos ni reglas de premios. |
 | `setRewardAvailabilityAction` | Versión de programa, disponible, `expectedRevision`, `operationId`. | `set_reward_availability`; responsable/AAL2, modifica solo disponibilidad operativa y audita. |

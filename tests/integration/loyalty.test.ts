@@ -58,11 +58,11 @@ describe("H6 integridad, identidad y concurrencia reales en PostgreSQL local", (
     await expect(privateCardQuery("select public.ensure_card_by_key($1,'Cliente',$2,'fyb-loyalty-v1',false)", [fresh.keyHash, fresh.phone])).rejects.toMatchObject({ message: "TERMS_CHANGED" });
     expect((await staffPool.query("select count(*)::int n from app_private.customers where access_key_hash=$1", [fresh.keyHash])).rows[0].n).toBe(0);
   });
-  it("cliente no ejecuta sello/búsqueda ni CRUD; personal AAL1 tampoco", async () => {
+  it("cliente no ejecuta sello/búsqueda ni CRUD; personal autorizado accede con contraseña", async () => {
     await expect(actorQuery(untrustedActor, "select public.credit_stamp($1,$2,true,true)", [first.customerId, randomUUID()])).rejects.toMatchObject({ message: "FORBIDDEN" });
     await expect(actorQuery(untrustedActor, "select public.lookup_customer($1)", [second.phone])).rejects.toMatchObject({ message: "FORBIDDEN" });
     await expect(actorQuery(untrustedActor, "select * from app_private.customers")).rejects.toMatchObject({ code: "42501" });
-    await expect(actorQuery({ ...attendant, aal: "aal1" }, "select public.get_staff_customer($1)", [first.customerId])).rejects.toMatchObject({ message: "MFA_REQUIRED" });
+    expect((await actorQuery(attendant, "select public.get_staff_customer($1) data", [first.customerId])).rows[0].data).toBeTruthy();
   });
   it("ni pago sin entrega ni entrega sin pago suman sello o recibo", async () => {
     for (const confirmations of [[true, false], [false, true], [true, null]]) {

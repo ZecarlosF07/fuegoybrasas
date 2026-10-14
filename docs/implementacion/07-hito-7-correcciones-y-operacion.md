@@ -1,6 +1,8 @@
 # Hito 7 — Resolver errores y situaciones especiales
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](../diseno-tecnico/16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](../diseno-tecnico/16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.2 · **Fecha:** 11 de octubre de 2026.
 **Destinatarios:** equipo de desarrollo, personal autorizado y responsable del negocio.  
@@ -56,7 +58,7 @@ Ejecutar H7-T14 antes y durante T04–T07; aplicar su parte de T10/T11 solo desp
 
 | ID | Requerimiento | Criterio técnico |
 | --- | --- | --- |
-| H7-RT01 | Reversión autorizada | `reverseStampAction` → `reverse_stamp`, solo manager activo/AAL2: cliente, evento original acreditado, UUID y motivo 10–500. Rechazar evento ajeno/ya revertido e incremento libre. |
+| H7-RT01 | Reversión autorizada | `reverseStampAction` → `reverse_stamp`, solo manager activo: cliente, evento original acreditado, UUID y motivo 10–500. Rechazar evento ajeno/ya revertido e incremento libre. |
 | H7-RT02 | Reversión sin canje afectado | Delta -1, evento `stamp_reversed` y anulación de premios disponibles afectados con eventos, contador y recibo atómicos. Verificar saldo no negativo y conservar original/relaciones. |
 | H7-RT03 | Reversión con canje afectado | Si el saldo posterior afectaría un premio canjeado, crear una sola incidencia/recibo `review_required`; no decrementar saldo, generar deuda, borrar canje ni reponer premio automáticamente. |
 | H7-RT04 | Ordinal restaurado por acreditación | Al recompletar un umbral, usar premio voided existente del mismo ordinal/UUID; emitir `reward_restored`, limpiar metadatos de borrado si estaba oculto y conservar snapshots. Solo nueva acreditación válida puede hacerlo; no botón genérico de restaurar premio. |
@@ -65,18 +67,18 @@ Ejecutar H7-T14 antes y durante T04–T07; aplicar su parte de T10/T11 solo desp
 | H7-RT07 | Clientes sin baja | DC-15 excluye baja/restauración de cliente/tarjeta: RPC deniegan ambas entidades, no hay botón, purga ni baja Auth. Metadatos históricos del esquema se conservan. |
 | H7-RT08 | Protecciones privadas | Versión activa o usada no se elimina, se retira; versión restaurable no usada vuelve a draft. Premio available/redeemed no admite soft delete; voided puede ocultarse sin destruir identidad. Último manager e incidentes abiertos siguen protegidos. |
 | H7-RT09 | Conservación inmutable | No DELETE/UPDATE de `loyalty_events`, `operation_receipts` ni `audit_entries`; `business_settings` mantiene singleton/flags. Las 14 tablas editables llevan los tres campos coherentes de borrado, revisión, motivo y auditoría. |
-| H7-RT10 | Operaciones administrativas estrechas | Lista cerrada de entidades en `soft_delete_entity`/`restore_entity`, manager/AAL2, revisión/UUID/motivo. RLS no reemplaza filtros explícitos de entidad/padres; incluir eliminados solo en lecturas autorizadas de revisión. |
+| H7-RT10 | Operaciones administrativas estrechas | Lista cerrada de entidades en `soft_delete_entity`/`restore_entity`, manager activo, revisión/UUID/motivo. RLS no reemplaza filtros explícitos de entidad/padres; incluir eliminados solo en lecturas autorizadas de revisión. |
 | H7-RT11 | Concurrencia y reintentos | Reversión/conservación mantienen orden de locks del diseño y permiso actual antes del replay; correcciones e incidencias pueden operar con programa pausado. Recibos y diario conservan UUID ante fallo y evitan segunda intervención. |
 
 ### 3.2. Personal, excepciones y continuidad
 
 | ID | Requerimiento | Criterio técnico |
 | --- | --- | --- |
-| H7-RT12 | Invitaciones verificadas | `inviteStaffAction` requiere manager/AAL2; Auth administrativo solo servidor. Identidad invitada queda sin acceso activo si Auth/fila staff no se completan; comprobar resultado y reconciliar antes de repetir. No anunciar «acceso listo» ante efecto parcial. |
+| H7-RT12 | Invitaciones verificadas | `inviteStaffAction` requiere manager activo; Auth administrativo solo servidor. Identidad invitada queda sin acceso activo si Auth/fila staff no se completan; comprobar resultado y reconciliar antes de repetir. No anunciar «acceso listo» ante efecto parcial. |
 | H7-RT13 | Permisos y última cuenta | Reutilizar `update_staff_access` y lock global antes de contar managers. Baja deja inactive/eliminado; restauración deja inactive y requiere reautorización. JWT vigente/password recuperada no saltan esa comprobación. |
 | H7-RT14 | Recuperación presencial aprobada | Manager/AAL2 contrasta referencia e historial de la misma tarjeta, confirma presencia/titularidad y rota hash con revisión/UUID/motivo. Sin traslado de saldo, alta duplicada, recuperación pública ni retirada de MFA. |
 | H7-RT15 | Privacidad y conservación | PT-11 mantiene términos/aviso/plazos pendientes para lanzamiento. DC-15 excluye baja de clientes; no fijar plazos legales ni borrar Auth. Cualquier cambio posterior requiere acuerdo explícito y diseño específico. |
-| H7-RT16 | Restitución aprobada por no entrega | DC-13: solo manager/AAL2 confirma no entrega, agrega reward_reinstated con motivo y FK al canje, devuelve el mismo premio a available y cierra incidencia. Original inmutable, saldo/ordinal intactos y doble resolución rechazada. |
+| H7-RT16 | Restitución aprobada por no entrega | DC-13: solo manager activo confirma no entrega, agrega reward_reinstated con motivo y FK al canje, devuelve el mismo premio a available y cierra incidencia. Original inmutable, saldo/ordinal intactos y doble resolución rechazada. |
 | H7-RT17 | Acreditación de contingencia | DC-14: solo manager utiliza `occurredAt` y referencia obligatoria, sin fecha futura ni anterior a la tarjeta; separar entrega real de `recorded_at`. Registro interno restringido, mínimo y conciliado; no sincronización automática offline. |
 | H7-RT18 | Respaldo y reconciliación | Inventariar SQL, Auth/configuración necesaria y archivos Storage: respaldo DB no garantiza copia de bytes Storage. Restaurar aislado, pausar escrituras y conciliar entregas posteriores al respaldo antes de habilitar operaciones. |
 | H7-RT19 | Observabilidad y pantallas | `/administracion/incidencias`/`personal` manager/no-store; ficha solo datos pertinentes. RequestId/operationId para diagnóstico sin teléfono, preferencias, direcciones, OTP o tokens en logs. |
@@ -90,7 +92,7 @@ Las siete migraciones H7 incorporan las operaciones y sus protecciones. DC-13 a�
 | --- | --- | --- |
 | H7-RT21 | Reglas y skill aplicables | Leer [Reglas del proyecto](../../.agents/rules/proyecto.md), [UX/UI](../../.agents/rules/ux-ui.md) y [Sistema visual](../../.agents/brand/sistema-visual.md); usar `ui-ux-pro-max` y registrar encaje/recomendaciones, sin depender de una ruta personal ni sustituir decisiones por una plantilla. |
 | H7-RT22 | Patrón visual del hito | Correcciones/incidencias/personas mantienen jerarquía funcional, identidad y efecto explícitos, conflictos/pendientes accesibles y confirmaciones con motivo. Diseñar resoluciones excepcionales solo cuando PT-08/PT-11/PT-13 determinen su comportamiento. |
-| H7-RT23 | Supervisión administrativa | Dashboard y listado privado paginado solo manager activo/AAL2, filtros por progreso/premio y periodo America/Lima; límite/cursor validados, DTO sin claves y datos sin caché compartida. Indicadores distinguen estado actual y eventos del periodo. |
+| H7-RT23 | Supervisión administrativa | Dashboard y listado privado paginado solo manager activo, filtros por progreso/premio y periodo America/Lima; límite/cursor validados, DTO sin claves y datos sin caché compartida. Indicadores distinguen estado actual y eventos del periodo. |
 
 Los valores visuales se consultan en el sistema canónico. La aceptación exige estados reales del alcance, anchos definidos allí y evidencia manual/automática pertinente; los recursos originales siguen pendientes en PT-09 cuando no estén disponibles. Esta ampliación no crea interfaces ni afirma pruebas ejecutadas.
 
@@ -121,7 +123,7 @@ El hito solo se acepta completo con evidencia técnica y operativa. Las casillas
 
 ### Correcciones y conservación
 
-- [x] Panel, filtros, paginación e indicadores funcionan con manager/MFA y deniegan al mozo acceso por URL/RPC; estado actual y actividad del periodo se distinguen sin cifras de ventas inventadas.
+- [x] Panel, filtros, paginación e indicadores funcionan con manager activo y deniegan al mozo acceso por URL/RPC; estado actual y actividad del periodo se distinguen sin cifras de ventas inventadas.
 - [x] Revertir 10→9 con premio disponible añade reversión/anulación y conserva original; acreditar de nuevo restaura mismo ordinal/UUID.
 - [x] Premio anulado y oculto por soft delete se restaura contablemente mediante nueva acreditación válida, sin botón libre ni duplicación.
 - [x] Reversión que afectaría premio canjeado genera una incidencia/recibo de revisión y mantiene saldo/canje; repetición no crea otra incidencia.
@@ -135,7 +137,7 @@ El hito solo se acepta completo con evidencia técnica y operativa. Las casillas
 ### Personal y procedimientos aprobados
 
 - [x] Invitación completa funciona con Auth real de prueba; efectos parciales no otorgan acceso y se reconcilian antes de repetir.
-- [x] Panel administra roles/bajas/restauración con MFA, revocación efectiva y carrera del último manager protegida.
+- [x] Panel administra roles/bajas/restauración con autorización vigente, revocación efectiva y carrera del último manager protegida.
 - [x] **DC-14 aplicado:** recuperación presencial y contingencia aprobadas, T08/T11 implementadas y probadas sin transferencias de saldo.
 - [ ] **PT-08 operativo:** confirmar personas reales autorizadas y recuperación de MFA del personal antes del lanzamiento.
 - [x] **DC-15 aplicado:** sin baja de clientes/tarjetas; metadatos e historial conservados. PT-11 mantiene textos/plazos de privacidad pendientes para lanzamiento, sin inventarlos ni borrar Auth.

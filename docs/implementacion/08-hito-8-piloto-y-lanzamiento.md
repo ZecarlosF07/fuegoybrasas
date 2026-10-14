@@ -1,13 +1,15 @@
 # Hito 8 — Probar y publicar
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](../diseno-tecnico/16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](../diseno-tecnico/16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.1 · **Fecha:** 3 de octubre de 2026.  
 **Destinatarios:** equipo de desarrollo, personal autorizado y responsable del negocio.  
 **Estado:** preparación técnica implementada y probada según [evidencia H8](evidencia/h8/README.md); piloto y lanzamiento pendientes.  
 **Guía general:** [Hitos del proyecto](hitos-del-proyecto.md).
 
-**Actualización H7 del 11/10/2026:** [DC-12–15](../diseno-tecnico/17-administracion-y-operacion-h7.md) y [evidencia](evidencia/h7/README.md) acreditan implementación/pruebas de panel, recuperación presencial, contingencia y restitución supervisada. PT-13 está resuelto. DC-15 excluye baja de clientes/tarjetas. H8 conserva piloto/revisión humana, personas reales/MFA, SMTP, privacidad, datos comerciales, respaldos contratados y restauración integral de configuración/Storage; no repite la decisión funcional ya aprobada.
+**Actualización H7 del 11/10/2026:** [DC-12–15](../diseno-tecnico/17-administracion-y-operacion-h7.md) y [evidencia](evidencia/h7/README.md) acreditan implementación/pruebas de panel, recuperación presencial, contingencia y restitución supervisada. PT-13 está resuelto. DC-15 excluye baja de clientes/tarjetas. H8 conserva piloto/revisión humana, personas reales/permisos, SMTP, privacidad, datos comerciales, respaldos contratados y restauración integral de configuración/Storage; no repite la decisión funcional ya aprobada.
 
 ## 1. Descripción del objetivo
 
@@ -61,7 +63,7 @@ Ejecutar H8-T13 antes del piloto T10 y de la activación T11; complementa la rev
 | H8-RT02 | Migraciones reproducibles | Secuencia completa, inventario de tablas, restricciones/grants/RLS y tipos generados verificados. Ensayar actualización desde versión anterior y no depender de cambios manuales ocultos en Dashboard. |
 | H8-RT03 | CI y aplicación | Lint, TypeScript, build y pruebas pertinentes con versiones/lockfile fijados. Consultar AGENTS y guías instaladas antes de ajustes; no renovar stack o agregar backend ajeno al diseño durante lanzamiento. |
 | H8-RT04 | Despliegue compatible | Hosting propuesto sujeto a PT-12; verificar runtime, URLs, SSR/cookies, handlers y límites de imágenes de 3/4 MiB en staging real. Migraciones y release de aplicación deben ser compatibles durante la transición. |
-| H8-RT05 | Acceso real comprobado | SMTP/MFA e invitación/recuperación del personal; alta sin SMS, cookie/enlace/QR y cambio de contacto del cliente con tarjeta preservada. Callbacks/dominios por entorno; mocks no prueban servicios reales. |
+| H8-RT05 | Acceso real comprobado | SMTP/permisos e invitación/recuperación del personal; alta sin SMS, cookie/enlace/QR y cambio de contacto del cliente con tarjeta preservada. Callbacks/dominios por entorno; mocks no prueban servicios reales. |
 | H8-RT06 | Secretos y permisos | Claves fuera de Git/bundles/DTO/logs, secreto Auth administrativo solo servidor y permisos revisados contra anon/cliente/atención/manager/AAL1/revocados. Tablas sin CRUD directo y RPC con permisos explícitos. |
 | H8-RT07 | Seguridad de sesión y privacidad | Sin caché compartida privada, filtración tras logout o callback con redirección libre. Logs no contienen direcciones, teléfonos completos, preferencias, OTP/JWT o mensajes completos. Términos/aviso/retención aprobados PT-11. |
 | H8-RT08 | Activación controlada | `ordering_enabled` solo después de configuración comercial y atención listas; fidelización mediante `activate_loyalty_program` y condiciones de H6, sin bypass por patch genérico. Costos/términos/personas/procedimientos reales confirmados antes de habilitar. |
@@ -120,7 +122,7 @@ Todas las condiciones siguientes requieren evidencia real del entorno correspond
 - [x] Migraciones completas reconstruyen esquema/datos controlados y actualización de versión; tipos, grants/RLS/funciones e inventario de tablas son coherentes. Evidencia H8: 23 migraciones, 18 tablas y 132 pgTAP.
 - [ ] Lint, TypeScript, build y pruebas pertinentes pasan en CI/staging; concurrencia se probó contra PostgreSQL real con conexiones distintas.
 - [ ] Android/iOS reales y navegadores previstos se revisan junto con teclado/lector/zoom/foco y tamaño mínimo; problemas críticos de accesibilidad están corregidos.
-- [ ] Enlace/QR entre dispositivos, cambio de contacto, MFA del personal y correo de recuperación/invitación se comprobaron con servicios reales de prueba y callbacks autorizados.
+- [ ] Enlace/QR entre dispositivos, cambio de contacto, permisos vigentes del personal y correo de recuperación/invitación se comprobaron con servicios reales de prueba y callbacks autorizados.
 - [x] Secretos, caché privada, permisos actuales y logs sanitizados se revisaron; no hay PII real en evidencias compartidas. E2E privado, pruebas de allowlist y 46 recursos estáticos comprobados; datos sintéticos únicamente.
 
 ### Configuración, procedimientos y piloto

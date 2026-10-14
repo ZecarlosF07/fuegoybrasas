@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import type { BrowserContext, Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
-import { enrollStaffBrowser } from "./staff-browser";
+import { signInStaffBrowser } from "./staff-browser";
 import { evidenceDirectory } from "./evidence";
 import { cleanupLoyaltyFixtures, testLaunchChecks, testProgramId } from "../integration/loyalty-fixture";
 import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool } from "../integration/staff-fixture";
@@ -28,7 +28,7 @@ test.beforeAll(async ({ browser }) => {
   await staffPool.query("insert into public.payment_methods(id,code,label,enabled,verified) values($1,$2,'Pago sintético H6',true,true)", [paymentId, paymentCode]);
   await staffPool.query("update public.business_settings set ordering_enabled=true where id=1");
   const context = await browser.newContext({ baseURL: "http://127.0.0.1:3100" });
-  const page = await context.newPage(); await enrollStaffBrowser(page, manager);
+  const page = await context.newPage(); await signInStaffBrowser(page, manager);
   staffCookies = await context.cookies(); await context.close();
 });
 test.afterAll(async () => {
@@ -74,7 +74,7 @@ test("alta sin SMS, cero sellos, acceso privado y preferencias explícitas", asy
   await page.goto("/personal"); await expect(page).toHaveURL(/\/personal\/acceso$/);
   await expect(page.getByRole("heading", { name: "Buscar tarjeta del cliente" })).toHaveCount(0);
 });
-test("personal con MFA: décimo sello, canje sin compra e incidencia sin restitución", async ({ page, context }) => {
+test("personal autorizado: décimo sello, canje sin compra e incidencia sin restitución", async ({ page, context }) => {
   await context.addCookies(staffCookies);
   for (let visit = 0; visit < 9; visit++) await actorQuery(manager, "select public.credit_stamp($1,$2,true,true)", [customerId, randomUUID()]);
   await page.goto("/personal"); await page.getByLabel("Celular peruano del cliente").fill("999000001");

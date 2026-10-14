@@ -1,5 +1,7 @@
 # Hito 5 — Completar el pedido por WhatsApp
 
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
 **Versión:** 1.3 · **Fecha:** 8 de octubre de 2026.  
 **Destinatarios:** equipo de desarrollo y responsable del negocio.  
 **Estado:** implementado con migración remota y comprobaciones automáticas aprobadas; repetición final de navegador: 31 pruebas aprobadas, incluidas siete H5. Build remoto y revisión de secretos aprobados después de la suite. Aceptación manual y habilitación comercial pendientes. [Reporte](evidencia/h5/README.md) y [operación](evidencia/h5/operacion.md).  
@@ -27,7 +29,7 @@ Fidelización y registro son opcionales. H5 debe funcionar como invitado antes d
 | --- | --- | --- | --- |
 | H5-T01 | Preparar configuración de compra | Revisar pagos, modalidades, ubicación, cobertura/cargos y horarios; distinguir confirmaciones bloqueantes de valores desconocidos permitidos. | Reglas de habilitación sin supuestos comerciales. |
 | H5-T02 | Migrar pagos y zonas | Crear las dos tablas con constraints, revisiones, permisos y soft delete; ampliar `read_catalog`/`update_business_config` y generar tipos. | Configuración de checkout protegida y proyectada con datos seguros. |
-| H5-T03 | Construir configuración privada | Añadir formularios manager/AAL2 para campos, pagos, zonas y pausa de pedidos, con revisión, recibos y auditoría. | Responsable controla condiciones confirmadas de compra. |
+| H5-T03 | Construir configuración privada | Añadir formularios manager activo para campos, pagos, zonas y pausa de pedidos, con revisión, recibos y auditoría. | Responsable controla condiciones confirmadas de compra. |
 | H5-T04 | Implementar dominio del carrito | Reducer/context, claves de línea por artículo/opciones/indicaciones, límites, edición y cálculo provisional en céntimos. | Carrito predecible sin duplicación de reglas. |
 | H5-T05 | Implementar persistencia | Versionar almacenamiento, caducidad, validación al recuperar y conflictos entre pestañas; separar información comercial de datos personales. | Borrador recuperable sin conservar PII en localStorage. |
 | H5-T06 | Implementar validación canónica | Crear handler público y validador con lectura fresca de catálogo, límites, revisiones y respuesta `ready`/`needs_review`. | Precios/opciones/cargos actuales y cambios explícitos. |
@@ -106,7 +108,7 @@ Las casillas marcadas remiten a [evidencia](evidencia/h5/README.md) del entorno 
 
 ### Configuración, datos y validación
 
-- [x] Pagos/zonas y su conservación se reconstruyen con migraciones, permisos y tipos; configuración versionada se mantiene solo por manager/AAL2.
+- [x] Pagos/zonas y su conservación se reconstruyen con migraciones, permisos y tipos; configuración versionada se mantiene solo por manager activo.
 - [x] Restaurar pagos/zonas no los habilita ni verifica automáticamente; configuración singleton se pausa mediante flags y no se elimina.
 - [x] API respeta límites, contrato seguro y datos canónicos; no recibe nombre, dirección ni texto de indicaciones.
 - [x] Cálculos exactos, modalidades, vigencia, opciones obligatorias, pausa y horario se prueban; C01/P05 conservan restricciones.

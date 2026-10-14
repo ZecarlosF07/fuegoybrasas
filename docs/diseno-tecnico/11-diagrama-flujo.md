@@ -1,6 +1,8 @@
 # 11. Diagramas de flujo de la aplicación
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.0 · **Fecha:** 3 de octubre de 2026.  
 **Estado:** flujos vigentes; implementación y comprobaciones en [H7](../implementacion/evidencia/h7/README.md). La evidencia distingue aprobación técnica de revisión humana/piloto.  
@@ -55,7 +57,7 @@ flowchart TD
     end
 
     subgraph PERSONAL[Operación autorizada]
-        ACCESO_STAFF --> AUTH_STAFF[Correo, contraseña y MFA]
+        ACCESO_STAFF --> AUTH_STAFF[Correo, contraseña y rol vigente]
         AUTH_STAFF --> ROL{Cuenta vigente y rol autorizado}
         ROL -->|No| DENEGAR[Denegar operaciones privadas]
         ROL -->|Atención o responsable| BUSCAR[Buscar contacto declarado y confirmar tarjeta]
@@ -139,7 +141,7 @@ flowchart TD
     PREPARAR --> DIARIO{Diario guardado}
     DIARIO -->|No| CONTINGENCIA[Usar contingencia sin anunciar sello registrado]
     DIARIO -->|Sí| RPC_SELLO[credit_stamp con JWT del personal]
-    RPC_SELLO --> GUARDS[SQL comprueba actor, MFA, perfil, tarjeta, programa e idempotencia]
+    RPC_SELLO --> GUARDS[SQL comprueba actor, rol vigente, perfil, tarjeta, programa e idempotencia]
     GUARDS --> PERMITIDO{Operación permitida}
     PERMITIDO -->|No| ERROR[Mostrar error funcional o de servicio]
     PERMITIDO -->|Sí| BLOQUEAR[Bloquear recursos en orden y comprobar visita repetida]
@@ -186,7 +188,7 @@ El diagrama mantiene el orden de canje acordado: confirmar registro digital y de
 
 ```mermaid
 flowchart TD
-    REVISAR[Responsable con MFA revisa evento original] --> MOTIVO[Seleccionar sello erróneo y motivo de 10 a 500 caracteres]
+    REVISAR[Responsable autorizado revisa evento original] --> MOTIVO[Seleccionar sello erróneo y motivo de 10 a 500 caracteres]
     MOTIVO --> REVERSION[reverse_stamp: UUID, permiso y bloqueo de tarjeta]
     REVERSION --> ORIGINAL{Original vigente y no revertido}
     ORIGINAL -->|No| DUPLICADO[Rechazar segunda reversión]
@@ -226,7 +228,7 @@ Correcciones agregan hechos y conservan originales. Borrado lógico no corrige s
 
 ```mermaid
 flowchart TD
-    ADMIN[Responsable activo con MFA] --> OPERACION{Mantenimiento}
+    ADMIN[Responsable activo] --> OPERACION{Mantenimiento}
     OPERACION -->|Edición| PATCH[Validar campos permitidos y revisión esperada]
     PATCH --> VALIDAR[Comprobar publicación, padres vigentes y datos confirmados]
     VALIDAR --> EDICION[Aplicar cambios y aumentar revisiones correspondientes]

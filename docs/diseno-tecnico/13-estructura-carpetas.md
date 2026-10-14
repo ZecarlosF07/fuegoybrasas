@@ -1,6 +1,8 @@
 # 13. Estructura base de carpetas para Next.js
 
-**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.0 · **Fecha:** 3 de octubre de 2026.  
 **Estado:** árbol propuesto para implementación; este documento no crea esas carpetas o archivos.  
@@ -300,6 +302,6 @@ Bootstrap de manager es script administrado, sin endpoint público, credenciales
 4. E6–E8: identidad cliente, tarjeta, staff, incidencias, conservación y contingencias; PT-13 condiciona su resolución específica.
 5. E9: recorridos completos, revisión comercial y piloto con flags.
 
-Aceptar la estructura cuando las 20 páginas y seis handlers del [mapa de navegación](12-flujo-navegacion.md) tengan una sola ubicación, acceso/MFA no estén bajo guards incompatibles y los imports cliente no incluyan DAL/secrets. Revisar alias TypeScript, permisos vigentes y límites de módulos antes de construir.
+Aceptar la estructura cuando las 20 páginas y seis handlers del [mapa de navegación](12-flujo-navegacion.md) tengan una sola ubicación, acceso/permisos no estén bajo guards incompatibles y los imports cliente no incluyan DAL/secrets. Revisar alias TypeScript, permisos vigentes y límites de módulos antes de construir.
 
 Este árbol no exige nuevas capas como ORM, backend separado, Realtime, Edge Functions, colas, campañas o POS. Los cuatro documentos nuevos completan el diseño; las carpetas, contratos y pruebas aquí propuestos se crearán en sus etapas de implementación.

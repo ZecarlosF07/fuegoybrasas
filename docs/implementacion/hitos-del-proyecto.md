@@ -1,5 +1,7 @@
 # Fuego y Brasas — Hitos de implementación
 
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
 **Versión:** 1.13
 **Fecha:** 12 de octubre de 2026  
 **Destinatarios:** equipo de desarrollo y responsable del negocio.  
@@ -43,7 +45,7 @@ El diseño y la consulta de la skill ocurren antes de construir la interfaz; la 
 | Hito | Tarea visual añadida | Resultado y evidencia esperados |
 | --- | --- | --- |
 | H1 | H1-T12 | Tokens, fuentes y primitivas necesarias de la aplicación base; contraste/foco/estados compartidos. |
-| H2 | H2-T11 | Login, MFA, recuperación y navegación privada con labels, pegado, errores y denegación accesibles. |
+| H2 | H2-T11 | Login, permisos vigentes, recuperación y navegación privada con labels, pegado, errores y denegación accesibles. |
 | H3 | H3-T11 | Carta/detalle con marca, fotografía, porción, precio, categorías y estados sin imagen/agotado/error. |
 | H4 | H4-T10 | Editor que distingue guardar/publicar, subir/asociar y restaurar/activar; conflictos y consecuencias claras. |
 | H5 | H5-T11 | Carrito, dock y formulario conservan foco/borrador; revisión de cambios y continuidad WhatsApp sin falsa confirmación. |
@@ -53,7 +55,7 @@ El diseño y la consulta de la skill ocurren antes de construir la interfaz; la 
 
 Cada especificación añade dos requerimientos técnicos, un requerimiento funcional y DoD de UX/UI. La evidencia identifica pantallas, estados, versión/entorno y consultas; comprueba anchos canónicos, teclado, foco despejado, contraste renderizado, zoom/reflujo y lector. H8 añade dispositivos reales y piloto. Capturas con datos sintéticos; casillas se marcan únicamente con evidencia ejecutada y las comprobaciones manuales no realizadas permanecen pendientes.
 
-Explicación para el equipo: [Identidad visual y sistema UI](../diseno-tecnico/14-identidad-visual-y-sistema-ui.md). Fundamento: [Investigación y referentes](../diseno-tecnico/15-investigacion-ux-y-referentes.md). Originales de logo/fotos pendientes según PT-09; los HEX de interfaz son propuestas. PT-08 conserva personas reales/MFA y PT-11 textos/plazos de lanzamiento; procedimientos DC-14 y restitución DC-13 ya están aprobados y probados.
+Explicación para el equipo: [Identidad visual y sistema UI](../diseno-tecnico/14-identidad-visual-y-sistema-ui.md). Fundamento: [Investigación y referentes](../diseno-tecnico/15-investigacion-ux-y-referentes.md). Originales de logo/fotos pendientes según PT-09; los HEX de interfaz son propuestas. PT-08 conserva personas reales/permisos y PT-11 textos/plazos de lanzamiento; procedimientos DC-14 y restitución DC-13 ya están aprobados y probados.
 
 ## 2. Resumen de hitos y dependencias
 
@@ -106,11 +108,11 @@ El pedido y la fidelización son capacidades independientes. H6 se entrega despu
 - Crear la configuración única del negocio y la base común de auditoría y recibos de operaciones.
 - Preparar el mecanismo que reconoce una operación repetida para que un reintento no duplique su efecto.
 - Aplicar permisos restrictivos y protección de registros; incorporar el borrado lógico de personal y la protección del último responsable activo.
-- Diseñar y revisar acceso/MFA/recuperación con la skill, incluyendo estados de espera, error y denegación.
+- Diseñar y revisar acceso/permisos/recuperación con la skill, incluyendo estados de espera, error y denegación.
 
 **Entregables:** acceso privado funcional, cuentas con roles, configuración común y mecanismos de trazabilidad e idempotencia listos para las mutaciones posteriores.
 
-**Se termina cuando:** una cuenta autorizada entra con MFA y una cuenta sin permiso, inactiva o eliminada no puede operar, incluso mediante llamadas directas. Un JWT vigente no evita revisar la autorización actual. La base común permite comprobar auditoría y repetición de una operación controlada; nunca queda el negocio sin responsable activo por una baja.
+**Se termina cuando:** una cuenta autorizada entra con autorización vigente y una cuenta sin permiso, inactiva o eliminada no puede operar, incluso mediante llamadas directas. Un JWT vigente no evita revisar la autorización actual. La base común permite comprobar auditoría y repetición de una operación controlada; nunca queda el negocio sin responsable activo por una baja.
 
 La gestión completa de altas/bajas desde el panel se entrega en H7; la comprobación de permisos y los mecanismos necesarios existen desde H2.
 
@@ -280,7 +282,7 @@ Un hito se acepta con su comportamiento integrado, evidencias del entorno y docu
 | --- | --- | --- |
 | PT-01 a PT-05: ubicación, horarios, cobertura/cargos, pagos, precios/inclusiones/modalidades | Antes de publicar los datos o funciones afectados en H3–H5/H8. | Implementación con fixtures separados y estados pendientes explícitos. |
 | PT-06: costo real del Mostrito; PT-07 comprobado automáticamente | Antes de activar públicamente fidelización: costo y aceptación humana todavía pendientes. | Acceso privado sin SMS probado; datos/permisos/transacciones/UI con identidades sintéticas. |
-| PT-08/PT-11: personas reales/MFA, condiciones, aviso y plazos | Antes de operar públicamente. Recuperación/contingencia aprobadas y probadas por DC-14; DC-15 excluye baja de clientes. | Pruebas técnicas con datos sintéticos y procedimientos aprobados. |
+| PT-08/PT-11: personas reales/permisos, condiciones, aviso y plazos | Antes de operar públicamente. Recuperación/contingencia aprobadas y probadas por DC-14; DC-15 excluye baja de clientes. | Pruebas técnicas con datos sintéticos y procedimientos aprobados. |
 | PT-09/PT-10: materiales oficiales y atención de WhatsApp | Presentación final, procedimiento de atención y piloto. | Interfaz con fallback y recorrido en pruebas. |
 | PT-12: dominio, hosting y respaldos contratados | Despliegue público en H8. | Desarrollo local y pruebas de integración. |
 | PT-13: resuelto por DC-13 | Restitución supervisada aprobada, implementada y probada en H7; ensayar con el personal en H8. | No conserva bloqueo funcional. |

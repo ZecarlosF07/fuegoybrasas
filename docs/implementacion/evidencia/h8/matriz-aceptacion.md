@@ -1,5 +1,7 @@
 # Matriz de aceptación H8
 
+**Actualización DC-22:** [personal sin MFA](personal-sin-mfa/README.md) sustituye la exigencia de segundo factor. Evidencia previa conserva su fecha; el preflight actual ya no exige ADMINISTRATOR_MFA.
+
 **Base:** [RF/CA/CT vigentes](../../../diseno-tecnico/08-pruebas-y-aceptacion.md), DC-11 acceso sin SMS y DC-12–19. **Resultado de comandos:** [reporte H8](README.md). «Local aprobado» significa fixtures/mocks según el nivel; nunca servicio productivo o piloto aprobado.
 
 ## RF-01–RF-18 y criterios funcionales

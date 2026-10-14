@@ -20,7 +20,6 @@ export async function requireStaffPage(manager = false) {
   const result = await getStaffAccess();
   if (!result.ok && result.error.code === "AUTH_REQUIRED") redirect("/personal/acceso");
   if (!result.ok) return result;
-  if (result.data.assuranceLevel !== "aal2") redirect("/personal/mfa");
   if (manager && result.data.role !== "manager") return failure({ code: "FORBIDDEN", message: "Solo el responsable puede acceder a la configuración." }, result.requestId);
   return result;
 }

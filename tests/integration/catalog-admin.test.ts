@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
-import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool, testAuthClient, totpCode } from "./staff-fixture";
+import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool, testAuthClient } from "./staff-fixture";
 import type { StaffFixture } from "./types/staff-fixture";
 import { adminCatalogSchema } from "@/features/catalog-admin/validation/schemas";
 
@@ -47,10 +47,10 @@ async function visible() { const snapshot = (await staffPool.query("select publi
 async function conserve(type: string, id: string, table: string, restoring = false, operation = randomUUID()) { return actorQuery(manager, `select public.${restoring ? "restore_entity" : "soft_delete_entity"}($1,$2,$3,$4,$5) data`, [type, id, await revision(table, id), "Motivo sintético de conservación", operation]); }
 
 describe("H4 permisos, contratos estrechos y publicación", () => {
-  it("solo responsable AAL2 obtiene una proyección privada válida y filtros de retirados", async () => {
+  it("solo responsable con contraseña obtiene una proyección privada válida y filtros de retirados", async () => {
     const data = (await actorQuery(manager, "select public.get_admin_catalog(true) data")).rows[0].data;
     expect(adminCatalogSchema.parse(data).items.some((entry) => entry.id === item)).toBe(true);
-    for (const actor of [attendant, outsider, { ...manager, aal: "aal1" as const }]) await expect(actorQuery(actor, "select public.get_admin_catalog(true)")).rejects.toMatchObject({ message: actor === attendant ? "FORBIDDEN" : actor === outsider ? "FORBIDDEN" : "MFA_REQUIRED" });
+    for (const actor of [attendant, outsider]) await expect(actorQuery(actor, "select public.get_admin_catalog(true)")).rejects.toMatchObject({ message: "FORBIDDEN" });
     await conserve("catalog_item", item, "catalog_items");
     expect((await actorQuery(manager, "select public.get_admin_catalog(false) data")).rows[0].data.items.some((entry: { id: string }) => entry.id === item)).toBe(false);
   });
@@ -79,13 +79,9 @@ describe("H4 permisos, contratos estrechos y publicación", () => {
     const seed = (await staffPool.query("select id,source_ref from public.catalog_items where source_ref in('C01','P05')")).rows;
     for (const row of seed) await expect(create("catalog_price", randomUUID(), { item_id: row.id, mode: "pickup", price_cents: 1, verified: true })).rejects.toMatchObject({ message: "VALIDATION_ERROR" });
   });
-  it("un JWT real AAL1 no edita; el mismo usuario con TOTP obtiene AAL2", async () => {
+  it("un JWT real de contraseña accede al catálogo privado según su rol", async () => {
     const client = testAuthClient();
     expect((await client.auth.signInWithPassword({ email: manager.email, password: manager.password })).error).toBeNull();
-    expect((await client.rpc("get_admin_catalog", { p_include_deleted: true })).error?.message).toBe("MFA_REQUIRED");
-    const enrolled = await client.auth.mfa.enroll({ factorType: "totp", friendlyName: `h4-${randomUUID()}` });
-    if (enrolled.error || enrolled.data.type !== "totp") throw new Error("No se pudo preparar MFA sintético.");
-    expect((await client.auth.mfa.challengeAndVerify({ factorId: enrolled.data.id, code: totpCode(enrolled.data.totp.secret) })).error).toBeNull();
     expect((await client.rpc("get_admin_catalog", { p_include_deleted: true })).error).toBeNull();
     await client.auth.signOut();
   });

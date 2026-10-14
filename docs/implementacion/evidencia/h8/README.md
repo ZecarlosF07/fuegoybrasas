@@ -1,16 +1,18 @@
 # H8 — Preparación de publicación
 
+**Actualización DC-22:** [personal sin MFA](personal-sin-mfa/README.md) sustituye la exigencia de segundo factor. Evidencia previa conserva su fecha; el preflight actual ya no exige ADMINISTRATOR_MFA.
+
 **Fecha:** 12/10/2026 (America/Lima). **Estado:** implementación técnica y pruebas locales terminadas; piloto y activación pública pendientes. El repositorio se prepara para importar en Vercel por instrucción del propietario. No se declara un despliegue Vercel ni aceptación operativa antes de comprobarlos.
 
 ## Entrega
 
-**Actualización 13/10 — DC-20:** [personal sin CAPTCHA](acceso-personal-sin-captcha.md). Se retira widget/proveedor/tokens y requisito de claves; se conserva contraseña/MFA/permisos/límites. Supabase oficial confirma CAPTCHA deshabilitado. La verificación anterior corresponde a su versión histórica; pruebas de la retirada se registran por separado.
+**Actualización 13/10 — DC-20:** [personal sin CAPTCHA](acceso-personal-sin-captcha.md). Se retira widget/proveedor/tokens y requisito de claves; se conserva contraseña/permisos/límites (DC-22 retiró MFA después). Supabase oficial confirma CAPTCHA deshabilitado. La verificación anterior corresponde a su versión histórica; pruebas de la retirada se registran por separado.
 
 - GitHub/Vercel: configuración de build con Yarn, CI aislado sin claves oficiales, inspección de secretos y validación del destino/versión/origen del despliegue.
 - `/api/health` mínimo, cabeceras de seguridad e instrumentación con allowlist sin cuerpos/PII; robots e indexación pausados por defecto.
 - 23 migraciones oficiales, 18 tablas; carta con 17 referencias confirmadas, 11 pendientes de contenido y C01 fuera de venta web. Maps confirmado sin tracking.
 - Horario 12:00–23:00 lunes–domingo estimado, sin verificar; Efectivo/Yape/Plin en borrador. No activan pedido ni aparecen como datos confirmados.
-- Cuenta administrativa inicial creada/auditada sin email; contraseña en archivo privado ignorado y MFA pendiente de configurar por el propietario.
+- Cuenta administrativa inicial creada/auditada sin email; contraseña en archivo privado ignorado y acceso con correo y contraseña.
 - Ensayo ampliado de respaldo SQL/Auth/MFA/Storage y recuperación separada de bytes con hash; guías de despliegue, operación y piloto.
 
 Decisiones [DC-16–19](../../../diseno-tecnico/18-publicacion-y-operacion-h8.md). Se conservan WhatsApp 982 042 493, diez sellos/Mostrito⅛, compra presencial pagada/entregada, canje posterior y exclusión de baja de clientes. No se activa programa ni se inventa costo del premio.
@@ -32,7 +34,7 @@ Windows, Node 22.16, Yarn 1.22.22, Next 16.3.8, CLI Supabase 2.119.0. Solo fixtu
 | `yarn test:boundary` | Rechazo real de importación `server-only` en cliente; 40,40 s. |
 | `yarn check:secrets` | 46 recursos estáticos sin claves privadas configuradas locales/remotas. No es auditoría universal. |
 | Migración remota | Historial y dry-run comprobados; única migración H8 aplicada por CLI, flags conservados false. |
-| Preflight | [Agregados oficiales](preflight-remoto.json): 18 tablas, 23 migraciones, 17 productos, cero diferencias de saldo, un manager y cero managers con MFA. Resultado **bloqueado** para lanzamiento; no se ignora ni presenta como éxito. |
+| Preflight | [Agregados oficiales](preflight-remoto.json): 18 tablas, 24 migraciones y manager activo. DC-22 elimina requisito MFA; configuración preparada, lanzamiento pendiente de pagos, costo, textos y piloto. |
 | Respaldo | [Resultado](restauracion.json): metadata/MFA recuperados y hash de bytes coincidente, 2557 ms en fixture pequeño. |
 
 Los dos fallos encontrados se corrigieron: expectativas de catálogo anteriores a las confirmaciones del propietario y tipado explícito `Promise<never>` en helper que siempre lanza error. La advertencia Edge de instrumentación se resolvió usando Web Crypto. Lint eliminó callbacks anidados en las pruebas nuevas. Se repitieron las comprobaciones afectadas; no hubo fallo de precio, permiso, sello o canje.
@@ -56,7 +58,7 @@ Vercel reportó por separado Yarn global 1.22.19 frente al engine 1.22.22. [Core
 ## Bloqueos conservados
 
 1. Importar GitHub en Vercel y configurar Production: origen HTTPS, secretos, callbacks y verificación de SHA/health. Preview no usa el oficial.
-2. MFA y operación real del administrador; recuperación de autenticador y personas autorizadas. No se enviaron invitaciones/correos.
+2. Operación real del administrador, recuperación de contraseña y personas autorizadas. No se enviaron invitaciones/correos.
 3. Confirmar pagos reales y datos comerciales de las once referencias incompletas. Horarios/cargos pueden seguir desconocidos donde el contrato lo permite.
 4. Costo real del premio y aprobación de condiciones/aviso/plazos. Precios de S/15 y S/14,90 no resuelven PT-06.
 5. Piloto con personal, recepción real por Roberto en WhatsApp, dispositivos físicos, Narrador/zoom real y aceptación del propietario.

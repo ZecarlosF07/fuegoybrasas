@@ -1,8 +1,10 @@
 # 16. Tarjeta con enlace privado, sin SMS
 
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
 **Versión:** 1.0 · **Fecha:** 10 de octubre de 2026.  
 **Origen:** el propietario retiró la verificación SMS y eligió que el cliente cree su tarjeta en la web con nombre y teléfono.  
-**Vigencia:** sustituye las definiciones anteriores de OTP, identidad telefónica en Auth y `phone_change` del cliente. El acceso del personal con Supabase Auth y MFA TOTP se conserva.
+**Vigencia:** sustituye las definiciones anteriores de OTP, identidad telefónica en Auth y `phone_change` del cliente. El acceso del personal con Supabase Auth y autorización por rol se conserva.
 
 ## Recorrido y límites
 
@@ -12,7 +14,7 @@ En `/mi-tarjeta/acceso`, el cliente escribe nombre y celular peruano y acepta la
 
 El teléfono es **contacto declarado**, no prueba de titularidad ni credencial. Escribir un número ocupado no abre esa tarjeta ni devuelve nombre, preferencias o saldo. Se informa `CUSTOMER_RECOVERY_REVIEW` sin crear otra. Esto evita duplicados, pero un número mal declarado puede requerir revisión del responsable: la unicidad del dato no demuestra propiedad.
 
-Quien posee el enlace puede consultar y editar el perfil correspondiente. La interfaz explica que debe guardarse en privado. El cliente no acredita sellos ni canjea premios: esas operaciones siguen exigiendo personal activo con MFA y permiso vigente. Al buscar por teléfono, el personal confirma la tarjeta presentada, el nombre y los movimientos antes de operar. El QR contiene acceso privado, no una acreditación ni autorización de canje.
+Quien posee el enlace puede consultar y editar el perfil correspondiente. La interfaz explica que debe guardarse en privado. El cliente no acredita sellos ni canjea premios: esas operaciones siguen exigiendo personal activo con autorización vigente y permiso vigente. Al buscar por teléfono, el personal confirma la tarjeta presentada, el nombre y los movimientos antes de operar. El QR contiene acceso privado, no una acreditación ni autorización de canje.
 
 Si se pierde el enlace y el acceso del navegador, se solicita revisión al personal. **H7/PT-08 debe definir y probar cómo comprobar titularidad, reemplazar/revocar la clave y entregar el nuevo acceso**; esa recuperación no está implementada en esta revisión. No recuperar por teléfono, coincidencia de nombre o respuesta a preguntas sobre preferencias. PT-11 conserva el procedimiento de baja y conservación pendiente.
 
@@ -48,13 +50,13 @@ Las recomendaciones sobre entropía y cookies se contrastaron con [OWASP Session
 
 Las cuatro RPC `*_by_key` solo conceden EXECUTE a `service_role`: anon/authenticated no pueden invocarlas directamente. La fábrica privilegiada tiene `server-only`, cliente sin sesión persistida y clave exclusivamente del servidor. Las Actions validan entradas estrictas y derivan hash de cookie/clave validada; nunca confían en un UUID de cliente recibido para estas operaciones. Next aplica sus controles de Origin/Host en Actions POST; los GET no escriben datos.
 
-`get_loyalty_offer()` publica únicamente disponibilidad, meta, nombre del premio y versión de condiciones, sin PII. `lookup_customer` sigue protegido por staff/MFA; busca contacto declarado o, para compatibilidad, teléfono confirmado de una identidad histórica Auth. No existe directorio por prefijo.
+`get_loyalty_offer()` publica únicamente disponibilidad, meta, nombre del premio y versión de condiciones, sin PII. `lookup_customer` sigue protegido por personal autorizado; busca contacto declarado o, para compatibilidad, teléfono confirmado de una identidad histórica Auth. No existe directorio por prefijo.
 
 ## Transacciones, fallos y operación
 
 Alta: configuración FOR SHARE → bloqueo advisory global de altas → versión FOR SHARE → creación atómica de perfil/tarjeta/auditoría. Repetir la misma clave devuelve la misma tarjeta; un replay no emite otro perfil o sello. La cookie candidata se guarda antes del RPC para reutilizarla tras respuesta perdida. Cambiar contacto comparte el advisory y bloquea el perfil; perfil/contacto exigen revisión y no sobrescriben conflictos.
 
-El límite técnico inicial es **20 altas nuevas por minuto en toda la aplicación**, dentro del bloqueo; no modifica reglas de visitas ni limita sellos por día. `RATE_LIMITED` muestra espera y reintento. No sustituye medición de abuso en el piloto; no se introduce un CAPTCHA obligatorio al cliente. El personal conserva Auth/MFA y límites de proveedor; CAPTCHA retirado por DC-20.
+El límite técnico inicial es **20 altas nuevas por minuto en toda la aplicación**, dentro del bloqueo; no modifica reglas de visitas ni limita sellos por día. `RATE_LIMITED` muestra espera y reintento. No sustituye medición de abuso en el piloto; no se introduce un CAPTCHA obligatorio al cliente. El personal conserva Auth/permisos y límites de proveedor; CAPTCHA retirado por DC-20.
 
 Auditoría propia utiliza el UUID interno de cliente en `actor_user_id` y `actorKind=customer_card`, sin FK a Auth. Registra nombres de campos cambiados, sin valores de contacto, indicaciones o claves. Operaciones de personal siguen identificadas por Auth y staff; los recibos e historial de sellos/canjes no cambian.
 

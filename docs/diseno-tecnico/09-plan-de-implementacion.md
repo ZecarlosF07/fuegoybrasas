@@ -1,6 +1,8 @@
 # 09. Plan de implementación
 
-**Actualización del 10/10/2026:** [acceso privado sin SMS](16-acceso-a-tarjeta-sin-sms.md) sustituye OTP/phone_change e identidad telefónica del cliente; MFA del personal se conserva.
+**Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
+
+**Actualización del 10/10/2026:** [acceso privado sin SMS](16-acceso-a-tarjeta-sin-sms.md) sustituye OTP/phone_change e identidad telefónica del cliente; El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.1 · **Fecha:** 3 de octubre de 2026.  
 **Relacionado:** [Índice](README.md), [Operación](07-despliegue-y-operacion.md), [Pruebas](08-pruebas-y-aceptacion.md).
@@ -16,9 +18,9 @@ Conservar Next.js 16.3.8 y consultar sus guías instaladas antes de escribir có
 | Etapa | Trabajo y entregables | Depende de | Condición para finalizar |
 | --- | --- | --- | --- |
 | E0. Preparación | Confirmar datos críticos, validar proveedor OTP/hosting y materiales; abrir entornos separados y completar registro de decisiones. | Paquete documental. | Pendientes clasificados; ninguna condición comercial inventada; entornos identificados. |
-| E1. Base técnica | Instalar SDK/SSR/Zod y herramientas; clientes por petición, validación de env, DTO, DAL server-only y estructura de módulos; preparar Auth interno/MFA sin otorgar roles desde navegador. | E0 para cuentas; local puede avanzar con configuración sintética. | TypeScript/lint/build pasan; no claves privilegiadas en cliente; renovación/logout y estados de configuración verificables. |
+| E1. Base técnica | Instalar SDK/SSR/Zod y herramientas; clientes por petición, validación de env, DTO, DAL server-only y estructura de módulos; preparar Auth interno/permisos sin otorgar roles desde navegador. | E0 para cuentas; local puede avanzar con configuración sintética. | TypeScript/lint/build pasan; no claves privilegiadas en cliente; renovación/logout y estados de configuración verificables. |
 | E2. Datos y permisos | Migraciones, constraints, catálogo/configuración, seed y RPC de lectura; proyección pública sin grants directos, helpers de autorización y tipos generados. | E1. | Reset local reproducible; grants/RPC/RLS probados; 29 referencias preservadas y C01 fuera de venta web; identidad telefónica única de Auth. |
-| E3. Catálogo mantenible | Carta pública y panel privado mínimo; identidad/MFA de responsable para mantenimiento, revisión de versión y auditoría. | E2 y Auth interno de E1. | Cambiar precio/agotado se refleja; conflictos no sobrescriben; publicación valida datos. |
+| E3. Catálogo mantenible | Carta pública y panel privado mínimo; identidad/permisos de responsable para mantenimiento, revisión de versión y auditoría. | E2 y Auth interno de E1. | Cambiar precio/agotado se refleja; conflictos no sobrescriben; publicación valida datos. |
 | E4. Carrito y checkout | Reducer, borrador dividido por sensibilidad, opciones, modalidad, importes, formulario y API de validación. | E2; E3 para datos publicables. | CA-04 a CA-19 pertinentes pasan; no solicitud guardada en Supabase; cambios conservan carrito. |
 | E5. WhatsApp | Mensaje canónico, revisión/continuación, enlace, copia, URL larga y retorno. | E4. | CA-20 a CA-22 y pruebas móviles; destinatario correcto, sin estados de venta inventados. |
 | E6. Cliente y tarjeta | Enlace privado sin SMS, activación con términos, perfil, tarjeta propia e indicaciones. | E2 y configuración de acceso privado probada de E0. | Acceso propio/ajeno comprobado; compra invitada independiente; preferencias no alteran pedidos ocultamente. |
@@ -34,7 +36,7 @@ La autenticación interna se introduce antes del panel, aunque la tarjeta del cl
 
 **Segundo bloque, E4–E5:** pedido como invitado, recuperación y WhatsApp. Permite probar compra sin esperar al programa, con datos comerciales validados. Publicarlo antes que fidelización solo si se acuerda un lanzamiento parcial; la primera versión objetivo sigue incluyendo ambas funciones.
 
-**Tercer bloque, E6–E8:** identidad, tarjeta y atención completa. Antes de hacerlo público validar costo del premio, SMS, MFA, permisos y procedimiento del personal. No mostrar tarjeta activa si el acceso sigue simulado.
+**Tercer bloque, E6–E8:** identidad, tarjeta y atención completa. Antes de hacerlo público validar costo del premio, SMS, permisos vigentes, permisos y procedimiento del personal. No mostrar tarjeta activa si el acceso sigue simulado.
 
 **Último bloque, E9:** piloto de pedido individual/familiar, correcciones y visita/canje, revisión de fallos y activación controlada. Las operaciones de ensayo se registran en staging; no contaminar tarjetas reales con pruebas.
 

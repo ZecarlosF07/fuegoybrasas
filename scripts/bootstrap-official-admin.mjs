@@ -47,5 +47,5 @@ end $$;
 reset role;
 commit;`, { mode: 0o600 });
 runSupabase(["db", "query", "--linked", "--file", sqlPath, "--output", "json"]);
-writeFileSync(path, JSON.stringify({ ...state, status: "created", userId, site: environment.APP_SITE_URL, mfa: "pending_self_enrollment" }, null, 2) + "\n", { mode: 0o600 });
-console.log("Cuenta inicial creada y auditada sin envío de correos. Acceso privado en .test-fixtures/initial-administrator.json; MFA debe completarse al entrar. No se activaron pedidos ni fidelización.");
+writeFileSync(path, JSON.stringify({ ...state, status: "created", userId, site: environment.APP_SITE_URL, access: "email_password" }, null, 2) + "\n", { mode: 0o600 });
+console.log("Cuenta inicial creada y auditada sin envío de correos. Acceso privado en .test-fixtures/initial-administrator.json; El acceso usa correo y contraseña. No se activaron pedidos ni fidelización.");
