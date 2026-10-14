@@ -10,7 +10,13 @@ Importar `https://github.com/ZecarlosF07/fuegoybrasas` con la rama publicada `ma
 
 El primer intento de Vercel reportó Yarn global 1.22.19 incompatible con el engine 1.22.22. La corrección mantiene la versión y lockfile, e invoca Corepack directamente; no modifica el Yarn global de la computadora. Si existe un override manual antiguo en Vercel, eliminarlo o usar los mismos comandos de `vercel.json`. El soporte automático de Corepack también puede habilitarse con `ENABLE_EXPERIMENTAL_COREPACK=1`; [documentación Vercel](https://vercel.com/docs/builds/configure-a-build#corepack) y [ejecución directa de Corepack](https://github.com/nodejs/corepack/blob/main/README.md#corepack-binary-nameversion--args).
 
-Verificación de la corrección: caché Corepack aislada en `.test-fixtures`; `corepack yarn --version` devolvió 1.22.22, instalación `--frozen-lockfile` aprobada (0,27 s) y build remoto aprobado (16,21 s). Lockfile idéntico al commit publicado, SHA-256 normalizado `6c9b69cf4a9433fd39236b85d7e5559ef17674ace3d14229e16d2a466e11d90f`. No demuestra todavía un build en Vercel. El archivo privado `.env.vercel.local` contiene credenciales oficiales verificadas por lecturas, con URL HTTPS pendiente; CAPTCHA retirado por DC-20; `.env.local` se reserva para pruebas y `.env.example` es una plantilla.
+Verificación de la corrección: caché Corepack aislada en `.test-fixtures`; `corepack yarn --version` devolvió 1.22.22, instalación `--frozen-lockfile` aprobada (0,27 s) y build remoto aprobado (16,21 s). Lockfile idéntico al commit publicado, SHA-256 normalizado `6c9b69cf4a9433fd39236b85d7e5559ef17674ace3d14229e16d2a466e11d90f`. No demuestra todavía un build en Vercel.
+
+**Simplificación del 13/10/2026:** importar las variables de **`.env.remote.local`**. Se eliminó `.env.vercel.local`, que duplicaba las seis entradas de credenciales/confirmaciones del archivo remoto; se conservaron Corepack y las preferencias de indexación/diagnóstico, ambas deshabilitadas. `.env.local` conserva credenciales diferentes del entorno aislado de pruebas y `.env.example` sigue siendo una plantilla sin secretos: no son copias redundantes y no se importan en Vercel.
+
+En Vercel, abrir la sección **Environment Variables** del proyecto, importar o pegar las entradas de `.env.remote.local` y seleccionar exclusivamente **Production**. Antes de guardar, sustituir `APP_SITE_URL=http://localhost:3000` por el origen HTTPS real y `APP_DEPLOYMENT_TARGET=development` por `production`. Mantener esos dos valores de desarrollo en el archivo de la computadora. Marcar las dos claves de servidor como Secret y generar un nuevo deployment después de guardar. [Gestión oficial de variables](https://vercel.com/docs/environment-variables/managing-environment-variables).
+
+Comprobación de la limpieza: archivo duplicado ausente, claves remotas completas y pruebas con URL local conservadas; 31 enlaces locales válidos y 758 archivos candidatos sin secretos versionados. `yarn build` aprobado con TypeScript en 31,90 s tras renovar la caché: los dos intentos previos fallaron al iniciar el proceso auxiliar de Turbopack. La caché anterior queda en `.test-fixtures`, ignorada por Git. Esta comprobación es de la computadora, no de un deployment Vercel.
 
 | Variable | Valor o procedencia |
 | --- | --- |
@@ -20,8 +26,9 @@ Verificación de la corrección: caché Corepack aislada en `.test-fixtures`; `c
 | `STAFF_AUTH_FLOW_SECRET` | Conservar el secreto actual; exclusivo del servidor y sensible. Rotarlo invalida las claves derivadas de recuperación: requiere procedimiento propio. |
 | `APP_SITE_URL` | Origen HTTPS real de Vercel/dominio, sin rutas ni parámetros; nunca localhost. |
 | `APP_DEPLOYMENT_TARGET` | `production` |
+| `ENABLE_EXPERIMENTAL_COREPACK` | `1`, incluido en el archivo remoto para seleccionar Yarn 1.22.22. |
 | `APP_RELEASE_ID` | Omitir para usar `VERCEL_GIT_COMMIT_SHA`; no usar un SHA antiguo fijado manualmente. |
-| `APP_TELEMETRY_ENABLED` | `true` si se acepta el diagnóstico sanitario del diseño 18; registros sin PII. |
+| `APP_TELEMETRY_ENABLED` | `false` en el archivo actual; cambiar a `true` solo si se acepta el diagnóstico sanitario del diseño 18, con registros sin PII. |
 | `APP_INDEXING_ENABLED` | `false` hasta publicación aceptada. |
 | `LOYALTY_TERMS_APPROVED` / `LOYALTY_PRIVACY_APPROVED` | `false` hasta aprobar los textos correspondientes. |
 | CAPTCHA | Retirado por DC-20. No requiere proveedor, site key ni secreto; Auth oficial lo tiene deshabilitado. |

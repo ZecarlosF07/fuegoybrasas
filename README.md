@@ -22,6 +22,18 @@ Para trabajar con la aplicación: Node 22 (versión verificada en `.node-version
 
 Next.js **16.3.8**, React **19.2.8**, TypeScript estricto y Tailwind 4. Las dependencias resueltas están en `yarn.lock`. Usar exclusivamente Yarn.
 
+## Archivos de entorno
+
+| Archivo | Uso |
+| --- | --- |
+| `.env.remote.local` | Credenciales del Supabase oficial. Lo usan `yarn dev/build/start`; importar sus variables en Vercel, exclusivamente en **Production**. |
+| `.env.local` | Supabase local de pruebas aisladas. No importar en Vercel. |
+| `.env.example` | Plantilla versionada sin credenciales reales. No importar en Vercel. |
+
+La copia `.env.vercel.local` se eliminó el 13/10/2026 tras comprobar que sus credenciales coincidían con el archivo remoto. Corepack y las preferencias de diagnóstico/indexación se conservaron en `.env.remote.local`. El desarrollo mantiene `APP_SITE_URL=http://localhost:3000` y `APP_DEPLOYMENT_TARGET=development`.
+
+Después de importar `.env.remote.local`, cambiar **solo en Vercel** `APP_SITE_URL` por el origen HTTPS real y `APP_DEPLOYMENT_TARGET` por `production`. Conservar `ENABLE_EXPERIMENTAL_COREPACK=1`, sin claves CAPTCHA. Guardar las variables y generar un nuevo deployment; [guía de publicación](docs/implementacion/evidencia/h8/despliegue.md). Los archivos con credenciales permanecen ignorados por Git.
+
 ## Desarrollo habitual con Supabase remoto
 
 La aplicación se ejecuta en la computadora y utiliza el proyecto Supabase **`geazxsvjkqpzbghlywbw`**, URL `https://geazxsvjkqpzbghlywbw.supabase.co`. No requiere iniciar Docker ni una base local. Con `.env.remote.local` ya preparado:
