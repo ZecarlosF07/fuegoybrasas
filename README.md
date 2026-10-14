@@ -126,6 +126,8 @@ E2E compila explícitamente con `build:local`, inicia con `start:local` en el pu
 
 ## Organización y límites
 
+La [renovación visual de portada y carta](docs/implementacion/evidencia/h8/renovacion-visual/README.md) incorpora fotografía grande, atajos por categoría y 16 imágenes referenciales para los 17 platos publicados. Las fotos propias asociadas desde el panel tienen prioridad; precios y porciones siguen viniendo de Supabase.
+
 - `src/app`: rutas y composición, carta/detalle, pedido invitado y páginas privadas.
 - `src/features/catalog` y `catalog-admin`: carta y mantenimiento; `cart` y `checkout-config`: pedido local y condiciones comerciales; `staff` y `business-config`: acceso y configuración común.
 - `src/features/loyalty`: acceso privado, contacto declarado, tarjeta, preferencias, operaciones de atención y configuración del programa; tipos/validaciones/servicios/componentes separados.

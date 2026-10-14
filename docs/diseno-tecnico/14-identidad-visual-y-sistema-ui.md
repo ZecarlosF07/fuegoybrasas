@@ -1,5 +1,7 @@
 # 14. Identidad visual y sistema UI
 
+**Aplicación visual del 14/10/2026:** [revisión de portada y carta](../implementacion/evidencia/h8/renovacion-visual/README.md) registra componentes, recursos referenciales identificados, prioridad de fotos propias y comprobaciones reales. La implementación conserva tokens y tipografías canónicos; el estado de especificación inicial de los párrafos siguientes corresponde a su fecha.
+
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
 
 **Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.

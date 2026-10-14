@@ -9,9 +9,10 @@ import { buttonClasses } from "@/components/ui/button-classes";
 
 export function ProductCard({ item, selectedSlug }: ProductCardProps) {
   return (
-    <article className="flex h-full flex-col gap-4 rounded-card border border-brand-border bg-brand-surface p-4">
+    <article className="flex h-full flex-col overflow-hidden rounded-card border border-brand-border bg-brand-surface transition-colors duration-feedback hover:border-brand-control-border motion-reduce:transition-none">
       <ProductImage item={item} />
-      <div className="flex flex-1 flex-col gap-3">
+      <div className="flex flex-1 flex-col gap-3 p-5">
+        {item.kind === "promotion" && <p className="self-start rounded-field bg-brand-bg px-3 py-1 text-sm font-semibold text-brand-action">En promoción</p>}
         {item.availability === "sold_out" && <p className="font-semibold text-brand-muted">Agotado por ahora</p>}
         <h3 className="text-product font-semibold">{item.name}</h3>
         {item.portionLabel && <p className="font-medium">{item.portionLabel}</p>}

@@ -6,6 +6,8 @@
 
 ## Entrega
 
+**Actualización visual 14/10:** [portada, carta y fotografías referenciales](renovacion-visual/README.md). Dieciséis recursos para diecisiete referencias; fotos propias del panel prioritarias. Build, unitarias y comprobaciones públicas de Chrome registradas por separado, sin activar funciones ni cambiar datos comerciales.
+
 **Actualización 13/10 — DC-20:** [personal sin CAPTCHA](acceso-personal-sin-captcha.md). Se retira widget/proveedor/tokens y requisito de claves; se conserva contraseña/permisos/límites (DC-22 retiró MFA después). Supabase oficial confirma CAPTCHA deshabilitado. La verificación anterior corresponde a su versión histórica; pruebas de la retirada se registran por separado.
 
 - GitHub/Vercel: configuración de build con Yarn, CI aislado sin claves oficiales, inspección de secretos y validación del destino/versión/origen del despliegue.

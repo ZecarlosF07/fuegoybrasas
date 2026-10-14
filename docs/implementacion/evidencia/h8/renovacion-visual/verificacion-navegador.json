@@ -1,0 +1,611 @@
+{
+  "environment": "Chrome local, build con perfil de producción, lecturas públicas del Supabase oficial; sin escrituras ni login",
+  "baseVersion": "6eb535facbf82024f6c710cdcc01d887a6f3e8b4",
+  "workingTreeChanges": true,
+  "externalFonts": [],
+  "imageFailures": [],
+  "results": [
+    {
+      "route": "/",
+      "width": 320,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "images": [
+        {
+          "alt": "Imagen referencial de pollo a la brasa con papas, ensalada y cremas",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ⅛ de pollo a la brasa",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo entero a la brasa, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Ronda de alitas, 16 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Combo Mostrito, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Gran Promoción, Pollo entero + ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, ¼ de pollo — para llevar",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ⅛ de pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ¼ de pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas clásicas, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas dulces, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas picantes, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas acevichadas, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas en salsa de maracuyá, 4 alitas",
+          "loaded": true
+        }
+      ],
+      "fonts": [
+        {
+          "family": "brandFont",
+          "weight": "600 700",
+          "status": "loaded"
+        },
+        {
+          "family": "brandFont Fallback",
+          "weight": "normal",
+          "status": "unloaded"
+        },
+        {
+          "family": "uiFont",
+          "weight": "400 700",
+          "status": "loaded"
+        },
+        {
+          "family": "uiFont Fallback",
+          "weight": "normal",
+          "status": "loaded"
+        }
+      ],
+      "bodyFont": "uiFont, \"uiFont Fallback\", system-ui, sans-serif, system-ui, sans-serif",
+      "brandFont": "brandFont, \"brandFont Fallback\", Georgia, serif, Georgia, serif",
+      "heroWidth": 288,
+      "heroScrollWidth": 288,
+      "axeViolations": 0
+    },
+    {
+      "route": "/",
+      "width": 360,
+      "viewport": 360,
+      "scrollWidth": 360,
+      "images": [
+        {
+          "alt": "Imagen referencial de pollo a la brasa con papas, ensalada y cremas",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ⅛ de pollo a la brasa",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo entero a la brasa, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Ronda de alitas, 16 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Combo Mostrito, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Gran Promoción, Pollo entero + ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, ¼ de pollo — para llevar",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ⅛ de pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ¼ de pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas clásicas, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas dulces, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas picantes, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas acevichadas, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas en salsa de maracuyá, 4 alitas",
+          "loaded": true
+        }
+      ],
+      "fonts": [
+        {
+          "family": "brandFont",
+          "weight": "600 700",
+          "status": "loaded"
+        },
+        {
+          "family": "brandFont Fallback",
+          "weight": "normal",
+          "status": "unloaded"
+        },
+        {
+          "family": "uiFont",
+          "weight": "400 700",
+          "status": "loaded"
+        },
+        {
+          "family": "uiFont Fallback",
+          "weight": "normal",
+          "status": "loaded"
+        }
+      ],
+      "bodyFont": "uiFont, \"uiFont Fallback\", system-ui, sans-serif, system-ui, sans-serif",
+      "brandFont": "brandFont, \"brandFont Fallback\", Georgia, serif, Georgia, serif",
+      "heroWidth": 328,
+      "heroScrollWidth": 328,
+      "axeViolations": 0
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "viewport": 390,
+      "scrollWidth": 390,
+      "images": [
+        {
+          "alt": "Imagen referencial de pollo a la brasa con papas, ensalada y cremas",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ⅛ de pollo a la brasa",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo entero a la brasa, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Ronda de alitas, 16 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Combo Mostrito, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Gran Promoción, Pollo entero + ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, ¼ de pollo — para llevar",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ⅛ de pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ¼ de pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas clásicas, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas dulces, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas picantes, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas acevichadas, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas en salsa de maracuyá, 4 alitas",
+          "loaded": true
+        }
+      ],
+      "fonts": [
+        {
+          "family": "brandFont",
+          "weight": "600 700",
+          "status": "loaded"
+        },
+        {
+          "family": "brandFont Fallback",
+          "weight": "normal",
+          "status": "unloaded"
+        },
+        {
+          "family": "uiFont",
+          "weight": "400 700",
+          "status": "loaded"
+        },
+        {
+          "family": "uiFont Fallback",
+          "weight": "normal",
+          "status": "loaded"
+        }
+      ],
+      "bodyFont": "uiFont, \"uiFont Fallback\", system-ui, sans-serif, system-ui, sans-serif",
+      "brandFont": "brandFont, \"brandFont Fallback\", Georgia, serif, Georgia, serif",
+      "heroWidth": 358,
+      "heroScrollWidth": 358,
+      "axeViolations": 0
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "viewport": 768,
+      "scrollWidth": 768,
+      "images": [
+        {
+          "alt": "Imagen referencial de pollo a la brasa con papas, ensalada y cremas",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ⅛ de pollo a la brasa",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo entero a la brasa, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Ronda de alitas, 16 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Combo Mostrito, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Gran Promoción, Pollo entero + ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, ¼ de pollo — para llevar",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ⅛ de pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ¼ de pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas clásicas, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas dulces, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas picantes, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas acevichadas, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas en salsa de maracuyá, 4 alitas",
+          "loaded": true
+        }
+      ],
+      "fonts": [
+        {
+          "family": "brandFont",
+          "weight": "600 700",
+          "status": "loaded"
+        },
+        {
+          "family": "brandFont Fallback",
+          "weight": "normal",
+          "status": "unloaded"
+        },
+        {
+          "family": "uiFont",
+          "weight": "400 700",
+          "status": "loaded"
+        },
+        {
+          "family": "uiFont Fallback",
+          "weight": "normal",
+          "status": "loaded"
+        }
+      ],
+      "bodyFont": "uiFont, \"uiFont Fallback\", system-ui, sans-serif, system-ui, sans-serif",
+      "brandFont": "brandFont, \"brandFont Fallback\", Georgia, serif, Georgia, serif",
+      "heroWidth": 720,
+      "heroScrollWidth": 720,
+      "axeViolations": 0
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "viewport": 1280,
+      "scrollWidth": 1280,
+      "images": [
+        {
+          "alt": "Imagen referencial de pollo a la brasa con papas, ensalada y cremas",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ⅛ de pollo a la brasa",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo entero a la brasa, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Ronda de alitas, 16 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Combo Mostrito, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Gran Promoción, Pollo entero + ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, ¼ de pollo — para llevar",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Pollo a la brasa, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ⅛ de pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ¼ de pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, ½ pollo",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Mostrito, Pollo entero",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas clásicas, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas dulces, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas picantes, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas acevichadas, 4 alitas",
+          "loaded": true
+        },
+        {
+          "alt": "Imagen referencial de Alitas en salsa de maracuyá, 4 alitas",
+          "loaded": true
+        }
+      ],
+      "fonts": [
+        {
+          "family": "brandFont",
+          "weight": "600 700",
+          "status": "loaded"
+        },
+        {
+          "family": "brandFont Fallback",
+          "weight": "normal",
+          "status": "unloaded"
+        },
+        {
+          "family": "uiFont",
+          "weight": "400 700",
+          "status": "loaded"
+        },
+        {
+          "family": "uiFont Fallback",
+          "weight": "normal",
+          "status": "loaded"
+        }
+      ],
+      "bodyFont": "uiFont, \"uiFont Fallback\", system-ui, sans-serif, system-ui, sans-serif",
+      "brandFont": "brandFont, \"brandFont Fallback\", Georgia, serif, Georgia, serif",
+      "heroWidth": 1136,
+      "heroScrollWidth": 1136,
+      "axeViolations": 0
+    }
+  ],
+  "keyboard": {
+    "href": "#contenido",
+    "width": 169.546875,
+    "outline": "solid"
+  },
+  "controlledFailure": "HTTP 404 interceptado solo en Chrome: Foto no disponible y precio conservado",
+  "navigation": "Filtro alitas, detalle y regreso con categoría conservada; acceso personal visible sin iniciar sesión"
+}

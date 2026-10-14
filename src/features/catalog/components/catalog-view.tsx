@@ -1,48 +1,34 @@
-import Link from "next/link";
-
-import { CATALOG_FOCUS_CLASSES } from "../constants";
-import { BusinessInfo } from "./business-info";
+import { CatalogHero } from "./catalog-hero";
+import { CatalogVisit } from "./catalog-visit";
+import { CategoryHighlights } from "./category-highlights";
 import { CategoryNav } from "./category-nav";
 import { ProductCard } from "./product-card";
-import { ProductPrice } from "./product-price";
-import { productHref } from "../services/presentation";
+import { visibleCategoryItems } from "../services/media";
+import { selectedCategorySlug } from "../services/presentation";
 import type { CatalogViewProps } from "../types/catalog";
 
 export function CatalogView({ catalog, selectedSlug = "todas" }: CatalogViewProps) {
-  const selected = catalog.categories.find((category) => category.slug === selectedSlug);
-  const currentSlug = selected?.slug ?? "todas";
-  const categories = selected ? [selected] : catalog.categories;
-  const featured = catalog.items.find((item) => item.kind === "promotion" && item.availability === "available");
+  const currentSlug = selectedCategorySlug(catalog, selectedSlug);
+  const sections = visibleCategoryItems(catalog, currentSlug);
   return (
-    <main id="contenido" tabIndex={-1} className="mx-auto max-w-content px-4 py-8 focus:outline-none md:px-6 lg:px-8">
-      <div className="grid gap-6 pb-8 md:grid-cols-2 md:items-center">
-        <div className="flex flex-col items-start gap-4">
-          <p className="text-sm font-semibold text-brand-gold-ink">Pollo a la brasa · Parcona</p>
-          <h1 className="max-w-lg font-brand text-brand-mobile font-bold md:text-brand-desktop">Sabor que une,<br />momentos que quedan.</h1>
-          <p className="max-w-lg text-brand-muted">Nuestra carta, tus favoritos. Encuentra el plato que te provoca y conoce qué incluye.</p>
-          <BusinessInfo catalog={catalog} />
+    <main id="contenido" tabIndex={-1} className="mx-auto max-w-content px-4 pb-8 pt-4 focus:outline-none md:px-6 md:pt-6 lg:px-8">
+      {currentSlug === "todas" ? <><CatalogHero /><CategoryHighlights catalog={catalog} /></> : <h1 className="mb-6 mt-4 font-brand text-brand-mobile font-bold md:text-brand-desktop">{sections[0]?.category.name ?? "Nuestra carta"}</h1>}
+      <section id="carta" aria-labelledby="carta-titulo" className="scroll-mt-6">
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+          <div><p className="mb-2 text-sm font-semibold text-brand-gold-ink">Hecha para tus antojos</p><h2 id="carta-titulo" className="text-section-mobile font-bold md:text-section-desktop">Nuestra carta</h2></div>
+          <p className="text-sm text-brand-muted">Porciones, inclusiones y precios en cada plato.</p>
         </div>
-        {featured && <aside aria-label="Promoción destacada" className="rounded-card border border-brand-border bg-brand-surface p-6">
-          <p className="mb-3 text-sm font-semibold text-brand-gold-ink">En promoción</p>
-          <h2 className="font-brand text-section-mobile font-semibold">{featured.name}</h2>
-          <p className="mt-2 font-medium">{featured.portionLabel}</p>
-          <p className="mb-4 mt-2 text-brand-muted">{featured.inclusions.join(" · ")}</p>
-          <ProductPrice item={featured} />
-          <Link href={productHref(featured, currentSlug)} className={`mt-4 inline-flex min-h-12 items-center font-semibold text-brand-action underline underline-offset-4 ${CATALOG_FOCUS_CLASSES}`}>Conocer esta promoción</Link>
-        </aside>}
-      </div>
-      <section id="carta" aria-labelledby="carta-titulo" className="scroll-mt-4">
-        <h2 id="carta-titulo" className="mb-4 text-section-mobile font-bold md:text-section-desktop">Nuestra carta</h2>
         {catalog.items.length === 0 ? <div className="rounded-card border border-brand-border bg-brand-surface p-6"><p>Estamos preparando nuestra carta.</p><p className="mt-2 text-brand-muted">Vuelve a consultarla pronto para conocer nuestros platos y promociones.</p></div> : <>
           <CategoryNav categories={catalog.categories} selectedSlug={currentSlug} />
-          {categories.map((category) => <section key={category.id} aria-labelledby={`categoria-${category.slug}`} className="mt-6">
-            <h2 id={`categoria-${category.slug}`} className="mb-4 text-section-mobile font-bold">{category.name}</h2>
+          {sections.map(({ category, items }) => <section key={category.id} aria-labelledby={`categoria-${category.slug}`} className="mt-8 md:mt-12">
+            <div className="mb-5 flex items-center gap-4"><h2 id={`categoria-${category.slug}`} className="text-section-mobile font-bold">{category.name}</h2><span aria-hidden="true" className="h-px flex-1 bg-brand-border" /></div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-              {catalog.items.filter((item) => item.categoryId === category.id).map((item) => <ProductCard key={item.id} item={item} selectedSlug={currentSlug} />)}
+              {items.map((item) => <ProductCard key={item.id} item={item} selectedSlug={currentSlug} />)}
             </div>
           </section>)}
         </>}
       </section>
+      <CatalogVisit catalog={catalog} />
     </main>
   );
 }

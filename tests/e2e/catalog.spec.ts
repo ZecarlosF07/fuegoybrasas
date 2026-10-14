@@ -63,7 +63,7 @@ test("imagen cargada y fallida: el texto comercial permanece legible", async ({ 
   await page.unroute("**/_next/image?**");
   await page.route("**/_next/image?**", (route) => route.fulfill({ status: 404, body: "Recurso no disponible" }));
   await page.reload();
-  await expect(page.getByText("Foto próximamente")).toBeVisible();
+  await expect(page.getByText("Foto no disponible")).toBeVisible();
   await expect(page.getByText("Desde S/14.90")).toBeVisible();
   await page.screenshot({ path: `${screenshots}/imagen-fallida.png`, fullPage: true });
   expect(E2E_IMAGE).toContain("items/");

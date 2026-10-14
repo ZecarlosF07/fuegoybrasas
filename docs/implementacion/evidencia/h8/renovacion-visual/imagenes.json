@@ -1,0 +1,167 @@
+{
+  "generatedAt": "2026-10-14T05:12:00.479Z",
+  "count": 16,
+  "totalBytes": 5027728,
+  "images": [
+    {
+      "name": "pollo-promocion",
+      "path": "/images/menu/pollo-promocion.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 391088,
+      "sha256": "e5664f19520aeecdac0dc1fd37edfc9ae65d525ca663dc06e9aea1d7dd26bb76",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-02a48abf-7635-4151-8b58-ae7134ea7a73.png"
+    },
+    {
+      "name": "mostrito-octavo",
+      "path": "/images/menu/mostrito-octavo.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 271470,
+      "sha256": "c286e5e7a55d4029c1c53af5dc3d1fec74de637e80b89ac8ae038644895d6044",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-766058b9-ae2c-4ff0-8ea4-77839a398dc1.png"
+    },
+    {
+      "name": "ronda-alitas",
+      "path": "/images/menu/ronda-alitas.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 391062,
+      "sha256": "3457e4cdaa278fae55371d2f16f55874163517147c235cb38e5c897316a303d7",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-c27604a3-623c-4db5-81ef-8cba7d8a68a6.png"
+    },
+    {
+      "name": "pollo-cuarto",
+      "path": "/images/menu/pollo-cuarto.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 270108,
+      "sha256": "51566f00ad0379ca22180ebb62ff45e0bf9d941197cc93356ddb10567377be41",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-8fc95689-fa64-4386-b0d3-8a79dda06697.png"
+    },
+    {
+      "name": "pollo-medio",
+      "path": "/images/menu/pollo-medio.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 308536,
+      "sha256": "0723291020ccdda597988929e1c8b36299dd13d6ab5a4f4a266d64147ddcf4fa",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-dd1de897-3eaa-4ee9-993d-af53b8c200ca.png"
+    },
+    {
+      "name": "pollo-entero",
+      "path": "/images/menu/pollo-entero.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 327176,
+      "sha256": "77db09802dc2b24f52b06536ca7648336aef63da9989e506b5d83dccf43de523",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-ec9db999-f375-4e32-ab7e-edbae1761c5f.png"
+    },
+    {
+      "name": "mostrito-cuarto",
+      "path": "/images/menu/mostrito-cuarto.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 316884,
+      "sha256": "5691746c372f93c6016c22c323ec8fd85c40a486944cf94c2388b5ed27d790f1",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-8e20be4c-e062-4210-b325-055707a69058.png"
+    },
+    {
+      "name": "mostrito-medio",
+      "path": "/images/menu/mostrito-medio.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 375746,
+      "sha256": "c392cdeec10ea696a51e0945a786cfed7456e662ffcad9b12d1341b5e92b0d97",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-60c202c8-136e-40bf-b90f-0fa225b4a847.png"
+    },
+    {
+      "name": "mostrito-entero",
+      "path": "/images/menu/mostrito-entero.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 429454,
+      "sha256": "17e95f78c84265be50a01f5285b9227981e752e892f2828bf71263b646c4260a",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-eaebf51f-a808-4562-883d-7cf1129628cd.png"
+    },
+    {
+      "name": "alitas-clasicas",
+      "path": "/images/menu/alitas-clasicas.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 251392,
+      "sha256": "a9f40bcf108ae6a21e461330f392298fe50f07049be51ba0b97e0be5c9fb7466",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-a9e0e4f5-9326-4ce2-b8f3-5160a8fa8d19.png"
+    },
+    {
+      "name": "alitas-dulces",
+      "path": "/images/menu/alitas-dulces.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 276414,
+      "sha256": "927ae201f67e38399bd09d851888dd81df97b12f0ec63b6e776d5a6605715275",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-0453b932-ff50-4e64-a8fa-28c8d2128f69.png"
+    },
+    {
+      "name": "alitas-picantes",
+      "path": "/images/menu/alitas-picantes.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 280190,
+      "sha256": "d32036494ba79a6ff8a5172cd95e506f3c846875e00262ded339907e7e671bc3",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-4c4c1cf2-76a6-4cf1-b1d3-c6877c2f224c.png"
+    },
+    {
+      "name": "alitas-acevichadas",
+      "path": "/images/menu/alitas-acevichadas.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 267518,
+      "sha256": "5fa784227664a1e4b80260fb9e8e53981169f5a2bdf48cf5336fd8ba0d88f731",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-85811eb4-960c-46ff-aca1-e07ca749bd4d.png"
+    },
+    {
+      "name": "alitas-maracuya",
+      "path": "/images/menu/alitas-maracuya.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 252248,
+      "sha256": "ca4566c17e8e382af2f5bb3a9694a5a1ef015944097cfffe19bf3fddc780ffc9",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-14d066e3-679f-42de-8202-133780437d0e.png"
+    },
+    {
+      "name": "combo-mostrito",
+      "path": "/images/menu/combo-mostrito.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 292650,
+      "sha256": "dccaebbc438ac34b4093adb9cf8c931db45a15be7dada56ecf8c3a348b442982",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-38822c8b-5771-4809-9f5e-5f3be5c9e79c.png"
+    },
+    {
+      "name": "gran-promocion",
+      "path": "/images/menu/gran-promocion.webp",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 325792,
+      "sha256": "edbc6e46a5d1ecbff7f5e714688e63dae3a79ebcfaa82bc010b46bc48b8d1468",
+      "provenance": "image_gen; imagen referencial generada; no fotografía real del local",
+      "originalAsset": "exec-11e01138-06dc-48fc-b13f-df21021eba35.png"
+    }
+  ]
+}
