@@ -1,6 +1,6 @@
 # Fuego y Brasas — Diseño técnico
 
-**Versión:** 1.10 · **Fecha:** 13 de octubre de 2026.
+**Versión:** 1.11 · **Fecha:** 13 de octubre de 2026.
 **Estado:** H1–H7 implementados; H8 con preparación técnica, migración oficial y regresión local aprobadas según [evidencia H8](../implementacion/evidencia/h8/README.md). GitHub/Vercel se preparan por solicitud del propietario. Piloto, revisión humana y activación productiva pendientes; ambos flags públicos apagados.
 **Base funcional:** [Análisis del proyecto](../analisis-del-proyecto.md) y [Resumen ejecutivo](../resumen-ejecutivo.md).
 
@@ -37,6 +37,8 @@ Los tipos, nombres de tablas y contratos son definiciones adoptadas para la impl
 Reglas para agentes: [Proyecto](../../.agents/rules/proyecto.md), [UX/UI](../../.agents/rules/ux-ui.md) y [Sistema visual](../../.agents/brand/sistema-visual.md), enlazadas desde [AGENTS.md](../../AGENTS.md). Los valores visuales se mantienen únicamente en el sistema canónico; [MASTER](../../design-system/fuego-y-brasas/MASTER.md) permite recuperarlo mediante la skill. La ejecución se organiza en los [ocho hitos](../implementacion/hitos-del-proyecto.md).
 
 ## 3. Decisiones confirmadas por el propietario
+
+**DC-21, 13/10/2026:** origen de producción confirmado `https://fuegoybrasas.vercel.app`. URLs de Supabase Auth aplicadas mediante perfil parcial y verificadas; variables del hosting y deployment pendientes. Desarrollo conserva localhost y no se crea otra copia de secretos. [Configuración y evidencia](../implementacion/evidencia/h8/despliegue.md). El dominio no implica aceptación del piloto ni activación de pedidos/fidelización.
 
 | ID | Decisión | Consecuencia |
 | --- | --- | --- |

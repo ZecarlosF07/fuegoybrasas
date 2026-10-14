@@ -32,7 +32,7 @@ Next.js **16.3.8**, React **19.2.8**, TypeScript estricto y Tailwind 4. Las depe
 
 La copia `.env.vercel.local` se eliminó el 13/10/2026 tras comprobar que sus credenciales coincidían con el archivo remoto. Corepack y las preferencias de diagnóstico/indexación se conservaron en `.env.remote.local`. El desarrollo mantiene `APP_SITE_URL=http://localhost:3000` y `APP_DEPLOYMENT_TARGET=development`.
 
-Después de importar `.env.remote.local`, cambiar **solo en Vercel** `APP_SITE_URL` por el origen HTTPS real y `APP_DEPLOYMENT_TARGET` por `production`. Conservar `ENABLE_EXPERIMENTAL_COREPACK=1`, sin claves CAPTCHA. Guardar las variables y generar un nuevo deployment; [guía de publicación](docs/implementacion/evidencia/h8/despliegue.md). Los archivos con credenciales permanecen ignorados por Git.
+Después de importar `.env.remote.local`, cambiar **solo en Vercel** `APP_SITE_URL` por `https://fuegoybrasas.vercel.app` (dominio confirmado por el propietario) y `APP_DEPLOYMENT_TARGET` por `production`. Conservar `ENABLE_EXPERIMENTAL_COREPACK=1`, sin claves CAPTCHA. Guardar las variables y generar un nuevo deployment; [guía de publicación y configuración Auth aplicada](docs/implementacion/evidencia/h8/despliegue.md). Los archivos con credenciales permanecen ignorados por Git.
 
 ## Desarrollo habitual con Supabase remoto
 

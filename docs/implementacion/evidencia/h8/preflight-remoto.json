@@ -1,11 +1,8 @@
 {
-  "checkedAt": "2026-10-13T00:21:13.479Z",
+  "checkedAt": "2026-10-14T00:22:37.556Z",
   "projectRef": "geazxsvjkqpzbghlywbw",
   "mode": "deployment",
-  "configurationProblems": [
-    "SITE_URL",
-    "RELEASE_ID"
-  ],
+  "configurationProblems": [],
   "launchProblems": [
     "PAYMENTS",
     "ADMINISTRATOR_MFA",
@@ -27,6 +24,6 @@
     "rewardCostCents": null,
     "scheduleConfirmed": false
   },
-  "ready": false,
+  "ready": true,
   "limitation": "No acredita piloto, recepción WhatsApp, SMTP, contratación, revisión humana ni aprobación para activar."
 }

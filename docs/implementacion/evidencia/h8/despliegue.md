@@ -2,6 +2,21 @@
 
 **Estado:** configuración del repositorio preparada; comprobar publicación y URL real en el [reporte](README.md). No se ha aprobado activar pedidos/programa.
 
+## Dominio confirmado
+
+El propietario confirmó el 13/10/2026 **[https://fuegoybrasas.vercel.app](https://fuegoybrasas.vercel.app)** como origen de producción. En Vercel, exclusivamente en Production:
+
+```dotenv
+APP_SITE_URL=https://fuegoybrasas.vercel.app
+APP_DEPLOYMENT_TARGET=production
+```
+
+El archivo `.env.remote.local` de desarrollo conserva `http://localhost:3000` y `development`; importar sus credenciales y sustituir estas dos entradas en el hosting. No se crea otra copia del archivo de secretos. `ENABLE_EXPERIMENTAL_COREPACK=1` ya está incluido. Las variables de Vercel aún debe guardarlas el propietario; no se dispone de un proyecto Vercel autenticado en este entorno.
+
+**Supabase Auth aplicado y verificado:** Site URL `https://fuegoybrasas.vercel.app`, callback exacto `https://fuegoybrasas.vercel.app/auth/confirm` y callbacks exactos de desarrollo `http://localhost:3000/auth/confirm` / `http://127.0.0.1:3000/auth/confirm`. CLI 2.119.0 documenta que un perfil parcial solo aplica propiedades declaradas. Se comparó un perfil privado mínimo, se verificaron las dos diferencias declaradas y se aplicó al proyecto oficial `geazxsvjkqpzbghlywbw`; la comparación posterior confirma las URLs y conserva diez propiedades remotas no declaradas. No se aplicó el `supabase/config.toml` local completo, no se cambió MFA/CAPTCHA/SMTP y no se enviaron correos. Snapshots bajo `.test-fixtures`, ignorados por Git.
+
+`yarn release:check` con este origen y el SHA real `bb546c4` completo: `ready=true`, sin problemas de configuración. Continúan pendientes de lanzamiento `PAYMENTS`, `ADMINISTRATOR_MFA`, `REWARD_COST` y `LOYALTY_DOCUMENTS`; el comando solo lee y no activa funciones. La consulta pública a `/api/health` devolvió HTTP 404 antes del nuevo deployment: aún no acredita una aplicación publicada correctamente. Guardar variables y hacer Redeploy; comprobar después los recorridos públicos y la salud del nuevo deployment.
+
 ## Variables de Vercel
 
 **DC-20, 13/10:** [CAPTCHA retirado](acceso-personal-sin-captcha.md) por el propietario. No importar claves de ese proveedor; el acceso del personal mantiene contraseña/MFA. Supabase oficial tiene CAPTCHA deshabilitado, comprobado mediante lectura de configuración.
@@ -14,7 +29,7 @@ Verificación de la corrección: caché Corepack aislada en `.test-fixtures`; `c
 
 **Simplificación del 13/10/2026:** importar las variables de **`.env.remote.local`**. Se eliminó `.env.vercel.local`, que duplicaba las seis entradas de credenciales/confirmaciones del archivo remoto; se conservaron Corepack y las preferencias de indexación/diagnóstico, ambas deshabilitadas. `.env.local` conserva credenciales diferentes del entorno aislado de pruebas y `.env.example` sigue siendo una plantilla sin secretos: no son copias redundantes y no se importan en Vercel.
 
-En Vercel, abrir la sección **Environment Variables** del proyecto, importar o pegar las entradas de `.env.remote.local` y seleccionar exclusivamente **Production**. Antes de guardar, sustituir `APP_SITE_URL=http://localhost:3000` por el origen HTTPS real y `APP_DEPLOYMENT_TARGET=development` por `production`. Mantener esos dos valores de desarrollo en el archivo de la computadora. Marcar las dos claves de servidor como Secret y generar un nuevo deployment después de guardar. [Gestión oficial de variables](https://vercel.com/docs/environment-variables/managing-environment-variables).
+En Vercel, abrir la sección **Environment Variables** del proyecto, importar o pegar las entradas de `.env.remote.local` y seleccionar exclusivamente **Production**. Antes de guardar, sustituir `APP_SITE_URL=http://localhost:3000` por `https://fuegoybrasas.vercel.app` y `APP_DEPLOYMENT_TARGET=development` por `production`. Mantener esos dos valores de desarrollo en el archivo de la computadora. Marcar las dos claves de servidor como Secret y generar un nuevo deployment después de guardar. [Gestión oficial de variables](https://vercel.com/docs/environment-variables/managing-environment-variables).
 
 Comprobación de la limpieza: archivo duplicado ausente, claves remotas completas y pruebas con URL local conservadas; 31 enlaces locales válidos y 758 archivos candidatos sin secretos versionados. `yarn build` aprobado con TypeScript en 31,90 s tras renovar la caché: los dos intentos previos fallaron al iniciar el proceso auxiliar de Turbopack. La caché anterior queda en `.test-fixtures`, ignorada por Git. Esta comprobación es de la computadora, no de un deployment Vercel.
 
@@ -24,7 +39,7 @@ Comprobación de la limpieza: archivo duplicado ausente, claves remotas completa
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Clave pública del proyecto; copiar desde el archivo privado existente o dashboard. |
 | `SUPABASE_SECRET_KEY` | Clave privada del proyecto; exclusiva del servidor, marcada como sensible en Vercel. |
 | `STAFF_AUTH_FLOW_SECRET` | Conservar el secreto actual; exclusivo del servidor y sensible. Rotarlo invalida las claves derivadas de recuperación: requiere procedimiento propio. |
-| `APP_SITE_URL` | Origen HTTPS real de Vercel/dominio, sin rutas ni parámetros; nunca localhost. |
+| `APP_SITE_URL` | `https://fuegoybrasas.vercel.app`, origen confirmado sin rutas ni parámetros. |
 | `APP_DEPLOYMENT_TARGET` | `production` |
 | `ENABLE_EXPERIMENTAL_COREPACK` | `1`, incluido en el archivo remoto para seleccionar Yarn 1.22.22. |
 | `APP_RELEASE_ID` | Omitir para usar `VERCEL_GIT_COMMIT_SHA`; no usar un SHA antiguo fijado manualmente. |
@@ -39,7 +54,7 @@ No subir archivos `.env`, contraseñas iniciales, `.test-fixtures`, claves de CL
 
 1. Verificar historial con `yarn supabase migration list --linked --agent=no`, después dry-run. No resetear remoto ni alterar historial para ocultar diferencias.
 2. Ejecutar las pruebas aisladas e inspecciones de secretos. CI no carga variables de producción.
-3. En Supabase Auth, establecer Site URL/callbacks exclusivamente del origen confirmado y `/auth/confirm`. No aceptar destinos externos manipulados ni comodines generales. No se configura un dominio supuesto.
+3. Supabase Auth ya usa Site URL y callbacks exactos del apartado «Dominio confirmado». Comprobarlos de nuevo si cambia el dominio. No aceptar destinos externos manipulados ni comodines generales.
 4. Ejecutar `yarn release:check` con `APP_SITE_URL` y SHA reales en el entorno del comando. Leer códigos y [preflight](preflight-remoto.json); esta consulta no activa flags.
 5. En Vercel comprobar SHA, logs sanitizados, `/api/health`, `/api/catalog`, robots, carta, acceso y MFA del administrador. No usar clientes reales como fixtures.
 
