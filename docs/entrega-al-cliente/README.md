@@ -1,5 +1,7 @@
 # Fuego y Brasas — Guía para entregar y operar la web
 
+**Actualización 22/10:** pedidos habilitados; textos aprobados por el propietario y tarjeta autorizada/activada ([DC-26](../diseno-tecnico/21-aprobacion-y-activacion-tarjeta.md)). [Comprobaciones de publicación](../implementacion/evidencia/h8/whatsapp-sin-pago-2026-10-21/README.md).
+
 **Fecha:** 21/10/2026. Esta guía describe el uso previsto y remite a la evidencia técnica; no marca aprobaciones del negocio por anticipado.
 
 ## Accesos
@@ -45,7 +47,7 @@ Ante una respuesta incierta, consultar o reintentar **la misma operación**; no 
 
 - Confirmar que la persona encargada de WhatsApp puede recibir y atender mensajes. La apertura automatizada de un enlace no demuestra recepción en su teléfono.
 - Entrar con las cuentas reales, revisar permisos y conservar sus credenciales en privado.
-- Revisar los textos de [condiciones](https://fuegoybrasas.vercel.app/condiciones-tarjeta) y [uso de datos](https://fuegoybrasas.vercel.app/privacidad), incluyendo conservación/atención de solicitudes, antes de activar nuevas tarjetas. Su aprobación corresponde al responsable del negocio.
+- Los textos de [condiciones](https://fuegoybrasas.vercel.app/condiciones-tarjeta) y [uso de datos](https://fuegoybrasas.vercel.app/privacidad) fueron aprobados por el propietario el 21/10. Los plazos/procedimientos aún no definidos siguen como seguimiento del negocio; no se inventan valores. Revisar la versión si cambian esos textos.
 - Revisar precios e inclusiones al cambiarlos. Las fotografías de apoyo están identificadas como «Imagen referencial» y pueden sustituirse por fotos propias desde el panel.
 - Confirmar horarios cuando se conozcan y asignar responsable de incidencias, respaldos y recuperación de acceso.
 

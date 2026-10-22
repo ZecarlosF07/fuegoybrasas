@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-10-22T23:51:20.271Z",
+  "release": "d25af1d3e262c20535742817d5fb184b0ba0b978",
+  "runs": [
+    {
+      "name": "Verificación de Fuego y Brasas",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/ZecarlosF07/fuegoybrasas/actions/runs/39712592404",
+      "diagnosis": "32 E2E aprobados; axe se ejecutó antes de instalar el título de la página tras redirección SSR; 18 casos dependientes no ejecutados. Corrección: esperar y exigir título válido, sin excluir la regla de accesibilidad."
+    }
+  ]
+}

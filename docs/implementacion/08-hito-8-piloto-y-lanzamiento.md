@@ -1,5 +1,7 @@
 # Hito 8 — Probar y publicar
 
+**Actualización DC-26, 22/10:** [aprobación y activación de tarjeta](../diseno-tecnico/21-aprobacion-y-activacion-tarjeta.md).
+
 **Actualización 21/10 — DC-23–25:** [pedido sin pago y costo de premio opcional](../diseno-tecnico/20-pedido-whatsapp-y-costo-opcional.md) sustituye los campos de pago/vuelto, la dependencia de pagos y el costo obligatorio de premio. La revisión técnica se delega al agente; ver [guía de entrega](../entrega-al-cliente/README.md).
 
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
@@ -8,7 +10,7 @@
 
 **Versión:** 1.1 · **Fecha:** 3 de octubre de 2026.  
 **Destinatarios:** equipo de desarrollo, personal autorizado y responsable del negocio.  
-**Estado al 20/10/2026:** regresión integral aprobada y Vercel publicado comprobado según [verificación vigente](evidencia/h8/verificacion-2026-10-20/README.md); piloto, condiciones comerciales y activación pendientes.
+**Estado al 22/10/2026:** pedido publicado sin pagos y revisión técnica delegada comprobados; textos de tarjeta aprobados y programa oficial activado por DC-26. La evidencia registra la comprobación del despliegue por separado. Los controles humanos y operativos no ejecutados permanecen identificados.
 
 **Guía general:** [Hitos del proyecto](hitos-del-proyecto.md).
 

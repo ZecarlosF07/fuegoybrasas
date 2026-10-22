@@ -1,6 +1,6 @@
 # Fuego y Brasas
 
-Web de la pollería con Next.js y Supabase. H1–H6 incorporan base visual, personal/permisos, carta, mantenimiento, pedido invitado por WhatsApp y tarjeta sin SMS. H7 añade indicadores de administrador, correcciones, incidencias y recuperación presencial. H8 prepara GitHub/Vercel, CI, salud, diagnóstico y operación, con pruebas integrales locales aprobadas. Piloto y activación pública siguen pendientes; pedidos y fidelización reales permanecen pausados.
+Web de la pollería con Next.js y Supabase. H1–H6 incorporan base visual, personal/permisos, carta, mantenimiento, pedido invitado por WhatsApp y tarjeta sin SMS. H7 añade indicadores de administrador, correcciones, incidencias y recuperación presencial. H8 prepara GitHub/Vercel, CI, salud, diagnóstico y operación, con pruebas integrales locales aprobadas. Pedidos habilitados sin pago web; textos de tarjeta aprobados y activación autorizada por el propietario ([DC-26](docs/diseno-tecnico/21-aprobacion-y-activacion-tarjeta.md)). La evidencia distingue publicación real de los controles humanos y operativos todavía no ejecutados.
 
 - [Guía de entrega al cliente](docs/entrega-al-cliente/README.md).
 - [Pedido sin pago y costo opcional del premio](docs/diseno-tecnico/20-pedido-whatsapp-y-costo-opcional.md).
@@ -37,7 +37,7 @@ Next.js **16.3.8**, React **19.2.8**, TypeScript estricto y Tailwind 4. Las depe
 
 La copia `.env.vercel.local` se eliminó el 13/10/2026 tras comprobar que sus credenciales coincidían con el archivo remoto. Corepack y las preferencias de diagnóstico/indexación se conservaron en `.env.remote.local`. El desarrollo mantiene `APP_SITE_URL=http://localhost:3000` y `APP_DEPLOYMENT_TARGET=development`.
 
-Por petición posterior del propietario, `.env.vercel.production` reúne las once variables para importar directamente: `APP_SITE_URL=https://fuegoybrasas.vercel.app`, `APP_DEPLOYMENT_TARGET=production` y `ENABLE_EXPERIMENTAL_COREPACK=1` ya están preparados. No requiere sustituir valores ni contiene claves CAPTCHA/MFA. Su nombre evita la carga automática de Next.js durante builds de pruebas locales; Vercel recibe sus variables mediante importación. Guardarlas en Production y generar un nuevo deployment; [guía de publicación y configuración Auth aplicada](docs/implementacion/evidencia/h8/despliegue.md). Los archivos con credenciales permanecen ignorados por Git; cambios posteriores de claves requieren actualizar también esta exportación.
+Por petición posterior del propietario, `.env.vercel.production` reúne las nueve variables para importar directamente: `APP_SITE_URL=https://fuegoybrasas.vercel.app`, `APP_DEPLOYMENT_TARGET=production` y `ENABLE_EXPERIMENTAL_COREPACK=1` ya están preparados. No requiere sustituir valores ni contiene claves CAPTCHA/MFA. Su nombre evita la carga automática de Next.js durante builds de pruebas locales; Vercel recibe sus variables mediante importación. Guardarlas en Production y generar un nuevo deployment; [guía de publicación y configuración Auth aplicada](docs/implementacion/evidencia/h8/despliegue.md). Los archivos con credenciales permanecen ignorados por Git; cambios posteriores de claves requieren actualizar también esta exportación.
 
 ## Desarrollo habitual con Supabase remoto
 

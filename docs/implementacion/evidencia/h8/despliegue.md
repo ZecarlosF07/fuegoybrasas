@@ -1,5 +1,7 @@
 # Preparar GitHub y Vercel
 
+**Estado vigente 22/10:** [DC-26](../../../diseno-tecnico/21-aprobacion-y-activacion-tarjeta.md) registra aprobación y activación autorizada. La exportación privada tiene nueve variables; las dos confirmaciones de textos se sustituyen por el registro versionado. Los antecedentes siguientes conservan sus fechas.
+
 **Estado al 20/10/2026:** Vercel publicado y comprobado con SHA `6b2b2de06c08c9f483dd7a27e84e9fbf35fa213a`, catálogo 200 y 17 productos. [Verificación vigente](verificacion-2026-10-20/README.md). Los antecedentes siguientes describen la preparación y sus fechas; los pendientes de pagos, costo, textos y piloto conservan pedidos/programa apagados.
 
 **DC-22:** [personal sin MFA](../../../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) y [evidencia](personal-sin-mfa/README.md). La migración oficial y Auth ya retiran segundo factor; los párrafos anteriores de preparación describen su fecha.
@@ -31,7 +33,7 @@ Verificación de la corrección: caché Corepack aislada en `.test-fixtures`; `c
 
 **Antecedente del 13/10/2026:** se eliminó `.env.vercel.local`, que duplicaba las seis entradas de credenciales/confirmaciones del archivo remoto; se conservaron Corepack y las preferencias de indexación/diagnóstico, ambas deshabilitadas. La petición posterior de un archivo de producción se atiende con **`.env.vercel.production`**, cuyos valores de origen y target ya corresponden al hosting. `.env.local` conserva credenciales diferentes del entorno aislado de pruebas y `.env.example` sigue siendo una plantilla sin secretos: no se importan en Vercel. Si cambian las claves oficiales, actualizar la exportación antes de importarla otra vez.
 
-En Vercel, abrir la sección **Environment Variables** del proyecto, importar o pegar las entradas de **`.env.vercel.production`** y seleccionar exclusivamente **Production**. Sus once variables ya están completas; no requieren sustituciones manuales. Marcar `SUPABASE_SECRET_KEY` y `STAFF_AUTH_FLOW_SECRET` como sensibles y generar un nuevo deployment después de guardar. Desarrollo y pruebas conservan sus archivos originales. [Gestión oficial de variables](https://vercel.com/docs/environment-variables/managing-environment-variables).
+En Vercel, abrir la sección **Environment Variables** del proyecto, importar o pegar las entradas de **`.env.vercel.production`** y seleccionar exclusivamente **Production**. Sus nueve variables ya están completas; no requieren sustituciones manuales. Marcar `SUPABASE_SECRET_KEY` y `STAFF_AUTH_FLOW_SECRET` como sensibles y generar un nuevo deployment después de guardar. Desarrollo y pruebas conservan sus archivos originales. [Gestión oficial de variables](https://vercel.com/docs/environment-variables/managing-environment-variables).
 
 Comprobación de la limpieza: archivo duplicado ausente, claves remotas completas y pruebas con URL local conservadas; 31 enlaces locales válidos y 758 archivos candidatos sin secretos versionados. `yarn build` aprobado con TypeScript en 31,90 s tras renovar la caché: los dos intentos previos fallaron al iniciar el proceso auxiliar de Turbopack. La caché anterior queda en `.test-fixtures`, ignorada por Git. Esta comprobación es de la computadora, no de un deployment Vercel.
 
@@ -47,7 +49,7 @@ Comprobación de la limpieza: archivo duplicado ausente, claves remotas completa
 | `APP_RELEASE_ID` | Omitir para usar `VERCEL_GIT_COMMIT_SHA`; no usar un SHA antiguo fijado manualmente. |
 | `APP_TELEMETRY_ENABLED` | `false` en el archivo actual; cambiar a `true` solo si se acepta el diagnóstico sanitario del diseño 18, con registros sin PII. |
 | `APP_INDEXING_ENABLED` | `false` hasta publicación aceptada. |
-| `LOYALTY_TERMS_APPROVED` / `LOYALTY_PRIVACY_APPROVED` | `false` hasta aprobar los textos correspondientes. |
+| Aprobación de textos | DC-26 versionada en `src/features/loyalty/config/documents-approval.json`. Las dos variables anteriores ya no se utilizan. |
 | CAPTCHA | Retirado por DC-20. No requiere proveedor, site key ni secreto; Auth oficial lo tiene deshabilitado. |
 
 No subir archivos `.env`, contraseñas iniciales, `.test-fixtures`, claves de CLI, conexión PostgreSQL ni `.vercel`. Variables públicas se incluyen al compilar; cambiar entorno requiere nuevo build. [Vercel: entornos](https://vercel.com/docs/deployments/environments).

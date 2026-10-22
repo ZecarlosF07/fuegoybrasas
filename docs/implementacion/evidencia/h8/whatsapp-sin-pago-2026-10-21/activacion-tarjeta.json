@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-22T23:47:54.018Z",
+  "projectRef": "geazxsvjkqpzbghlywbw",
+  "decision": "DC-26",
+  "approvalOn": "2026-10-21",
+  "termsVersion": "fyb-loyalty-v1",
+  "operationId": "5e55000c-15c4-4a89-ba28-8804c8d63288",
+  "availabilityOperationId": "2f054ed6-5ebf-4336-a914-8e1ba977f4f4",
+  "loyaltyEnabled": true,
+  "programStatus": "active",
+  "target": 10,
+  "rewardName": "Mostrito de ⅛",
+  "rewardContents": [
+    "Chaufa",
+    "Papas fritas",
+    "Ensalada"
+  ],
+  "rewardCostCents": null,
+  "rewardAvailable": true,
+  "availabilityBasis": "Mostrito vigente y disponible en catálogo; cada canje exige confirmación de cocina.",
+  "usedAuditedRpc": true,
+  "syntheticCustomersCreated": false,
+  "stampsAdded": 0,
+  "rewardsRedeemed": 0,
+  "messagesSent": false,
+  "limitation": "No acredita capacitación de otras personas ni recepción WhatsApp. Verificación de alta publicada pendiente del despliegue DC-26."
+}

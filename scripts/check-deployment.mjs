@@ -11,7 +11,7 @@ if (readFileSync("supabase/.temp/project-ref", "utf8").trim() !== OFFICIAL_PROJE
 const data = JSON.parse(runSupabase(["db", "query", "--linked", "--file", "supabase/checks/h8-readiness.sql", "--output", "json"]))[0]?.readiness;
 if (!data) throw new Error("No se pudo comprobar el estado de publicación.");
 const configuration = deploymentProblems(environment);
-const features = launchReadiness(data, environment, !configuration.length);
+const features = launchReadiness(data, !configuration.length);
 const launchProblems = [...new Set([...features.ordering.problems, ...features.loyalty.problems])];
 const report = { checkedAt: new Date().toISOString(), projectRef: OFFICIAL_PROJECT_REF, mode: launch ? "launch" : "deployment", configurationProblems: configuration, launchProblems, features, readiness: data, ready: !configuration.length && (!launch || !launchProblems.length),
   limitation: "No acredita piloto, recepción WhatsApp, SMTP, contratación, revisión humana ni aprobación para activar." };

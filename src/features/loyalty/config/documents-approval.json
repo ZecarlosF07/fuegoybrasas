@@ -1,0 +1,18 @@
+{
+  "decision": "DC-26",
+  "approved": true,
+  "approvedOn": "2026-10-21",
+  "approvedBy": "propietario",
+  "termsVersion": "fyb-loyalty-v1",
+  "authorization": "Apruebo los textos y autorizo habilitar la tarjeta",
+  "documents": [
+    {
+      "path": "src/app/condiciones-tarjeta/page.tsx",
+      "sha256": "6f38a3ba0938a649b56be0a55870d22984923ef7ebebc6fbaabd4585019955e7"
+    },
+    {
+      "path": "src/app/privacidad/page.tsx",
+      "sha256": "e986e609c2e04fbcfe5b38eb5b9e4ecbd48fd962377fbe4209b598b02e2aff92"
+    }
+  ]
+}

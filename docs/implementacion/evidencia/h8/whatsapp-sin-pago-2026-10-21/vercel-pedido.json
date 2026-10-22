@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-22T02:42:38.819Z",
+  "origin": "https://fuegoybrasas.vercel.app",
+  "release": "d25af1d3e262c20535742817d5fb184b0ba0b978",
+  "orderingEnabled": true,
+  "paymentMethods": 0,
+  "publicProducts": 17,
+  "layouts": [
+    {
+      "route": "/pedido/datos",
+      "width": 390,
+      "axeViolations": 0,
+      "overflow": false
+    },
+    {
+      "route": "/pedido/datos",
+      "width": 1280,
+      "axeViolations": 0,
+      "overflow": false
+    }
+  ],
+  "validationInputs": [
+    [
+      "lines",
+      "mode"
+    ]
+  ],
+  "messagePrepared": true,
+  "paymentFieldsAbsent": true,
+  "whatsappDestinationCorrect": true,
+  "messageSent": false,
+  "createdCustomer": false,
+  "personalFieldsOnlyInBrowser": true,
+  "anonymousCardStatus": 401,
+  "pageErrors": []
+}

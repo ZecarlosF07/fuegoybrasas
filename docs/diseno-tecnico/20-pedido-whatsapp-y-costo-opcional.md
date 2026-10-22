@@ -1,5 +1,7 @@
 # Pedido por WhatsApp y costo opcional del premio
 
+**Actualización DC-26, 22/10:** [textos aprobados y tarjeta autorizada](21-aprobacion-y-activacion-tarjeta.md).
+
 **Fecha:** 21/10/2026. **Alcance:** actualización de H5, H6 y preparación de H8.
 
 ## Decisiones

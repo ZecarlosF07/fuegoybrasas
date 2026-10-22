@@ -1,3 +1,5 @@
+import approval from "../../src/features/loyalty/config/documents-approval.json" with { type: "json" };
+
 export const OFFICIAL_PROJECT_REF = "geazxsvjkqpzbghlywbw";
 export const OFFICIAL_SUPABASE_URL = `https://${OFFICIAL_PROJECT_REF}.supabase.co`;
 
@@ -15,12 +17,12 @@ export function deploymentProblems(environment) {
   return problems;
 }
 
-export function launchReadiness(data, environment, configured = true) {
+export function launchReadiness(data, configured = true, documents = approval) {
   const common = [
     ...(!data.activeManagers ? ["ADMINISTRATOR"] : []),
     ...(!data.locationVerified ? ["LOCATION"] : []),
   ];
-  const loyalty = [...common, ...(environment.LOYALTY_TERMS_APPROVED !== "true" || environment.LOYALTY_PRIVACY_APPROVED !== "true" ? ["LOYALTY_DOCUMENTS"] : [])];
+  const loyalty = [...common, ...(!documents.approved ? ["LOYALTY_DOCUMENTS"] : [])];
   return {
     ordering: { ready: configured && !common.length, problems: common },
     loyalty: { ready: configured && !loyalty.length, problems: loyalty },

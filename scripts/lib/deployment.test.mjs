@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
+import approval from "../../src/features/loyalty/config/documents-approval.json" with { type: "json" };
 import { deploymentProblems, launchReadiness, OFFICIAL_SUPABASE_URL } from "./deployment.mjs";
 
 const environment = {
@@ -30,18 +33,27 @@ test("SHA suministrado por Vercel se usa si el override está vacío", () => {
 });
 
 test("WhatsApp no depende de pagos configurados, costo del premio ni textos de fidelización", () => {
-  const features = launchReadiness({ activeManagers: 1, locationVerified: true, confirmedPayments: 0, rewardCostCents: null }, environment);
+  const features = launchReadiness({ activeManagers: 1, locationVerified: true, confirmedPayments: 0, rewardCostCents: null }, true, { approved: false });
   assert.deepEqual(features.ordering, { ready: true, problems: [] });
   assert.deepEqual(features.loyalty, { ready: false, problems: ["LOYALTY_DOCUMENTS"] });
 });
 
 test("el programa puede estar preparado con costo desconocido y documentos aprobados", () => {
-  const features = launchReadiness({ activeManagers: 1, locationVerified: true, rewardCostCents: null }, { ...environment, LOYALTY_TERMS_APPROVED: "true", LOYALTY_PRIVACY_APPROVED: "true" });
+  const features = launchReadiness({ activeManagers: 1, locationVerified: true, rewardCostCents: null });
   assert.equal(features.ordering.ready, true);
   assert.equal(features.loyalty.ready, true);
 });
 
+test("la aprobación del propietario corresponde a los textos publicados sin cambios", () => {
+  assert.equal(approval.approved, true);
+  assert.equal(approval.termsVersion, "fyb-loyalty-v1");
+  for (const document of approval.documents) {
+    const content = readFileSync(new URL("../../" + document.path, import.meta.url), "utf8").replace(/\r\n/g, "\n");
+    assert.equal(createHash("sha256").update(content).digest("hex"), document.sha256, "Revisar la aprobación si cambian los textos: " + document.path);
+  }
+});
+
 test("configuración incompleta o ausencia de administrador conserva bloqueos reales", () => {
-  assert.equal(launchReadiness({ activeManagers: 1, locationVerified: true }, environment, false).ordering.ready, false);
-  assert.ok(launchReadiness({ activeManagers: 0, locationVerified: true }, environment).ordering.problems.includes("ADMINISTRATOR"));
+  assert.equal(launchReadiness({ activeManagers: 1, locationVerified: true }, false).ordering.ready, false);
+  assert.ok(launchReadiness({ activeManagers: 0, locationVerified: true }).ordering.problems.includes("ADMINISTRATOR"));
 });

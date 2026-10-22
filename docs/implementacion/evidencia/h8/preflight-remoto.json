@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-22T02:35:44.563Z",
+  "checkedAt": "2026-10-22T02:44:34.340Z",
   "projectRef": "geazxsvjkqpzbghlywbw",
   "mode": "launch",
   "configurationProblems": [],
@@ -27,7 +27,7 @@
     "locationVerified": true,
     "loyaltyEnabled": false,
     "migrations": 25,
-    "orderingEnabled": false,
+    "orderingEnabled": true,
     "publicProducts": 17,
     "rewardCostCents": null,
     "scheduleConfirmed": false

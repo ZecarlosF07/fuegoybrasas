@@ -1,5 +1,7 @@
 # H8 — Preparación de publicación
 
+**Estado vigente 22/10 — DC-26:** textos aprobados y programa oficial activado por autorización del propietario. [Evidencia vigente](whatsapp-sin-pago-2026-10-21/README.md). Los reportes fechados anteriores no describen el estado actual de los flags.
+
 **Actualización 21/10 — DC-23–25:** [revisión delegada, pedido sin pago y costo opcional](whatsapp-sin-pago-2026-10-21/README.md). 134 unitarias, 132 DB, 116 integración y 51 E2E aprobadas; migración adicional aplicada al oficial. Se retiran pagos/costo como bloqueos y se separa preparación de pedidos/tarjeta. [Guía de entrega](../../../entrega-al-cliente/README.md).
 
 **Actualización DC-22:** [personal sin MFA](personal-sin-mfa/README.md) sustituye la exigencia de segundo factor. Evidencia previa conserva su fecha; el preflight actual ya no exige ADMINISTRATOR_MFA.
@@ -61,13 +63,13 @@ El proyecto se subió a GitHub (`master`, base de publicación `c8e8c42`). La [p
 
 Vercel reportó por separado Yarn global 1.22.19 frente al engine 1.22.22. [Corepack y verificación de comandos](despliegue.md) corrigen ese problema; instalación y build locales aprobados sin alterar el lockfile. Push no implica que Vercel haya terminado correctamente: URL/variables y servicios reales siguen pendientes.
 
-## Bloqueos conservados
+## Seguimiento operativo vigente
 
 1. Mantener la disponibilidad del Supabase oficial y revisar la operación del hosting. Importación en Vercel, HTTPS, SHA, catálogo e imágenes quedaron comprobados el 20/10; Preview conserva su prohibición de usar el oficial.
 2. Operación real del administrador, recuperación de contraseña y personas autorizadas. No se enviaron invitaciones/correos.
-3. Confirmar pagos reales y datos comerciales de las once referencias incompletas. Horarios/cargos pueden seguir desconocidos donde el contrato lo permite.
-4. Costo real del premio y aprobación de condiciones/aviso/plazos. Precios de S/15 y S/14,90 no resuelven PT-06.
+3. Completar las once referencias comerciales aún en borrador y horarios/cargos cuando se conozcan. No hay selección de pago en el pedido ni dependencia de medios de pago.
+4. Condiciones/aviso aprobados por DC-26. Costo interno opcional y desconocido; definir después los plazos/procedimientos aún pendientes en el aviso, sin inventarlos.
 5. Piloto con personal, recepción real por Roberto en WhatsApp, dispositivos físicos, Narrador/zoom real y aceptación del propietario.
 6. Plan/custodia/backups productivos, restauración fuera de esta máquina y monitor/alertas con responsables.
 
-Los pendientes no impiden subir el proyecto para importarlo. **H8 no está aceptado integralmente ni se activan pedidos/fidelización por hacer push.**
+La revisión técnica fue delegada y la activación fue autorizada expresamente; no se infiere del push. Los controles humanos/operativos listados no se presentan como ejecutados ni como una aceptación integral del piloto presencial.

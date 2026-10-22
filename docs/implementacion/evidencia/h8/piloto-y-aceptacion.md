@@ -1,5 +1,7 @@
 # Piloto pendiente de ejecución
 
+**Actualización 22/10:** revisión técnica delegada ejecutada y aprobación de textos/activación recibida ([DC-26](../../../diseno-tecnico/21-aprobacion-y-activacion-tarjeta.md)); la [evidencia técnica](whatsapp-sin-pago-2026-10-21/README.md) se registra aparte. Las casillas humanas siguientes no se marcan por automatización. Pagos no se solicitan y costo interno es opcional.
+
 **Actualización DC-22:** [personal sin MFA](personal-sin-mfa/README.md) sustituye la exigencia de segundo factor. Evidencia previa conserva su fecha; el preflight actual ya no exige ADMINISTRATOR_MFA.
 
 **Estado:** guía preparada; ninguna casilla de este piloto se considera ejecutada. Usar datos sintéticos locales o un entorno productivo controlado expresamente autorizado, nunca reset/seed sintético sobre el Supabase oficial.
