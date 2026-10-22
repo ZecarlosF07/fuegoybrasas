@@ -42,13 +42,13 @@ export const lookupSchema = z.discriminatedUnion("found", [
 ]);
 const programIdentity = { programId: z.uuid(), expectedRevision: z.number().int().positive(), operationId: z.uuid() };
 export const activationChecksSchema = z.strictObject({
-  costConfirmed: z.literal(true), termsApproved: z.literal(true), privacyApproved: z.literal(true), accessTested: z.literal(true), staffReady: z.literal(true),
+  termsApproved: z.literal(true), privacyApproved: z.literal(true), accessTested: z.literal(true), staffReady: z.literal(true),
 });
 export const programActivationSchema = z.strictObject({
-  ...programIdentity, costCents: z.number().int().nonnegative(), termsVersion: z.literal(LOYALTY_TERMS_VERSION), checks: activationChecksSchema,
+  ...programIdentity, costCents: z.number().int().nonnegative().nullable(), termsVersion: z.literal(LOYALTY_TERMS_VERSION), checks: activationChecksSchema,
 });
 export const availabilitySchema = z.strictObject({ ...programIdentity, available: z.boolean() });
-export const costSchema = z.strictObject({ ...programIdentity, costCents: z.number().int().nonnegative() });
+export const costSchema = z.strictObject({ ...programIdentity, costCents: z.number().int().nonnegative().nullable() });
 export const loyaltyJournalSchema = z.strictObject({
   actorUserId: z.uuid(), operationId: z.uuid(), customerId: z.uuid().nullable(), programId: z.uuid().nullable(),
   rewardId: z.uuid().nullable(), kind: z.enum(["credit", "redeem", "incident", "activate", "availability", "cost"]),

@@ -4,6 +4,7 @@ import type { BrowserContext, Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
 import { signInStaffBrowser } from "./staff-browser";
+import { E2E_ORIGIN } from "./environment";
 import { evidenceDirectory } from "./evidence";
 import { cleanupLoyaltyFixtures, testLaunchChecks, testProgramId } from "../integration/loyalty-fixture";
 import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool } from "../integration/staff-fixture";
@@ -27,7 +28,7 @@ test.beforeAll(async ({ browser }) => {
   await actorQuery(manager, "select public.set_reward_availability($1,$2,true,$3)", [testProgramId, revision, randomUUID()]);
   await staffPool.query("insert into public.payment_methods(id,code,label,enabled,verified) values($1,$2,'Pago sintético H6',true,true)", [paymentId, paymentCode]);
   await staffPool.query("update public.business_settings set ordering_enabled=true where id=1");
-  const context = await browser.newContext({ baseURL: "http://127.0.0.1:3100" });
+  const context = await browser.newContext({ baseURL: E2E_ORIGIN });
   const page = await context.newPage(); await signInStaffBrowser(page, manager);
   staffCookies = await context.cookies(); await context.close();
 });
@@ -51,6 +52,19 @@ async function checkLayout(page: Page, name: string) {
     await page.screenshot({ path: captures + "/" + name + "-" + width + ".png", fullPage: true });
   }
 }
+test("administrador conserva el costo del premio desconocido sin bloquear la tarjeta", async ({ page, context }) => {
+  await context.addCookies(staffCookies);
+  await page.goto("/administracion/configuracion");
+  const cost = page.getByLabel("Costo de referencia del premio (soles, opcional)");
+  await cost.fill("");
+  await page.getByRole("button", { name: "Guardar costo de referencia", exact: true }).click();
+  await expect.poll(async () => (await staffPool.query("select reward_cost_cents from app_private.loyalty_program_versions where id=$1", [testProgramId])).rows[0].reward_cost_cents).toBeNull();
+  await expect(cost).toHaveValue("");
+  await expect(page.getByLabel("Costo real confirmado por el responsable")).toHaveCount(0);
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.screenshot({ path: captures + "/programa-costo-opcional.png", fullPage: true });
+});
+
 test("alta sin SMS, cero sellos, acceso privado y preferencias explícitas", async ({ page, context }) => {
   await page.goto("/mi-tarjeta"); await expect(page).toHaveURL(/\/mi-tarjeta\/acceso$/);
   await checkLayout(page, "alta-sin-sms");
@@ -171,7 +185,7 @@ test("preferencias opcionales: lectura fallida o borrador cambiado no bloquean n
   await page.getByRole("link", { name: "Continuar con mis datos", exact: true }).click();
   await page.getByLabel("Tu nombre", { exact: true }).fill("Invitado sintético");
   await page.getByLabel("Dirección de entrega").fill("Dirección sintética H6");
-  await page.getByLabel("Medio de pago").selectOption(paymentCode);
+  await expect(page.getByLabel("Medio de pago")).toHaveCount(0);
   await page.getByRole("button", { name: "Aplicar mis indicaciones frecuentes", exact: true }).click();
   await expect(page.getByLabel("Indicaciones generales (opcional)")).toHaveValue("Sin ají sintético");
   await page.route("**/api/me/card", (route) => route.fulfill({ status: 503, body: "{}" }));
@@ -204,7 +218,7 @@ test("cambiar contacto sin SMS conserva tarjeta; enlace privado abre en otro dis
   await page.getByRole("button", { name: "Copiar enlace y mostrar QR" }).click();
   await expect(page.getByLabel("Enlace privado de mi tarjeta")).toBeVisible();
   const link = await page.getByLabel("Enlace privado de mi tarjeta").inputValue();
-  const other = await browser.newContext({ baseURL: "http://127.0.0.1:3100" }); const otherPage = await other.newPage();
+  const other = await browser.newContext({ baseURL: E2E_ORIGIN }); const otherPage = await other.newPage();
   await otherPage.goto("/mi-tarjeta/acceso");
   await otherPage.getByLabel("Tu nombre", { exact: true }).fill("Otra tarjeta sintética H6");
   await otherPage.getByLabel("Tu celular peruano").fill("999000003");
@@ -217,13 +231,13 @@ test("cambiar contacto sin SMS conserva tarjeta; enlace privado abre en otro dis
   await otherPage.getByRole("button", { name: "Abrir mi tarjeta", exact: true }).click();
   await expect(otherPage.locator("main").getByRole("alert")).toBeVisible();
   expect((await (await otherPage.request.get("/api/me/card")).json()).data.cardId).toBe(previousCard.cardId);
-  await otherPage.goto(link.replace("http://localhost:3000", "http://127.0.0.1:3100"));
+  await otherPage.goto(link.replace("http://localhost:3000", E2E_ORIGIN));
   await expect(otherPage.getByRole("button", { name: "Abrir mi tarjeta", exact: true })).toBeVisible();
   await expect.poll(() => new URL(otherPage.url()).hash.length).toBe(0);
   expect((await (await otherPage.request.get("/api/me/card")).json()).data.cardId).toBe(previousCard.cardId);
   await otherPage.getByRole("button", { name: "Abrir mi tarjeta", exact: true }).click();
   await expect(otherPage.getByRole("heading", { name: "Mi tarjeta", exact: true })).toBeVisible();
-  expect((await (await otherPage.request.get("http://127.0.0.1:3100/api/me/card")).json()).data.cardId).toBe(cardId);
+  expect((await (await otherPage.request.get(`${E2E_ORIGIN}/api/me/card`)).json()).data.cardId).toBe(cardId);
   await other.close(); await page.reload();
   await page.getByLabel("Tu nombre", { exact: true }).focus(); await page.keyboard.press("Tab");
   await expect(page.getByLabel("Indicaciones frecuentes (opcional)")).toBeFocused();

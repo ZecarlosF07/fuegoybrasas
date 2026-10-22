@@ -1428,12 +1428,12 @@ export type Database = {
     Functions: {
       activate_loyalty_program: {
         Args: {
-          p_checks: Json
-          p_cost_cents: number
+          p_checks?: Json
+          p_cost_cents?: number
           p_expected_revision: number
-          p_operation_id: string
+          p_operation_id?: string
           p_program_id: string
-          p_terms_version: string
+          p_terms_version?: string
         }
         Returns: Json
       }
@@ -1755,9 +1755,9 @@ export type Database = {
       }
       update_reward_cost: {
         Args: {
-          p_cost_cents: number
+          p_cost_cents?: number
           p_expected_revision: number
-          p_operation_id: string
+          p_operation_id?: string
           p_program_id: string
         }
         Returns: Json

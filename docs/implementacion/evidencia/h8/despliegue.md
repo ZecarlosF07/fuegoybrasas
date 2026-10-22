@@ -1,6 +1,6 @@
 # Preparar GitHub y Vercel
 
-**Estado:** configuración del repositorio preparada; comprobar publicación y URL real en el [reporte](README.md). No se ha aprobado activar pedidos/programa.
+**Estado al 20/10/2026:** Vercel publicado y comprobado con SHA `6b2b2de06c08c9f483dd7a27e84e9fbf35fa213a`, catálogo 200 y 17 productos. [Verificación vigente](verificacion-2026-10-20/README.md). Los antecedentes siguientes describen la preparación y sus fechas; los pendientes de pagos, costo, textos y piloto conservan pedidos/programa apagados.
 
 **DC-22:** [personal sin MFA](../../../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) y [evidencia](personal-sin-mfa/README.md). La migración oficial y Auth ya retiran segundo factor; los párrafos anteriores de preparación describen su fecha.
 
@@ -74,7 +74,7 @@ Sin SMTP no se envía ninguna invitación. Las pantallas existentes de recuperac
 
 ## Activación y reversión
 
-Tras completar el [piloto](piloto-y-aceptacion.md), confirmar pagos reales, personas autorizadas, costo del premio y textos de privacidad/condiciones. `yarn release:check --launch` añade controles de estos datos; no demuestra piloto ni envía solicitudes a WhatsApp.
+Desde DC-23–25, el pedido no requiere pagos configurados y el costo del premio es opcional. Confirmar personas autorizadas y textos de privacidad/condiciones para fidelización. `yarn release:check --launch` informa preparación de pedidos y tarjeta por separado; no demuestra recepción real en WhatsApp ni aprueba textos del negocio.
 
 El administrador puede habilitar pedido desde configuración comercial cuando estén confirmados sus requisitos. El programa se activa mediante su operación transaccional con costo y confirmaciones, no mediante escritura directa de `loyalty_enabled`. Aprobar también disponibilidad de cocina.
 

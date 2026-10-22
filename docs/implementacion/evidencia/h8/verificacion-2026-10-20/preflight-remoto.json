@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-21T03:18:15.474Z",
+  "projectRef": "geazxsvjkqpzbghlywbw",
+  "mode": "launch",
+  "configurationProblems": [],
+  "launchProblems": [
+    "PAYMENTS",
+    "REWARD_COST",
+    "LOYALTY_DOCUMENTS"
+  ],
+  "readiness": {
+    "activeManagers": 1,
+    "applicationTables": 18,
+    "balanceMismatches": 0,
+    "confirmedPayments": 0,
+    "draftProducts": 11,
+    "locationVerified": true,
+    "loyaltyEnabled": false,
+    "migrations": 24,
+    "orderingEnabled": false,
+    "publicProducts": 17,
+    "rewardCostCents": null,
+    "scheduleConfirmed": false
+  },
+  "ready": false,
+  "limitation": "No acredita piloto, recepción WhatsApp, SMTP, contratación, revisión humana ni aprobación para activar."
+}

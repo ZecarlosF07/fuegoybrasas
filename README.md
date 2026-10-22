@@ -2,6 +2,8 @@
 
 Web de la pollería con Next.js y Supabase. H1–H6 incorporan base visual, personal/permisos, carta, mantenimiento, pedido invitado por WhatsApp y tarjeta sin SMS. H7 añade indicadores de administrador, correcciones, incidencias y recuperación presencial. H8 prepara GitHub/Vercel, CI, salud, diagnóstico y operación, con pruebas integrales locales aprobadas. Piloto y activación pública siguen pendientes; pedidos y fidelización reales permanecen pausados.
 
+- [Guía de entrega al cliente](docs/entrega-al-cliente/README.md).
+- [Pedido sin pago y costo opcional del premio](docs/diseno-tecnico/20-pedido-whatsapp-y-costo-opcional.md).
 - [Hitos y alcance](docs/implementacion/hitos-del-proyecto.md).
 - [Especificación de H1](docs/implementacion/01-hito-1-preparacion-del-proyecto.md).
 - [Evidencia y límites de H1](docs/implementacion/evidencia/h1/README.md).
@@ -120,7 +122,7 @@ yarn test:release
 
 `verify` ejecuta lint, tipos, pruebas unitarias/de componentes y build. `test:db` comprueba permisos con pgTAP y revierte sus objetos; `test:integration` usa Auth/PostgreSQL local reales y elimina sus identidades sintéticas al finalizar. Ejecutar integración y E2E secuencialmente porque ambas prueban el singleton. `test:boundary` compila una copia temporal con una importación prohibida y exige su rechazo por Next, sin alterar la aplicación.
 
-E2E compila explícitamente con `build:local`, inicia con `start:local` en el puerto **3100** y usa Chrome sin ventana. Incluye teclado, axe, reflujo y capturas nuevas en `docs/implementacion/evidencia/h8/capturas/`, preservando las históricas. La fixture de controles renderiza componentes reales con los estilos de producción dentro de la sesión de prueba; no publica una página de demostración. El bloqueo de dobles ejecuciones del botón asíncrono se verifica en pruebas de componentes. Si Chrome no está instalado, preparar ese requisito antes de ejecutar E2E. Después de E2E, ejecutar `yarn build` antes de `yarn start`: el build remoto debe volver a incluir sus propias variables públicas.
+E2E compila explícitamente con `build:local`, inicia con `start:local` en el puerto **13100** (origen centralizado en `tests/e2e/environment.ts`) y usa Chrome sin ventana. Incluye teclado, axe, reflujo y capturas nuevas en `docs/implementacion/evidencia/h8/capturas/`, preservando las históricas. La fixture de controles renderiza componentes reales con los estilos de producción dentro de la sesión de prueba; no publica una página de demostración. El bloqueo de dobles ejecuciones del botón asíncrono se verifica en pruebas de componentes. Si Chrome no está instalado, preparar ese requisito antes de ejecutar E2E. Después de E2E, ejecutar `yarn build` antes de `yarn start`: el build remoto debe volver a incluir sus propias variables públicas.
 
 `check:secrets` busca las claves de servidor configuradas en los recursos estáticos compilados, sin mostrar sus valores. En CI que no disponga de esas claves, registrar esta verificación como no ejecutada y configurar una credencial sintética de prueba; nunca cargar claves productivas solo para correr tests.
 

@@ -1,13 +1,23 @@
 {
-  "checkedAt": "2026-10-14T01:00:28.269Z",
+  "checkedAt": "2026-10-22T02:35:44.563Z",
   "projectRef": "geazxsvjkqpzbghlywbw",
-  "mode": "deployment",
+  "mode": "launch",
   "configurationProblems": [],
   "launchProblems": [
-    "PAYMENTS",
-    "REWARD_COST",
     "LOYALTY_DOCUMENTS"
   ],
+  "features": {
+    "ordering": {
+      "ready": true,
+      "problems": []
+    },
+    "loyalty": {
+      "ready": false,
+      "problems": [
+        "LOYALTY_DOCUMENTS"
+      ]
+    }
+  },
   "readiness": {
     "activeManagers": 1,
     "applicationTables": 18,
@@ -16,12 +26,12 @@
     "draftProducts": 11,
     "locationVerified": true,
     "loyaltyEnabled": false,
-    "migrations": 24,
+    "migrations": 25,
     "orderingEnabled": false,
     "publicProducts": 17,
     "rewardCostCents": null,
     "scheduleConfirmed": false
   },
-  "ready": true,
+  "ready": false,
   "limitation": "No acredita piloto, recepción WhatsApp, SMTP, contratación, revisión humana ni aprobación para activar."
 }

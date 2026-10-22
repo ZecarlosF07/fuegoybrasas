@@ -1,12 +1,15 @@
 # Hito 8 — Probar y publicar
 
+**Actualización 21/10 — DC-23–25:** [pedido sin pago y costo de premio opcional](../diseno-tecnico/20-pedido-whatsapp-y-costo-opcional.md) sustituye los campos de pago/vuelto, la dependencia de pagos y el costo obligatorio de premio. La revisión técnica se delega al agente; ver [guía de entrega](../entrega-al-cliente/README.md).
+
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
 
 **Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](../diseno-tecnico/16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
 
 **Versión:** 1.1 · **Fecha:** 3 de octubre de 2026.  
 **Destinatarios:** equipo de desarrollo, personal autorizado y responsable del negocio.  
-**Estado:** preparación técnica implementada y probada según [evidencia H8](evidencia/h8/README.md); piloto y lanzamiento pendientes.  
+**Estado al 20/10/2026:** regresión integral aprobada y Vercel publicado comprobado según [verificación vigente](evidencia/h8/verificacion-2026-10-20/README.md); piloto, condiciones comerciales y activación pendientes.
+
 **Guía general:** [Hitos del proyecto](hitos-del-proyecto.md).
 
 **Actualización H7 del 11/10/2026:** [DC-12–15](../diseno-tecnico/17-administracion-y-operacion-h7.md) y [evidencia](evidencia/h7/README.md) acreditan implementación/pruebas de panel, recuperación presencial, contingencia y restitución supervisada. PT-13 está resuelto. DC-15 excluye baja de clientes/tarjetas. H8 conserva piloto/revisión humana, personas reales/permisos, SMTP, privacidad, datos comerciales, respaldos contratados y restauración integral de configuración/Storage; no repite la decisión funcional ya aprobada.

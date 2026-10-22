@@ -27,6 +27,6 @@ export function ProgramPanel({ initial, actorUserId, launchReady }: ProgramPanel
     </div>}
     <Button variant="secondary" disabled={operation.pending || operation.journal !== null} aria-busy={operation.pending} onClick={operation.refresh}>{operation.pending ? "Consultando programa…" : "Consultar programa actual"}</Button>
     {data.programs.map((program) => <ProgramEditor key={program.id + ":" + program.revision} program={program} operation={operation} launchReady={launchReady} />)}
-    <p className="text-sm text-brand-muted">No se modifican meta ni contenido de una versión utilizada. Recuperación, baja y resolución de canjes sin entrega se completan con el responsable.</p>
+    <p className="text-sm text-brand-muted">La meta y el premio de una versión utilizada se conservan. El administrador revisa recuperaciones e incidencias con motivo e historial; los clientes y sus tarjetas se conservan.</p>
   </section>;
 }

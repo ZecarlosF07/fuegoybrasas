@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { deploymentProblems, OFFICIAL_SUPABASE_URL } from "./deployment.mjs";
+import { deploymentProblems, launchReadiness, OFFICIAL_SUPABASE_URL } from "./deployment.mjs";
 
 const environment = {
   NEXT_PUBLIC_SUPABASE_URL: OFFICIAL_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_synthetic_release",
@@ -27,4 +27,21 @@ test("servidor incompleto no pasa la preparación", () => {
 });
 test("SHA suministrado por Vercel se usa si el override está vacío", () => {
   assert.deepEqual(deploymentProblems({ ...environment, APP_RELEASE_ID: "", VERCEL_GIT_COMMIT_SHA: "b".repeat(40) }), []);
+});
+
+test("WhatsApp no depende de pagos configurados, costo del premio ni textos de fidelización", () => {
+  const features = launchReadiness({ activeManagers: 1, locationVerified: true, confirmedPayments: 0, rewardCostCents: null }, environment);
+  assert.deepEqual(features.ordering, { ready: true, problems: [] });
+  assert.deepEqual(features.loyalty, { ready: false, problems: ["LOYALTY_DOCUMENTS"] });
+});
+
+test("el programa puede estar preparado con costo desconocido y documentos aprobados", () => {
+  const features = launchReadiness({ activeManagers: 1, locationVerified: true, rewardCostCents: null }, { ...environment, LOYALTY_TERMS_APPROVED: "true", LOYALTY_PRIVACY_APPROVED: "true" });
+  assert.equal(features.ordering.ready, true);
+  assert.equal(features.loyalty.ready, true);
+});
+
+test("configuración incompleta o ausencia de administrador conserva bloqueos reales", () => {
+  assert.equal(launchReadiness({ activeManagers: 1, locationVerified: true }, environment, false).ordering.ready, false);
+  assert.ok(launchReadiness({ activeManagers: 0, locationVerified: true }, environment).ordering.problems.includes("ADMINISTRATOR"));
 });

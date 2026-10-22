@@ -20,7 +20,7 @@ import { buttonClasses } from "@/components/ui/button-classes";
 import { FormFeedback } from "@/components/ui/form-feedback";
 import { SelectField } from "@/components/ui/select-field";
 import { SubmitButton } from "@/components/ui/submit-button";
-import { formatPen, parseSolesToCents } from "@/lib/money/utils";
+import { formatPen } from "@/lib/money/utils";
 
 const HEADINGS = { cart: "Revisa tu pedido", data: "Completa tus datos", continue: "Continúa por WhatsApp" };
 export function CartFlow({ catalog, step }: CartPageProps) {
@@ -30,12 +30,6 @@ export function CartFlow({ catalog, step }: CartPageProps) {
   const unavailable = !cart.ready || cart.blocked || cart.expired || cart.external;
   async function prepare(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const change = new FormData(event.currentTarget).get("changeForCents");
-    try {
-      const amount = typeof change === "string" ? change.trim() ? parseSolesToCents(change.trim()) : null : cart.draft.checkout.changeForCents;
-      const saved = cart.dispatch({ type: "setCheckout", fields: { ...cart.draft.checkout, changeForCents: amount } });
-      if (!saved) return;
-    } catch { cart.setError({ code: "VALIDATION_ERROR", message: "Revisa el importe para el cambio.", fieldErrors: { changeForCents: ["Usa soles con hasta dos decimales."] } }); return; }
     if (await cart.validate()) router.push("/pedido/continuar");
   }
   return <main id="contenido" tabIndex={-1} className="mx-auto max-w-3xl space-y-6 px-4 py-8 focus:outline-none md:px-6">

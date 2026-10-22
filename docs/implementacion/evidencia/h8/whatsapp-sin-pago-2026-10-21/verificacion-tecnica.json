@@ -1,0 +1,46 @@
+{
+  "checkedAt": "2026-10-22T02:38:38.033Z",
+  "baseRelease": "6b2b2de06c08c9f483dd7a27e84e9fbf35fa213a",
+  "workingTreeChanges": true,
+  "environment": "Windows, Node 22.16, Yarn 1.22.22, Next 16.3.8; datos sintéticos solo Supabase local",
+  "results": {
+    "unit": {
+      "passed": 134,
+      "files": 29
+    },
+    "database": {
+      "passed": 132,
+      "files": 9,
+      "migrations": 25
+    },
+    "integration": {
+      "passed": 116,
+      "files": 18,
+      "cleanRun": true
+    },
+    "e2e": {
+      "passed": 51,
+      "port": 13100,
+      "durationSeconds": 199.3
+    },
+    "release": {
+      "passed": 8
+    },
+    "lint": "passed",
+    "typecheck": "passed",
+    "productionBuild": {
+      "passed": true,
+      "durationSeconds": 24.31
+    },
+    "clientSecrets": {
+      "passed": true,
+      "resources": 36
+    }
+  },
+  "limitations": [
+    "WhatsApp interceptado en E2E; sin envío real",
+    "Sin aprobación de términos/privacidad del negocio",
+    "Sin afirmación de Narrador, zoom real ni otro teléfono físico",
+    "Restauración sintética local; sin custodia productiva externa"
+  ]
+}

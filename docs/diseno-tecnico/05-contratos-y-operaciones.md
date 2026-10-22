@@ -1,5 +1,7 @@
 # 05. Contratos, validaciones y operaciones
 
+**Actualización 21/10/2026 — DC-23–25:** [pedido por WhatsApp sin pago y costo de premio opcional](20-pedido-whatsapp-y-costo-opcional.md) sustituye los campos/requisitos de pago y la obligatoriedad del costo de las definiciones anteriores.
+
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
 
 **Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
@@ -77,7 +79,6 @@ Las lecturas privadas construyen el DTO con una sola sentencia de proyección, d
 ```ts
 type CartValidationInput = {
   mode: Mode;
-  paymentMethodCode: string;
   deliveryZoneId?: string;
   lines: Array<{
     lineId: string;

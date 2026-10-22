@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-22T02:33:21.170Z",
+  "projectRef": "geazxsvjkqpzbghlywbw",
+  "migration": "supabase/migrations/20261021000000_whatsapp_without_payment_optional_reward_cost.sql",
+  "sha256": "e9076730f0560217e9e1f63e79326f6218a5d26df9bcac3c3806d8f118657bec",
+  "localMigrationsTested": 25,
+  "historyAndDryRunChecked": true,
+  "applied": true,
+  "productionReset": false,
+  "syntheticIdentitiesCreated": false,
+  "featuresActivatedByMigration": false
+}

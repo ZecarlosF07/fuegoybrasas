@@ -1,0 +1,249 @@
+{
+  "checkedAt": "2026-10-21T03:06:00.318Z",
+  "origin": "https://fuegoybrasas.vercel.app",
+  "expectedRelease": "6b2b2de06c08c9f483dd7a27e84e9fbf35fa213a",
+  "readOnly": true,
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "elapsedMs": 1788,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 15326,
+      "page": {
+        "title": "Carta y promociones | Fuego y Brasas",
+        "hero": false,
+        "images": false,
+        "deploymentMissing": false
+      }
+    },
+    {
+      "path": "/api/health",
+      "status": 200,
+      "elapsedMs": 1551,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "no-store",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 68,
+      "health": {
+        "status": "ok",
+        "release": "6b2b2de06c08c9f483dd7a27e84e9fbf35fa213a"
+      }
+    },
+    {
+      "path": "/api/catalog",
+      "status": 503,
+      "elapsedMs": 1691,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "no-store",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 177,
+      "catalog": {
+        "ok": false,
+        "errorCode": "SERVICE_UNAVAILABLE"
+      },
+      "page": {
+        "hero": false,
+        "images": false,
+        "deploymentMissing": false
+      }
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "elapsedMs": 1378,
+      "headers": {
+        "content-type": "text/plain",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 27,
+      "robots": "User-Agent: *\nDisallow: /\n\n"
+    },
+    {
+      "path": "/personal/acceso",
+      "status": 200,
+      "elapsedMs": 988,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 15855
+    },
+    {
+      "path": "/personal",
+      "status": 307,
+      "elapsedMs": 1105,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "location": "/personal/acceso"
+      },
+      "bytes": 8212
+    },
+    {
+      "path": "/administracion",
+      "status": 307,
+      "elapsedMs": 1095,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "location": "/personal/acceso"
+      },
+      "bytes": 8224
+    },
+    {
+      "path": "/api/me/card",
+      "status": 401,
+      "elapsedMs": 482,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "private, no-store",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 150,
+      "page": {
+        "hero": false,
+        "images": false,
+        "deploymentMissing": false
+      }
+    },
+    {
+      "path": "/privacidad",
+      "status": 200,
+      "elapsedMs": 265,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 20117
+    },
+    {
+      "path": "/condiciones-tarjeta",
+      "status": 200,
+      "elapsedMs": 699,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 20024
+    },
+    {
+      "path": "/pedido",
+      "status": 200,
+      "elapsedMs": 742,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 15362
+    },
+    {
+      "path": "/mi-tarjeta/acceso",
+      "status": 200,
+      "elapsedMs": 362,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 17803
+    },
+    {
+      "path": "/ruta-inexistente-h8",
+      "status": 404,
+      "elapsedMs": 298,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=0, must-revalidate",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "no-referrer",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "x-vercel-cache": "MISS",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload"
+      },
+      "bytes": 10346,
+      "page": {
+        "title": "Fuego y Brasas",
+        "hero": false,
+        "images": false,
+        "deploymentMissing": false
+      }
+    }
+  ]
+}

@@ -1,9 +1,11 @@
 # Fuego y Brasas — Diseño técnico
 
+**Actualización 21/10/2026 — DC-23–25:** [pedido por WhatsApp sin pago y costo de premio opcional](20-pedido-whatsapp-y-costo-opcional.md) sustituye los campos/requisitos de pago y la obligatoriedad del costo de las definiciones anteriores.
+
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
 
-**Versión:** 1.12 · **Fecha:** 13 de octubre de 2026.
-**Estado:** H1–H7 implementados; H8 con preparación técnica, migración oficial y regresión local aprobadas según [evidencia H8](../implementacion/evidencia/h8/README.md). GitHub/Vercel se preparan por solicitud del propietario. Piloto, revisión humana y activación productiva pendientes; ambos flags públicos apagados.
+**Versión:** 1.14 · **Fecha:** 21 de octubre de 2026.
+**Estado:** H1–H7 implementados; [verificación H8 del 20/10](../implementacion/evidencia/h8/verificacion-2026-10-20/README.md) acredita regresión integral, CI y publicación Vercel con catálogo e imágenes disponibles. Piloto, revisión humana, condiciones comerciales y activación productiva pendientes; ambos flags públicos apagados.
 **Base funcional:** [Análisis del proyecto](../analisis-del-proyecto.md) y [Resumen ejecutivo](../resumen-ejecutivo.md).
 
 ## 1. Propósito y precedencia
@@ -36,6 +38,7 @@ Los tipos, nombres de tablas y contratos son definiciones adoptadas para la impl
 | 17 | [Administración y operación H7](17-administracion-y-operacion-h7.md) | Indicadores/clientes, correcciones, restitución, recuperación, contingencia e invitaciones. | DC-12–15 y permisos MFA; amplía contratos y datos. |
 | 18 | [Publicación y operación H8](18-publicacion-y-operacion-h8.md) | GitHub/Vercel, CI, salud, diagnóstico y datos comerciales. | DC-16–19; preparación diferenciada de piloto/activación. |
 | 19 | [Personal sin MFA](19-acceso-del-personal-sin-mfa.md) | Login con contraseña, rol vigente, recuperación y ajuste Auth/SQL compatible. | DC-22; sustituye segundo factor en todos los hitos. |
+| 20 | [Pedido WhatsApp y costo opcional](20-pedido-whatsapp-y-costo-opcional.md) | Pedido sin pago, compatibilidad de borradores, costo interno opcional y revisión técnica delegada. | DC-23–25; actualiza H5/H6/H8. |
 
 Reglas para agentes: [Proyecto](../../.agents/rules/proyecto.md), [UX/UI](../../.agents/rules/ux-ui.md) y [Sistema visual](../../.agents/brand/sistema-visual.md), enlazadas desde [AGENTS.md](../../AGENTS.md). Los valores visuales se mantienen únicamente en el sistema canónico; [MASTER](../../design-system/fuego-y-brasas/MASTER.md) permite recuperarlo mediante la skill. La ejecución se organiza en los [ocho hitos](../implementacion/hitos-del-proyecto.md).
 

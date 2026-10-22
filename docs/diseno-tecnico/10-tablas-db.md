@@ -1,5 +1,7 @@
 # 10. Tablas de base de datos, E-R y soft delete
 
+**Actualización 21/10/2026 — DC-23–25:** [pedido por WhatsApp sin pago y costo de premio opcional](20-pedido-whatsapp-y-costo-opcional.md) sustituye los campos/requisitos de pago y la obligatoriedad del costo de las definiciones anteriores.
+
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
 
 **Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.
@@ -582,7 +584,7 @@ Configuración única del negocio. No tiene soft delete ni operación de elimina
 | `created_at` | `timestamptz` | No | `now()` | Alta única. |
 | `updated_at` | `timestamptz` | No | `now()` | Mutación. |
 
-**Integridad:** CHECK singleton; trigger rechaza DELETE de la configuración en operaciones ordinarias. JSON debe ser array con estructura cerrada, día ISO 1–7, horas HH:mm y cruce explícito de medianoche; periodos confirmados sin solapamientos. `pickup_charges_verified=true` exige importe no nulo. Activar fidelización exige versión activa, costo y términos confirmados; validación entre tablas en RPC.
+**Integridad:** CHECK singleton; trigger rechaza DELETE de la configuración en operaciones ordinarias. JSON debe ser array con estructura cerrada, día ISO 1–7, horas HH:mm y cruce explícito de medianoche; periodos confirmados sin solapamientos. `pickup_charges_verified=true` exige importe no nulo. Activar fidelización exige versión activa y condiciones aprobadas; el costo de referencia es opcional; validación entre tablas en RPC.
 
 **Índices y acceso:** PK suficiente. `update_business_config` para responsable; activación del programa mediante su RPC específica. Lectura pública solo campos verificados. Datos sin confirmar no se exponen como definitivos. Sin horarios confirmados, estado derivado `unknown`; pausa no equivale a horario cerrado. Sin fila singleton, devolver `CONFIG_NOT_READY`.
 
@@ -712,7 +714,7 @@ Regla fija de cada tarjeta, con disponibilidad y costo operativo revisables.
 | `deleted_by` | `uuid` | Sí | `NULL` | FK a personal. |
 | `delete_reason` | `text` | Sí | `NULL` | Motivo. |
 
-**Integridad e índices:** UNIQUE `code`; índice único parcial sobre `status WHERE status='active' AND deleted_at IS NULL` asegura como máximo una activa. Activación exige costo/términos confirmados. Trigger/RPC impide cambiar meta, nombre, contenido o versión de términos después de salir de draft. Variar costo/disponibilidad no cambia derechos ganados.
+**Integridad e índices:** UNIQUE `code`; índice único parcial sobre `status WHERE status='active' AND deleted_at IS NULL` asegura como máximo una activa. Activación exige condiciones aprobadas y admite costo desconocido. Trigger/RPC impide cambiar meta, nombre, contenido o versión de términos después de salir de draft. Variar costo/disponibilidad no cambia derechos ganados.
 
 **Operaciones:** `activate_loyalty_program`, `set_reward_availability`, `update_reward_cost` por manager activo. No se incorpora editor de campañas/meta. Versión activa o referenciada por tarjetas/premios, incluso eliminados, no se borra lógicamente: se retira. Restaurar versión no usada la devuelve a draft y no activa el programa.
 

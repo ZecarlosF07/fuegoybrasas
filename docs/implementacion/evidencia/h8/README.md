@@ -1,8 +1,12 @@
 # H8 — Preparación de publicación
 
+**Actualización 21/10 — DC-23–25:** [revisión delegada, pedido sin pago y costo opcional](whatsapp-sin-pago-2026-10-21/README.md). 134 unitarias, 132 DB, 116 integración y 51 E2E aprobadas; migración adicional aplicada al oficial. Se retiran pagos/costo como bloqueos y se separa preparación de pedidos/tarjeta. [Guía de entrega](../../../entrega-al-cliente/README.md).
+
 **Actualización DC-22:** [personal sin MFA](personal-sin-mfa/README.md) sustituye la exigencia de segundo factor. Evidencia previa conserva su fecha; el preflight actual ya no exige ADMINISTRATOR_MFA.
 
-**Fecha:** 12/10/2026 (America/Lima). **Estado:** implementación técnica y pruebas locales terminadas; piloto y activación pública pendientes. El repositorio se prepara para importar en Vercel por instrucción del propietario. No se declara un despliegue Vercel ni aceptación operativa antes de comprobarlos.
+**Actualización 20/10/2026:** [verificación integral y Vercel publicado](verificacion-2026-10-20/README.md). Regresión local 132 unitarias, 132 DB, 113 integración y 50 E2E aprobadas; CI y SHA publicado comprobados. Supabase quedó accesible después de que el propietario lo habilitara y la carta pública responde 200. Piloto, datos comerciales y activación siguen pendientes. Los apartados fechados anteriores conservan su evidencia histórica.
+
+**Fecha del reporte inicial:** 12/10/2026 (America/Lima). **Estado vigente:** versión publicada comprobada técnicamente; aceptación operativa y activación pública pendientes.
 
 ## Entrega
 
@@ -59,7 +63,7 @@ Vercel reportó por separado Yarn global 1.22.19 frente al engine 1.22.22. [Core
 
 ## Bloqueos conservados
 
-1. Importar GitHub en Vercel y configurar Production: origen HTTPS, secretos, callbacks y verificación de SHA/health. Preview no usa el oficial.
+1. Mantener la disponibilidad del Supabase oficial y revisar la operación del hosting. Importación en Vercel, HTTPS, SHA, catálogo e imágenes quedaron comprobados el 20/10; Preview conserva su prohibición de usar el oficial.
 2. Operación real del administrador, recuperación de contraseña y personas autorizadas. No se enviaron invitaciones/correos.
 3. Confirmar pagos reales y datos comerciales de las once referencias incompletas. Horarios/cargos pueden seguir desconocidos donde el contrato lo permite.
 4. Costo real del premio y aprobación de condiciones/aviso/plazos. Precios de S/15 y S/14,90 no resuelven PT-06.

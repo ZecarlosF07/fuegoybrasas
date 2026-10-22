@@ -46,8 +46,9 @@ it("H8 restaura identidad Auth y metadatos Storage; recupera bytes guardados por
   if (recovered.error || !recovered.data) throw new Error("No se pudo recuperar el archivo sintético.");
   const expectedHash = createHash("sha256").update(bytes).digest("hex");
   expect(createHash("sha256").update(Buffer.from(await recovered.data.arrayBuffer())).digest("hex")).toBe(expectedHash);
-  mkdirSync("docs/implementacion/evidencia/h8/personal-sin-mfa", { recursive: true });
-  writeFileSync("docs/implementacion/evidencia/h8/personal-sin-mfa/restauracion.json", JSON.stringify({ checkedAt: new Date().toISOString(),
+  const evidence = process.env.H8_EVIDENCE_ROOT ?? ".test-fixtures/h8-evidence";
+  mkdirSync(evidence, { recursive: true });
+  writeFileSync(evidence + "/restauracion.json", JSON.stringify({ checkedAt: new Date().toISOString(),
     environment: "Supabase local aislado", durationMs: Math.round(performance.now() - startedAt), databaseMetadataRestored: true,
     authIdentityRestored: true, storageBytesRecovered: true, sha256Matches: true,
     limitations: ["Mismo clúster PostgreSQL: roles preexistentes", "Auth/Storage HTTP usan la base de origen; no se desplegó otra plataforma", "Bytes sintéticos recuperados en origen local; no restauración productiva ni medición de RPO real"] }, null, 2) + "\n");

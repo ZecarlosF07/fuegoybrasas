@@ -10,9 +10,6 @@ function problem(message: string, code: ErrorCode = "VALIDATION_ERROR"): CartVal
 export function validateCart(catalog: Catalog, input: CartInput, fingerprint: string): CartValidationResult {
   const config = catalog.configuration;
   if (!config.orderingEnabled) return { error: { code: "ORDERING_PAUSED", message: "Los pedidos están pausados. Conservamos tu borrador para cuando se habiliten." } };
-  if (!config.paymentsReady) return { error: { code: "CONFIG_NOT_READY", message: "No hay medios de pago confirmados. Conserva el borrador y vuelve más tarde." } };
-  const paymentMethod = config.paymentMethods.find((method) => method.code === input.paymentMethodCode);
-  if (!paymentMethod) return problem("El medio de pago ya no está disponible. Vuelve a seleccionarlo.", "CATALOG_CHANGED");
   if (businessStatus(config, catalog.serverNow) === "closed") return problem("El local está fuera de su horario de atención. Conservamos tu borrador.", "BUSINESS_CLOSED");
   if (input.mode === "pickup" && (!config.locationVerified || !config.address)) return problem("El recojo aún no tiene una ubicación confirmada. Elige entrega o vuelve más tarde.", "MODE_NOT_ALLOWED");
   const zone = input.mode === "delivery" && input.deliveryZoneId ? config.deliveryZones.find((value) => value.id === input.deliveryZoneId) : null;
@@ -30,7 +27,7 @@ export function validateCart(catalog: Catalog, input: CartInput, fingerprint: st
   if (input.mode === "delivery" && (!zone || zone.minimumSubtotalCents === null)) warnings.push("El mínimo de compra para esta dirección está pendiente de confirmación.");
   if (amountCents === null) warnings.push("El cargo está pendiente; el total se confirmará por WhatsApp.");
   const totalCents = amountCents === null ? null : subtotalCents + amountCents;
-  const parsed = validatedCartSchema.safeParse({ status: lineIssues.length ? "needs_review" : "ready", validatedAt: catalog.serverNow, expiresAt: new Date(Date.parse(catalog.serverNow) + VALIDATION_TTL_MS).toISOString(), fingerprint, mode: input.mode, configRevision: config.revision, whatsappE164: config.whatsappE164, paymentMethod, deliveryZone: zone ?? null, warnings, lineIssues, lines, totals: { subtotalCents, charge: { status: amountCents === null ? "pending" : "known", amountCents }, totalCents } });
+  const parsed = validatedCartSchema.safeParse({ status: lineIssues.length ? "needs_review" : "ready", validatedAt: catalog.serverNow, expiresAt: new Date(Date.parse(catalog.serverNow) + VALIDATION_TTL_MS).toISOString(), fingerprint, mode: input.mode, configRevision: config.revision, whatsappE164: config.whatsappE164, deliveryZone: zone ?? null, warnings, lineIssues, lines, totals: { subtotalCents, charge: { status: amountCents === null ? "pending" : "known", amountCents }, totalCents } });
   if (!parsed.success) return problem("El importe excede los límites del pedido. Reduce las cantidades.");
   return { data: parsed.data };
 }

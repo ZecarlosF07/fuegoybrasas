@@ -4,6 +4,7 @@ import type { BrowserContext, Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
 import { signInStaffBrowser } from "./staff-browser";
+import { E2E_ORIGIN } from "./environment";
 import { evidenceDirectory } from "./evidence";
 import { cleanupLoyaltyFixtures, testLaunchChecks, testProgramId } from "../integration/loyalty-fixture";
 import { createPrivateCustomerFixture } from "../integration/private-card-fixture";
@@ -25,7 +26,7 @@ test.beforeAll(async ({ browser }) => {
   await actorQuery(manager, "select public.activate_loyalty_program($1,$2,650,'fyb-loyalty-v1',$3,$4)", [testProgramId, program.revision, JSON.stringify(testLaunchChecks), randomUUID()]);
   near = await createPrivateCustomerFixture(); ready = await createPrivateCustomerFixture();
   for (const [customer, stamps] of [[near, 8], [ready, 10]] as const) for (let index = 0; index < stamps; index += 1) await actorQuery(manager, "select public.credit_stamp($1,$2,true,true,$3)", [customer.customerId, randomUUID(), "H7-VISITA-" + index]);
-  const context = await browser.newContext({ baseURL: "http://127.0.0.1:3100" });
+  const context = await browser.newContext({ baseURL: E2E_ORIGIN });
   await signInStaffBrowser(await context.newPage(), manager); cookies = await context.cookies(); await context.close();
 });
 test.afterAll(async () => {
@@ -133,7 +134,7 @@ test("recuperación presencial invalida acceso antiguo y conserva identidad", as
   await expect(page.getByLabel("Nuevo enlace privado del cliente")).toBeVisible();
   const link = await page.getByLabel("Nuevo enlace privado del cliente").inputValue();
   await page.setViewportSize({ width: 320, height: 900 }); expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  const ownContext = await browser.newContext({ baseURL: "http://127.0.0.1:3100" });
+  const ownContext = await browser.newContext({ baseURL: E2E_ORIGIN });
   try {
     const own = await ownContext.newPage(); await own.goto(link); await own.getByRole("button", { name: "Abrir mi tarjeta", exact: true }).click();
     await expect(own.getByText("8 de 10 sellos", { exact: true })).toBeVisible();

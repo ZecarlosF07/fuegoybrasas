@@ -2,6 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
+import { E2E_ORIGIN } from "./environment";
 import { evidenceDirectory } from "./evidence";
 import { actorQuery, cleanupStaffFixtures, createInvitationFixture, createStaffFixture, staffAdmin, staffPool } from "../integration/staff-fixture";
 import type { StaffFixture } from "../integration/types/staff-fixture";
@@ -28,7 +29,7 @@ test("sin JavaScript el acceso no envía credenciales mediante navegación GET",
   const context = await browser.newContext({ javaScriptEnabled: false });
   try {
     const page = await context.newPage();
-    await page.goto("http://127.0.0.1:3100/personal/acceso");
+    await page.goto(`${E2E_ORIGIN}/personal/acceso`);
     await page.getByLabel("Correo electrónico").fill("sin-js@example.test");
     await page.getByLabel("Contraseña", { exact: true }).fill("Texto sintético sin cuenta");
     await expect(page.getByRole("button", { name: "Ingresar", exact: true })).toBeDisabled();
@@ -112,9 +113,9 @@ test("login con contraseña, configuración real, conflicto y logout", async ({ 
 });
 
 test("recuperación consume enlace y permite ingresar con la nueva contraseña", async ({ page }) => {
-  const link = await staffAdmin.generateLink({ type: "recovery", email: manager.email, options: { redirectTo: "http://127.0.0.1:3100/auth/confirm" } });
+  const link = await staffAdmin.generateLink({ type: "recovery", email: manager.email, options: { redirectTo: `${E2E_ORIGIN}/auth/confirm` } });
   if (link.error) throw new Error("No se pudo preparar el enlace sintético de recuperación.");
-  const url = `http://127.0.0.1:3100/auth/confirm?token_hash=${encodeURIComponent(link.data.properties.hashed_token)}&type=recovery`;
+  const url = `${E2E_ORIGIN}/auth/confirm?token_hash=${encodeURIComponent(link.data.properties.hashed_token)}&type=recovery`;
   await page.goto(url);
   await expect(page).toHaveURL(/\/personal\/restablecer$/);
   await expect(page.getByLabel("Código de seis dígitos")).toHaveCount(0);

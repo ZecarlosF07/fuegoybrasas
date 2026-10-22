@@ -14,3 +14,15 @@ export function deploymentProblems(environment) {
   if (!/^[a-f0-9]{40}$/.test(environment.APP_RELEASE_ID || environment.VERCEL_GIT_COMMIT_SHA || "")) problems.push("RELEASE_ID");
   return problems;
 }
+
+export function launchReadiness(data, environment, configured = true) {
+  const common = [
+    ...(!data.activeManagers ? ["ADMINISTRATOR"] : []),
+    ...(!data.locationVerified ? ["LOCATION"] : []),
+  ];
+  const loyalty = [...common, ...(environment.LOYALTY_TERMS_APPROVED !== "true" || environment.LOYALTY_PRIVACY_APPROVED !== "true" ? ["LOYALTY_DOCUMENTS"] : [])];
+  return {
+    ordering: { ready: configured && !common.length, problems: common },
+    loyalty: { ready: configured && !loyalty.length, problems: loyalty },
+  };
+}

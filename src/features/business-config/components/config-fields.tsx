@@ -15,7 +15,7 @@ export function ConfigFields({ config, disabled, errors }: ConfigFieldsProps) {
     <TextField id="pickupExtraCents" name="pickupExtraCents" label="Cargo adicional para recoger, en céntimos" inputMode="numeric" type="number" min={0} max={100000} step={1} defaultValue={config.pickupExtraCents ?? ""} help="Un importe pendiente se deja vacío. Cero significa un cargo confirmado de S/ 0.00." error={errors?.["patch.pickupExtraCents"]?.[0]} />
     <CheckboxField id="pickupChargesVerified" name="pickupChargesVerified" label="Cargo para recoger confirmado" defaultChecked={config.pickupChargesVerified} />
     <CheckboxField id="scheduleConfirmed" name="scheduleConfirmed" label="Horario comprobado" defaultChecked={config.scheduleConfirmed} />
-    <CheckboxField id="orderingEnabled" name="orderingEnabled" label="Habilitar pedidos por WhatsApp" defaultChecked={config.orderingEnabled} help="Requiere un medio de pago confirmado. Habilitar solo después de confirmar precios y atención real." />
+    <CheckboxField id="orderingEnabled" name="orderingEnabled" label="Habilitar pedidos por WhatsApp" defaultChecked={config.orderingEnabled} help="Prepara el carrito para coordinarlo por WhatsApp. Habilitar después de revisar precios y atención; no requiere configurar pagos." />
     <CheckboxField id="loyaltyEnabled" name="loyaltyEnabled" label="Habilitar tarjeta de fidelización" defaultChecked={config.loyaltyEnabled} help="Pausar conserva progreso y premios. Reanudar exige una versión activa y condiciones operativas aprobadas." />
     <p className="text-sm text-brand-muted">Zona horaria: {config.timezone}.</p>
   </fieldset>;

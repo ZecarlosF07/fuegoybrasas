@@ -5,13 +5,14 @@ import { createClient } from "@supabase/supabase-js";
 import { randomUUID } from "node:crypto";
 import sharp from "sharp";
 
+import { E2E_ORIGIN } from "./environment";
 import { evidenceDirectory } from "./evidence";
 import { actorQuery, cleanupStaffFixtures, createStaffFixture, staffPool } from "../integration/staff-fixture";
 import type { StaffFixture } from "../integration/types/staff-fixture";
 
 test.describe.configure({ mode: "serial", timeout: 90000 });
 test.use({ trace: "off" });
-const root = "http://127.0.0.1:3100";
+const root = E2E_ORIGIN;
 const screenshots = evidenceDirectory("h4/capturas");
 const category = randomUUID(), item = randomUUID();
 const paths: string[] = [];

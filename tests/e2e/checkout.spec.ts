@@ -4,17 +4,18 @@ import type { BrowserContext, Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
 import { signInStaffBrowser } from "./staff-browser";
+import { E2E_ORIGIN } from "./environment";
 import { evidenceDirectory } from "./evidence";
 import { cleanupStaffFixtures, createStaffFixture, staffPool } from "../integration/staff-fixture";
 import type { StaffFixture } from "../integration/types/staff-fixture";
 
 test.describe.configure({ mode: "serial", timeout: 90000 });
 test.use({ trace: "off" });
-const category = randomUUID(), item = randomUUID(), price = randomUUID(), group = randomUUID(), choice = randomUUID(), payment = randomUUID(), zone = randomUUID();
-const slug = `h5-e2e-${item}`, code = `h5-${payment}`;
+const category = randomUUID(), item = randomUUID(), price = randomUUID(), group = randomUUID(), choice = randomUUID(), zone = randomUUID();
+const slug = `h5-e2e-${item}`;
 const screenshots = evidenceDirectory("h5/capturas");
 let manager: StaffFixture, cookies: Awaited<ReturnType<BrowserContext["cookies"]>>, original: Record<string, unknown>;
-const extraPayments: string[] = [], extraZones: string[] = [], extraCodes: string[] = [];
+const extraZones: string[] = [];
 test.beforeAll(async ({ browser }) => {
   original = (await staffPool.query("select * from public.business_settings where id=1")).rows[0];
   manager = await createStaffFixture("manager");
@@ -25,20 +26,19 @@ test.beforeAll(async ({ browser }) => {
   await staffPool.query("insert into public.option_groups(id,item_id,name,min_choices,max_choices,active,verified) values($1,$2,'Salsa de prueba',1,1,true,true)", [group, item]);
   await staffPool.query("insert into public.option_choices(id,group_id,label,extra_price_cents,available,verified) values($1,$2,'Salsa sintética',100,true,true)", [choice, group]);
   await staffPool.query("update public.catalog_items set publication_status='published',online_enabled=true,content_verified=true where id=$1", [item]);
-  await staffPool.query("insert into public.payment_methods(id,code,label,needs_change,enabled,verified) values($1,$2,'Pago sintético H5',true,true,true)", [payment, code]);
   await staffPool.query("insert into public.delivery_zones(id,name,coverage,fee_cents,minimum_subtotal_cents,enabled,verified) values($1,'Zona sintética H5','allowed',300,1000,true,true)", [zone]);
   await staffPool.query("update public.business_settings set ordering_enabled=true,location_verified=true,address='Ubicación sintética H5',pickup_charges_verified=true,pickup_extra_cents=0 where id=1");
   await staffPool.query("commit");
-  const context = await browser.newContext({ baseURL: "http://127.0.0.1:3100" });
+  const context = await browser.newContext({ baseURL: E2E_ORIGIN });
   const page = await context.newPage(); await signInStaffBrowser(page, manager); cookies = await context.cookies(); await context.close();
 });
 test.afterAll(async () => {
   await staffPool.query("update public.business_settings set ordering_enabled=false where id=1");
   await staffPool.query("begin");
-  for (const table of ["payment_methods", "delivery_zones", "option_choices", "option_groups", "catalog_prices", "catalog_items", "categories"]) await staffPool.query(`alter table public.${table} disable trigger catalog_no_delete`);
-  await staffPool.query("delete from public.payment_methods where id=any($1::uuid[]) or code=any($2::text[])", [[payment, ...extraPayments], extraCodes]); await staffPool.query("delete from public.delivery_zones where id=any($1::uuid[])", [[zone, ...extraZones]]);
+  for (const table of ["delivery_zones", "option_choices", "option_groups", "catalog_prices", "catalog_items", "categories"]) await staffPool.query(`alter table public.${table} disable trigger catalog_no_delete`);
+  await staffPool.query("delete from public.delivery_zones where id=any($1::uuid[])", [[zone, ...extraZones]]);
   await staffPool.query("delete from public.option_choices where group_id=$1", [group]); await staffPool.query("delete from public.option_groups where id=$1", [group]); await staffPool.query("delete from public.catalog_prices where item_id=$1", [item]); await staffPool.query("delete from public.catalog_items where id=$1", [item]); await staffPool.query("delete from public.categories where id=$1", [category]);
-  for (const table of ["payment_methods", "delivery_zones", "option_choices", "option_groups", "catalog_prices", "catalog_items", "categories"]) await staffPool.query(`alter table public.${table} enable trigger catalog_no_delete`);
+  for (const table of ["delivery_zones", "option_choices", "option_groups", "catalog_prices", "catalog_items", "categories"]) await staffPool.query(`alter table public.${table} enable trigger catalog_no_delete`);
   if (original) await staffPool.query("update public.business_settings set ordering_enabled=$1,location_verified=$2,address=$3,pickup_charges_verified=$4,pickup_extra_cents=$5,revision=$6,updated_at=$7 where id=1", [original.ordering_enabled, original.location_verified, original.address, original.pickup_charges_verified, original.pickup_extra_cents, original.revision, original.updated_at]);
   await staffPool.query("commit");
   if (manager) await cleanupStaffFixtures([manager]); await staffPool.end();
@@ -53,7 +53,7 @@ async function addProduct(page: Page, instructions = "Sin ají sintético") {
 async function fillCheckout(page: Page) {
   await page.getByRole("link", { name: "Continuar con mis datos", exact: true }).click(); await expect(page).toHaveURL(/\/pedido\/datos$/);
   await page.getByLabel("Tu nombre").fill("Cliente sintético"); await page.getByLabel("Dirección de entrega").fill("Dirección sintética 123");
-  await page.getByLabel("Medio de pago").selectOption(code);
+  await expect(page.getByLabel("Medio de pago")).toHaveCount(0);
 }
 async function prepare(page: Page) { await page.getByRole("button", { name: "Preparar mensaje de WhatsApp", exact: true }).click(); }
 async function checkCheckoutLayout(page: Page, step: string) {
@@ -83,7 +83,7 @@ test("invitado móvil: datos, cargos pendientes, mensaje íntegro y retorno sin 
   expect(await address.evaluate((element) => getComputedStyle(element).outlineWidth)).toBe("2px");
   await prepare(page); await expect(page).toHaveURL(/\/pedido\/continuar$/); await checkCheckoutLayout(page, "continuar");
   const text = await page.getByLabel("Mensaje completo para WhatsApp").inputValue();
-  expect(text).toContain("Sin ají sintético"); expect(text).toContain("S/16.90"); expect(text).toContain("Total: por confirmar"); expect(text).toContain("Dirección sintética 123");
+  expect(text).not.toMatch(/Pago:|Cambio para:/); expect(text).toContain("Sin ají sintético"); expect(text).toContain("S/16.90"); expect(text).toContain("Total: por confirmar"); expect(text).toContain("Dirección sintética 123");
   const link = page.getByRole("link", { name: "Abrir WhatsApp", exact: true }); const href = await link.getAttribute("href"); expect(href).toMatch(/^https:\/\/wa.me\/51982042493\?text=/);
   expect(new URL(href ?? "").searchParams.get("text")).toBe(text);
   const local = await page.evaluate(() => localStorage.getItem("fyb.cart.v1")); for (const pii of ["Cliente sintético", "Dirección sintética", "Sin ají sintético"]) expect(local).not.toContain(pii);
@@ -95,7 +95,7 @@ test("invitado móvil: datos, cargos pendientes, mensaje íntegro y retorno sin 
 
 test("API estricta sin PII, cantidades acotadas y respuesta canónica real", async ({ page }) => {
   const snapshot = (await (await page.request.get("/api/catalog")).json()).data; const product = snapshot.items.find((value: { id: string }) => value.id === item);
-  const input = { mode: "delivery", paymentMethodCode: code, deliveryZoneId: zone, lines: [{ lineId: randomUUID(), itemId: item, quantity: 2, choiceIds: [choice], observedItemRevision: product.revision, observedUnitPriceCents: 1690 }] };
+  const input = { mode: "delivery", deliveryZoneId: zone, lines: [{ lineId: randomUUID(), itemId: item, quantity: 2, choiceIds: [choice], observedItemRevision: product.revision, observedUnitPriceCents: 1690 }] };
   const historyBefore = (await staffPool.query("select (select count(*)::int from app_private.operation_receipts) receipts,(select count(*)::int from app_private.audit_entries) audits,(select revision from public.business_settings where id=1) revision")).rows[0];
   const response = await page.request.post("/api/cart/validate", { data: input }); expect(response.status()).toBe(200); expect(response.headers()["cache-control"]).toBe("no-store");
   const historyAfter = (await staffPool.query("select (select count(*)::int from app_private.operation_receipts) receipts,(select count(*)::int from app_private.audit_entries) audits,(select revision from public.business_settings where id=1) revision")).rows[0];
@@ -138,19 +138,27 @@ test("revisión expirada y clipboard denegado conservan mensaje y ofrecen recupe
   await page.screenshot({ path: `${screenshots}/revision-expirada.png`, fullPage: true }); await page.getByRole("button", { name: "Revalidar antes de abrir WhatsApp" }).click(); await expect(page.getByRole("link", { name: "Abrir WhatsApp", exact: true })).toBeVisible();
 });
 
-test("configuración privada crea, retira y restaura pagos sin reactivar condiciones", async ({ page, context }) => {
-  await context.addCookies(cookies); await page.goto("/administracion/configuracion"); await page.getByRole("button", { name: "Crear medio de pago", exact: true }).click();
-  const editor = page.getByRole("region", { name: "Editor de pagos y zonas" }); const newCode = `h5-e2e-${randomUUID()}`; extraCodes.push(newCode);
-  await editor.getByLabel("Código del pago").fill(newCode); await editor.getByLabel("Nombre del medio de pago").fill("Pago adicional de prueba H5"); await editor.getByRole("button", { name: "Guardar condiciones", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Pago adicional de prueba H5 · pendiente" })).toBeVisible();
-  const id = (await staffPool.query("select id from public.payment_methods where code=$1", [newCode])).rows[0].id; extraPayments.push(id);
-  await page.getByRole("button", { name: "Pago adicional de prueba H5 · pendiente" }).click(); await editor.getByLabel("Motivo (10–500 caracteres)").fill("Retiro sintético de prueba H5"); await editor.getByRole("button", { name: "Confirmar retiro", exact: true }).click();
-  await page.getByLabel("Mostrar condiciones retiradas").check(); await page.getByRole("button", { name: "Pago adicional de prueba H5 · retirado" }).click(); await editor.getByLabel("Motivo (10–500 caracteres)").fill("Restauración sintética H5"); await editor.getByRole("button", { name: "Confirmar restauración", exact: true }).click();
-  expect((await staffPool.query("select enabled,verified from public.payment_methods where id=$1", [id])).rows[0]).toEqual({ enabled: false, verified: false });
-  await page.getByRole("button", { name: "Crear zona", exact: true }).click(); await editor.getByLabel("Nombre de la zona").fill("Zona adicional de prueba H5"); await editor.getByLabel("Cargo (soles, opcional)").fill("2.50"); await editor.getByRole("button", { name: "Guardar condiciones", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Zona adicional de prueba H5 · pendiente" })).toBeVisible();
-  extraZones.push((await staffPool.query("select id from public.delivery_zones where name='Zona adicional de prueba H5'")).rows[0].id);
-  await page.screenshot({ path: `${screenshots}/configuracion-condiciones.png`, fullPage: true });
+test("configuración privada conserva zonas sin exigir pagos", async ({ page, context }) => {
+  await context.addCookies(cookies); await page.goto("/administracion/configuracion");
+  await expect(page.getByRole("button", { name: "Crear medio de pago", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "Crear zona", exact: true }).click();
+  const editor = page.getByRole("region", { name: "Editor de condiciones" });
+  await editor.getByLabel("Nombre de la zona").fill("Zona adicional de prueba H5");
+  await editor.getByLabel("Cargo (soles, opcional)").fill("2.50");
+  await editor.getByRole("button", { name: "Guardar condiciones", exact: true }).click();
+  const label = "Zona adicional de prueba H5";
+  await expect(page.getByRole("button", { name: label + " · pendiente" })).toBeVisible();
+  const id = (await staffPool.query("select id from public.delivery_zones where name=$1", [label])).rows[0].id;
+  extraZones.push(id);
+  await page.getByRole("button", { name: label + " · pendiente" }).click();
+  await editor.getByLabel("Motivo (10–500 caracteres)").fill("Retiro sintético de prueba H5");
+  await editor.getByRole("button", { name: "Confirmar retiro", exact: true }).click();
+  await page.getByLabel("Mostrar condiciones retiradas").check();
+  await page.getByRole("button", { name: label + " · retirada" }).click();
+  await editor.getByLabel("Motivo (10–500 caracteres)").fill("Restauración sintética H5");
+  await editor.getByRole("button", { name: "Confirmar restauración", exact: true }).click();
+  expect((await staffPool.query("select enabled,verified from public.delivery_zones where id=$1", [id])).rows[0]).toEqual({ enabled: false, verified: false });
+  await page.screenshot({ path: screenshots + "/configuracion-condiciones.png", fullPage: true });
 });
 
 

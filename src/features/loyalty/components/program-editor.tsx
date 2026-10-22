@@ -16,11 +16,12 @@ export function ProgramEditor({ program, operation, launchReady }: ProgramEditor
   async function costSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); if (disabled) return;
     const form = new FormData(event.currentTarget);
-    let costCents: number;
-    try { costCents = parseSolesToCents(String(form.get("costCents") ?? "")); }
-    catch { operation.setError({ code: "VALIDATION_ERROR", message: "Escribe el costo real en soles, con hasta dos decimales.", fieldErrors: { costCents: ["El costo no puede quedar vacío."] } }); return; }
+    let costCents: number | null;
+    const cost = String(form.get("costCents") ?? "").trim();
+    try { costCents = cost ? parseSolesToCents(cost) : null; }
+    catch { operation.setError({ code: "VALIDATION_ERROR", message: "Si conoces el costo, escríbelo en soles con hasta dos decimales.", fieldErrors: { costCents: ["Revisa el importe o déjalo vacío."] } }); return; }
     const base = { programId: program.id, expectedRevision: program.revision, operationId: formOperationId(operation), costCents };
-    const checks = { costConfirmed: form.get("costConfirmed") === "on", termsApproved: form.get("termsApproved") === "on", privacyApproved: form.get("privacyApproved") === "on", accessTested: form.get("accessTested") === "on", staffReady: form.get("staffReady") === "on" };
+    const checks = { termsApproved: form.get("termsApproved") === "on", privacyApproved: form.get("privacyApproved") === "on", accessTested: form.get("accessTested") === "on", staffReady: form.get("staffReady") === "on" };
     const parsed = kind === "activate" ? programActivationSchema.safeParse({ ...base, termsVersion: program.termsVersion, checks }) : costSchema.safeParse(base);
     if (!parsed.success) { operation.setError(loyaltyFormError(parsed.error)); return; }
     await operation.run(kind, parsed.data);
@@ -35,9 +36,8 @@ export function ProgramEditor({ program, operation, launchReady }: ProgramEditor
     <h3 className="text-xl font-bold">{program.rewardName} · diez sellos</h3><p>{program.rewardContents.join(" · ")}</p>
     <p>Estado: {program.status === "draft" ? "borrador" : program.status === "active" ? "activo" : "retirado con derechos conservados"}. Revisión {program.revision}.</p>
     <form method="post" onSubmit={costSubmit} noValidate className="space-y-4">
-      <TextField id="costCents" name="costCents" label="Costo real del premio (soles)" inputMode="decimal" defaultValue={program.costCents === null ? "" : (program.costCents / 100).toFixed(2)} disabled={disabled} help="Ingredientes, preparación, empaque y acompañamientos. No uses el precio de venta." />
+      <TextField id="costCents" name="costCents" label="Costo de referencia del premio (soles, opcional)" inputMode="decimal" defaultValue={program.costCents === null ? "" : (program.costCents / 100).toFixed(2)} disabled={disabled} help="Lo que cuesta prepararlo: ingredientes, acompañamientos y empaque. Puedes dejarlo vacío; no afecta los sellos ni los canjes. No es el precio de carta." />
       {kind === "activate" && <fieldset disabled={disabled} className="space-y-4"><legend className="mb-4 font-semibold">Confirmaciones antes de activar</legend>
-        <CheckboxField id="costConfirmed" name="costConfirmed" label="Costo real confirmado por el responsable" />
         <CheckboxField id="termsApproved" name="termsApproved" label="Condiciones vigentes aprobadas por el negocio" />
         <CheckboxField id="privacyApproved" name="privacyApproved" label="Aviso y conservación de datos aprobados" />
         <CheckboxField id="accessTested" name="accessTested" label="Alta sin SMS, enlace privado y cambio de contacto probados" />

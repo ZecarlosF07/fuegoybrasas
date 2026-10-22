@@ -30,6 +30,15 @@ const writer = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
     for (const value of ["Invitado sintético", "Dirección sintética", "Sin ají", "Tocar la puerta"]) expect(stored.commercial).not.toContain(value);
     expect(recoverDraft(stored.commercial, stored.personal, Date.parse(cartDraft.updatedAt)).draft.lines[0]).toMatchObject({ lineId: cartLine.lineId, instructions: "Sin ají", instructionsStatus: "ready" });
   });
+  it("recupera borradores anteriores descartando pago y vuelto sin perder productos ni datos", () => {
+    const stored = serializeDraft(cartDraft, writer);
+    const previous = JSON.parse(stored.personal);
+    previous.fields.paymentMethodCode = "pago-antiguo"; previous.fields.changeForCents = 10000;
+    const recovered = recoverDraft(stored.commercial, JSON.stringify(previous), Date.parse(cartDraft.updatedAt));
+    expect(recovered.blocked).toBe(false);
+    expect(recovered.draft.checkout).toEqual(cartDraft.checkout);
+    expect(recovered.draft.lines[0].instructions).toBe("Sin ají");
+  });
   it("indicaciones ausentes y otra pestaña conservan líneas separadas hasta aceptación", () => {
     const separated = reduceDraft(cartDraft, { type: "addLine", line: { ...cartLine, lineId: crypto.randomUUID(), instructions: "Otro texto" }, mode: "delivery" });
     const stored = serializeDraft(separated, writer);
@@ -48,13 +57,13 @@ const writer = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
     const result = validateCart(checkoutCatalog, cartInput, fingerprint).data;
     expect(result?.status).toBe("ready"); expect(result?.totals).toEqual({ subtotalCents: 17980, charge: { status: "pending", amountCents: null }, totalCents: null });
   });
-  it("cobertura, mínimos, pausa, pago retirado y recojo sin ubicación bloquean", () => {
+  it("cobertura, mínimos, pausa y recojo sin ubicación bloquean", () => {
     const config = checkoutCatalog.configuration;
     const zone = { id: ZONE_ID, name: "Zona sintética", coverage: "excluded" as const, feeCents: 300, minimumSubtotalCents: 0, revision: 1 };
     expect(validateCart({ ...checkoutCatalog, configuration: { ...config, deliveryZones: [zone] } }, { ...cartInput, deliveryZoneId: ZONE_ID }, fingerprint).error?.message).toContain("no atendemos");
     expect(validateCart({ ...checkoutCatalog, configuration: { ...config, deliveryZones: [{ ...zone, coverage: "allowed", minimumSubtotalCents: 20000 }] } }, { ...cartInput, deliveryZoneId: ZONE_ID }, fingerprint).error?.message).toContain("mínimo");
     expect(validateCart({ ...checkoutCatalog, configuration: { ...config, orderingEnabled: false } }, cartInput, fingerprint).error?.code).toBe("ORDERING_PAUSED");
-    expect(validateCart(checkoutCatalog, { ...cartInput, paymentMethodCode: "retirado" }, fingerprint).error).toBeDefined();
+    expect(cartValidationSchema.safeParse({ ...cartInput, paymentMethodCode: "retirado" }).success).toBe(false);
     expect(validateCart(checkoutCatalog, { ...cartInput, mode: "pickup" }, fingerprint).error).toBeDefined();
   });
   it("P05 rechaza recojo aun con ubicación y un cargo explícito cero", () => {
@@ -83,6 +92,8 @@ const writer = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
     const prepared = prepareMessage(result, cartDraft);
     expect(prepared.url).toMatch(/^https:\/\/wa.me\/51982042493\?text=/);
     expect(prepared.message).toContain("Sin ají"); expect(prepared.message).toContain("Total: por confirmar"); expect(prepared.message).toContain("2 × Gran Promoción");
+    expect(prepared.message).not.toMatch(/Pago:|Cambio para:|Indicaciones de pago:/);
+    expect(result).not.toHaveProperty("paymentMethod");
     const long = prepareMessage(result, { ...cartDraft, checkout: { ...cartDraft.checkout, instructions: "🔥".repeat(250) } });
     expect(long.message).toContain("🔥".repeat(250));
     // Varias líneas válidas producen el fallback conservando todo el texto.
@@ -91,9 +102,8 @@ const writer = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
     const more = prepareMessage({ ...result, lines: detailedLines.map((line) => ({ ...result.lines[0], lineId: line.lineId })) }, longer);
     expect(more.long).toBe(true); expect(more.url).toBe("https://wa.me/51982042493");
   });
-  it("vuelto insuficiente e indicaciones sin revisar impiden preparar el mensaje", () => {
+  it("indicaciones sin revisar impiden preparar el mensaje", () => {
     const result = validateCart(checkoutCatalog, cartInput, fingerprint).data!;
-    expect(() => prepareMessage({ ...result, totals: { ...result.totals, totalCents: 17980 } }, { ...cartDraft, checkout: { ...cartDraft.checkout, changeForCents: 100 } })).toThrow("cambio");
     expect(() => prepareMessage(result, { ...cartDraft, lines: [{ ...cartLine, instructionsStatus: "needs_review" }] })).toThrow("indicaciones");
   });
 

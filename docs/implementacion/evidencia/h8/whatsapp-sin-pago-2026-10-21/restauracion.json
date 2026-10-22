@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-22T02:21:40.333Z",
+  "environment": "Supabase local aislado",
+  "durationMs": 2548,
+  "databaseMetadataRestored": true,
+  "authIdentityRestored": true,
+  "storageBytesRecovered": true,
+  "sha256Matches": true,
+  "limitations": [
+    "Mismo clúster PostgreSQL: roles preexistentes",
+    "Auth/Storage HTTP usan la base de origen; no se desplegó otra plataforma",
+    "Bytes sintéticos recuperados en origen local; no restauración productiva ni medición de RPO real"
+  ]
+}

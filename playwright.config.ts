@@ -1,12 +1,13 @@
 import { defineConfig } from "@playwright/test";
 
+import { E2E_ORIGIN, E2E_PORT } from "./tests/e2e/environment";
+
 process.loadEnvFile(".env.local");
 process.env.E2E_EVIDENCE_ROOT ??= "docs/implementacion/evidencia/h8/capturas";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 if (!supabaseUrl || !["127.0.0.1", "localhost"].includes(new URL(supabaseUrl).hostname)) {
   throw new Error("E2E exige Supabase local; nunca ejecutar fixtures contra el proyecto remoto.");
 }
-const PORT = 3100;
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
@@ -20,15 +21,15 @@ export default defineConfig({
     { name: "catalog-failure", testMatch: "**/catalog-failure.spec.ts", dependencies: ["management"], fullyParallel: false, workers: 1 },
   ],
   use: {
-    baseURL: `http://127.0.0.1:${PORT}`,
+    baseURL: E2E_ORIGIN,
     browserName: "chromium",
     channel: "chrome",
     trace: "retain-on-failure",
   },
   webServer: {
-    env: { APP_SITE_URL: `http://127.0.0.1:${PORT}` },
-    command: `yarn start:local --port ${PORT}`,
-    url: `http://127.0.0.1:${PORT}`,
+    env: { APP_SITE_URL: E2E_ORIGIN },
+    command: `yarn start:local --port ${E2E_PORT} --hostname 127.0.0.1`,
+    url: E2E_ORIGIN,
     reuseExistingServer: false,
     timeout: 60_000,
   },

@@ -1,10 +1,18 @@
 import { describe, expect, it } from "vitest";
 
-import { activateSchema, cardKeySchema, creditSchema, phoneSchema, profileSchema, redeemSchema, registerCardSchema } from "./schemas";
+import { activateSchema, cardKeySchema, costSchema, creditSchema, phoneSchema, profileSchema, programActivationSchema, redeemSchema, registerCardSchema } from "./schemas";
 
 const customerId = "60000000-0000-4000-8000-000000000001";
 const operationId = "60000000-0000-4000-8000-000000000002";
 describe("Entradas críticas de fidelización", () => {
+  it("permite costo desconocido sin inventar cero y conserva las confirmaciones de activación", () => {
+    const identity = { programId: customerId, expectedRevision: 1, operationId };
+    const input = { ...identity, costCents: null, termsVersion: "fyb-loyalty-v1", checks: { termsApproved: true, privacyApproved: true, accessTested: true, staffReady: true } };
+    expect(programActivationSchema.parse(input).costCents).toBeNull();
+    expect(costSchema.parse({ ...identity, costCents: null }).costCents).toBeNull();
+    expect(costSchema.safeParse({ ...identity, costCents: -1 }).success).toBe(false);
+    expect(programActivationSchema.safeParse({ ...input, checks: { ...input.checks, termsApproved: false } }).success).toBe(false);
+  });
   it("normaliza un teléfono peruano y rechaza números parciales/extranjeros", () => {
     for (const phone of ["999000001", "+51 999-000-001", "51999000001"]) expect(phoneSchema.parse(phone)).toBe("+51999000001");
     for (const phone of ["999", "+56999000001", "899000001", "999000001x"]) expect(phoneSchema.safeParse(phone).success).toBe(false);

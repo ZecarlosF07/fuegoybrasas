@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-10-21T03:14:34.032Z",
+  "projectRef": "geazxsvjkqpzbghlywbw",
+  "readOnly": true,
+  "projectUrl": "https://geazxsvjkqpzbghlywbw.supabase.co",
+  "dns": [
+    {
+      "resolver": "dns.google",
+      "status": "NXDOMAIN",
+      "answers": 0
+    },
+    {
+      "resolver": "cloudflare-dns.com",
+      "status": "NXDOMAIN",
+      "answers": 0
+    }
+  ],
+  "directRequests": [
+    {
+      "path": "/auth/v1/health",
+      "result": "ENOTFOUND"
+    },
+    {
+      "path": "/rest/v1/rpc/read_catalog",
+      "result": "ENOTFOUND"
+    }
+  ],
+  "cli": {
+    "sessionValid": true,
+    "officialProjectListed": false,
+    "linkedQueryStatus": 403,
+    "linkedQueryReason": "Cuenta sin privilegios para el endpoint"
+  },
+  "preflight": {
+    "executed": false,
+    "reason": "La consulta remota de solo lectura falló; no se actualizó el agregado histórico."
+  },
+  "conclusion": "Bloqueo externo confirmado; no se conoce aún si el proyecto fue pausado, eliminado o cambió su acceso. No se modificó el destino de producción.",
+  "userAction": "Revisar el estado del proyecto oficial en el Dashboard y restablecer acceso o confirmar un reemplazo. No solicitar claves por el chat.",
+  "resolution": {
+    "checkedAt": "2026-10-21T03:19:01.089Z",
+    "ownerAction": "El propietario indicó que habilitó el proyecto.",
+    "officialRpcStatus": 200,
+    "vercelCatalogStatus": 200,
+    "items": 17,
+    "cliProjectAccessible": true
+  }
+}

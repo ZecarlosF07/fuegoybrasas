@@ -76,11 +76,14 @@ describe("H5 configuración remota reproducible: pruebas locales aisladas", () =
     await expect(save("deliveryZones", zone, await rowRevision("delivery_zones", zone), { deleted_at: "2026-01-01" })).rejects.toMatchObject({ message: "VALIDATION_ERROR" });
     await expect(save("deliveryZones", zone, await rowRevision("delivery_zones", zone), { fee_cents: -1 })).rejects.toMatchObject({ message: "VALIDATION_ERROR" });
   });
-  it("activación necesita un pago; no permite retirar ni desverificar el último pago mientras esté activa", async () => {
+  it("activar WhatsApp y retirar pagos antiguos son independientes", async () => {
     await actorQuery(manager, "select public.update_business_config($1,'{\"orderingEnabled\":true}',$2)", [await configRevision(), randomUUID()]);
     expect((await readCatalog()).configuration.orderingEnabled).toBe(true);
-    await expect(save("paymentMethods", payment, await rowRevision("payment_methods", payment), { label: "Cambio sin confirmar" })).rejects.toMatchObject({ message: "CONFIG_NOT_READY" });
-    await expect(actorQuery(manager, "select public.soft_delete_entity('payment_method',$1,$2,'Retiro sintético H5',$3)", [payment, await rowRevision("payment_methods", payment), randomUUID()])).rejects.toMatchObject({ message: "CONFIG_NOT_READY" });
+    await save("paymentMethods", payment, await rowRevision("payment_methods", payment), { label: "Cambio sin confirmar" });
+    expect((await readCatalog()).configuration.paymentsReady).toBe(false);
+    expect((await readCatalog()).configuration.orderingEnabled).toBe(true);
+    await actorQuery(manager, "select public.soft_delete_entity('payment_method',$1,$2,'Retiro sintético H5',$3)", [payment, await rowRevision("payment_methods", payment), randomUUID()]);
+    await actorQuery(manager, "select public.restore_entity('payment_method',$1,$2,'Restauración sintética H5',$3)", [payment, await rowRevision("payment_methods", payment), randomUUID()]);
     await actorQuery(manager, "select public.update_business_config($1,'{\"orderingEnabled\":false}',$2)", [await configRevision(), randomUUID()]);
   });
   it("borrado/restauración conserva UUID y deja disabled/unverified con recibos consultables", async () => {
@@ -93,6 +96,8 @@ describe("H5 configuración remota reproducible: pruebas locales aisladas", () =
     await actorQuery(manager, "select public.soft_delete_entity('payment_method',$1,$2,'Retiro sintético H5',$3)", [payment, await rowRevision("payment_methods", payment), randomUUID()]);
     await actorQuery(manager, "select public.restore_entity('payment_method',$1,$2,'Restauración sintética H5',$3)", [payment, await rowRevision("payment_methods", payment), randomUUID()]);
     expect((await staffPool.query("select enabled,verified from public.payment_methods where id=$1", [payment])).rows[0]).toEqual({ enabled: false, verified: false });
-    await expect(actorQuery(manager, "select public.update_business_config($1,'{\"orderingEnabled\":true}',$2)", [await configRevision(), randomUUID()])).rejects.toMatchObject({ message: "CONFIG_NOT_READY" });
+    await actorQuery(manager, "select public.update_business_config($1,'{\"orderingEnabled\":true}',$2)", [await configRevision(), randomUUID()]);
+    expect((await readCatalog()).configuration.orderingEnabled).toBe(true);
+    expect((await readCatalog()).configuration.paymentMethods).toEqual([]);
   });
 });

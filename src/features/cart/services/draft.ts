@@ -3,7 +3,7 @@ import type { CartAction, CartDraft, CartLine } from "../types/cart";
 import { cartLineSchema, checkoutFieldsSchema } from "../validation/schemas";
 
 export function emptyDraft(now = new Date().toISOString()): CartDraft {
-  return { schemaVersion: 1, updatedAt: now, mode: null, lines: [], revision: 0, checkout: { name: "", address: "", reference: "", paymentMethodCode: "", deliveryZoneId: "", changeForCents: null, instructions: "" } };
+  return { schemaVersion: 1, updatedAt: now, mode: null, lines: [], revision: 0, checkout: { name: "", address: "", reference: "", deliveryZoneId: "", instructions: "" } };
 }
 export function lineKey(line: CartLine) { return JSON.stringify([line.itemId, [...line.choiceIds].sort(), line.instructions.trim()]); }
 function mergeLines(lines: CartLine[], line: CartLine) {
@@ -35,6 +35,6 @@ export function reduceDraft(draft: CartDraft, action: CartAction, now = new Date
   return { ...next, revision: draft.revision + 1, updatedAt: now };
 }
 export function draftInput(draft: CartDraft) {
-  return { mode: draft.mode, paymentMethodCode: draft.checkout.paymentMethodCode, ...(draft.mode === "delivery" && draft.checkout.deliveryZoneId ? { deliveryZoneId: draft.checkout.deliveryZoneId } : {}), lines: draft.lines.map(({ lineId, itemId, quantity, choiceIds, observedItemRevision, observedUnitPriceCents }) => ({ lineId, itemId, quantity, choiceIds: [...choiceIds].sort(), observedItemRevision, observedUnitPriceCents })) };
+  return { mode: draft.mode, ...(draft.mode === "delivery" && draft.checkout.deliveryZoneId ? { deliveryZoneId: draft.checkout.deliveryZoneId } : {}), lines: draft.lines.map(({ lineId, itemId, quantity, choiceIds, observedItemRevision, observedUnitPriceCents }) => ({ lineId, itemId, quantity, choiceIds: [...choiceIds].sort(), observedItemRevision, observedUnitPriceCents })) };
 }
 export function provisionalSubtotal(lines: CartLine[]) { return lines.reduce((sum, line) => sum + line.quantity * line.observedUnitPriceCents, 0); }

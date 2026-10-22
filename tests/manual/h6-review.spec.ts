@@ -1,3 +1,4 @@
+import { E2E_ORIGIN } from "../e2e/environment";
 import { expect, test } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
@@ -34,18 +35,18 @@ test("preparar entorno local para revisión humana de H6 y restaurarlo al finali
     customerIds.push(customer.customerId);
     for (let stamp = 0; stamp < 9; stamp += 1) await actorQuery(manager, "select public.credit_stamp($1,$2,true,true)", [customer.customerId, randomUUID()]);
 
-    const staffContext = await browser.newContext({ baseURL: "http://127.0.0.1:3100", viewport: null });
+    const staffContext = await browser.newContext({ baseURL: E2E_ORIGIN, viewport: null });
     const staffPage = await staffContext.newPage();
     console.info("Preparando sesión de personal local con contraseña.");
     await signInStaffBrowser(staffPage, manager);
     await staffPage.goto("/personal/clientes/" + customer.customerId);
     await expect(staffPage.getByText("9 de 10 sellos", { exact: true })).toBeVisible();
-    const customerContext = await browser.newContext({ baseURL: "http://127.0.0.1:3100", viewport: null });
+    const customerContext = await browser.newContext({ baseURL: E2E_ORIGIN, viewport: null });
     const customerPage = await customerContext.newPage();
     console.info("Preparando ventana de alta local.");
     await customerPage.goto("/mi-tarjeta/acceso");
     await expect(customerPage.getByRole("heading", { name: "Crear mi tarjeta", exact: true })).toBeVisible();
-    writeFileSync(readyFile, JSON.stringify({ localOnly: true, origin: "http://127.0.0.1:3100", customerPhone: manualPhone, staffCardId: customer.cardId, ownerResult: "pending" }) + "\n");
+    writeFileSync(readyFile, JSON.stringify({ localOnly: true, origin: E2E_ORIGIN, customerPhone: manualPhone, staffCardId: customer.cardId, ownerResult: "pending" }) + "\n");
     console.info("Ventanas locales listas: alta del cliente y ficha de personal con nueve sellos. Revisión humana pendiente.");
     while (!existsSync(completionFile)) await setTimeout(1000);
     await customerContext.close();

@@ -1,0 +1,201 @@
+{
+  "checkedAt": "2026-10-21T03:13:53.266Z",
+  "origin": "https://fuegoybrasas.vercel.app",
+  "release": "6b2b2de06c08c9f483dd7a27e84e9fbf35fa213a",
+  "scope": "Lectura real de Vercel; sin login, escrituras, envío WhatsApp ni simulación del catálogo.",
+  "limitation": "El catálogo remoto devuelve 503: solo se acredita su estado de error, no la carta ni los recorridos comerciales.",
+  "results": [
+    {
+      "route": "/",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/",
+      "width": 360,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/personal/acceso",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/personal/acceso",
+      "width": 360,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/personal/acceso",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/personal/acceso",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/personal/acceso",
+      "width": 1280,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/mi-tarjeta/acceso",
+      "width": 320,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/mi-tarjeta/acceso",
+      "width": 360,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/mi-tarjeta/acceso",
+      "width": 390,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/mi-tarjeta/acceso",
+      "width": 768,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "route": "/mi-tarjeta/acceso",
+      "width": 1280,
+      "status": 200,
+      "overflow": false,
+      "axeViolations": 0
+    }
+  ],
+  "focus": {
+    "href": "#contenido",
+    "outline": "solid"
+  },
+  "assets": [
+    {
+      "file": "alitas-acevichadas.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "alitas-clasicas.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "alitas-dulces.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "alitas-maracuya.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "alitas-picantes.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "combo-mostrito.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "gran-promocion.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "mostrito-cuarto.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "mostrito-entero.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "mostrito-medio.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "mostrito-octavo.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "pollo-cuarto.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "pollo-entero.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "pollo-medio.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "pollo-promocion.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "file": "ronda-alitas.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    }
+  ],
+  "pageErrors": []
+}

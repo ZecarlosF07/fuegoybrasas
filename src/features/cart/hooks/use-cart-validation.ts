@@ -33,7 +33,6 @@ export function useCartValidation({ current, available, setError }: CartValidati
       if (!result.ok) { setError(result.error); return false; }
       const deadline = validationDeadline(startedAt, result.data);
       if (performance.now() >= deadline) { setError({ code: "CATALOG_CHANGED", message: "La revisión expiró. Vuelve a validar el pedido." }); return false; }
-      if (result.data.paymentMethod.needsChange && draft.checkout.changeForCents !== null && result.data.totals.totalCents !== null && draft.checkout.changeForCents < result.data.totals.totalCents) { setError({ code: "VALIDATION_ERROR", message: "El importe para el cambio no cubre el total.", fieldErrors: { changeForCents: ["Indica un importe que cubra el total."] } }); return false; }
       setValidation({ cart: result.data, revision: draft.revision, deadline });
       return result.data.status === "ready";
     } catch { setError({ code: "SERVICE_UNAVAILABLE", message: "No pudimos validar el pedido. Conservamos el borrador; vuelve a intentarlo." }); return false; }

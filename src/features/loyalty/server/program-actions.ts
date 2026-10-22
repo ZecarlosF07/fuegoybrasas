@@ -21,7 +21,7 @@ export async function activateLoyaltyProgramAction(input: unknown) {
     if (!getCardAccessSettings().ready) return failure({ code: "CONFIG_NOT_READY", message: "Falta aprobar las condiciones, el aviso de datos o preparar el acceso privado. El programa se conserva en borrador." }, requestId);
     const client = await createServerSupabaseClient("action");
     const value = parsed.data;
-    return rpcResult(await client.rpc("activate_loyalty_program", { p_program_id: value.programId, p_expected_revision: value.expectedRevision, p_cost_cents: value.costCents, p_terms_version: value.termsVersion, p_checks: value.checks, p_operation_id: value.operationId }), mutationSchema, requestId, true);
+    return rpcResult(await client.rpc("activate_loyalty_program", { p_program_id: value.programId, p_expected_revision: value.expectedRevision, ...(value.costCents === null ? {} : { p_cost_cents: value.costCents }), p_terms_version: value.termsVersion, p_checks: value.checks, p_operation_id: value.operationId }), mutationSchema, requestId, true);
   }, true);
 }
 export async function setRewardAvailabilityAction(input: unknown) {
@@ -39,6 +39,6 @@ export async function updateRewardCostAction(input: unknown) {
     if (!parsed.success) return invalidInput(parsed.error, requestId);
     const client = await createServerSupabaseClient("action");
     const value = parsed.data;
-    return rpcResult(await client.rpc("update_reward_cost", { p_program_id: value.programId, p_expected_revision: value.expectedRevision, p_cost_cents: value.costCents, p_operation_id: value.operationId }), mutationSchema, requestId, true);
+    return rpcResult(await client.rpc("update_reward_cost", { p_program_id: value.programId, p_expected_revision: value.expectedRevision, ...(value.costCents === null ? {} : { p_cost_cents: value.costCents }), p_operation_id: value.operationId }), mutationSchema, requestId, true);
   }, true);
 }

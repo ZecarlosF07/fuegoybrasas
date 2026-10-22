@@ -1,7 +1,7 @@
 import { staffAdmin, staffPool } from "./staff-fixture";
 
 export const testProgramId = "f6000000-0000-4000-8000-000000000001";
-export const testLaunchChecks = { costConfirmed: true, termsApproved: true, privacyApproved: true, accessTested: true, staffReady: true };
+export const testLaunchChecks = { termsApproved: true, privacyApproved: true, accessTested: true, staffReady: true };
 export async function cleanupLoyaltyFixtures(authIds: string[], settings: Record<string, unknown>, program: Record<string, unknown>, customerIds: string[] = []) {
   const client = await staffPool.connect();
   try {

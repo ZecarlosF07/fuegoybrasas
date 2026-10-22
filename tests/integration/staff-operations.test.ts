@@ -14,7 +14,7 @@ beforeAll(async () => {
   original = (await staffPool.query("select * from public.business_settings where id=1")).rows[0];
 });
 afterAll(async () => {
-  if (original) await staffPool.query("update public.business_settings set display_name=$1,revision=$2,updated_at=$3 where id=1", [original.display_name, original.revision, original.updated_at]);
+  if (original) await staffPool.query("update public.business_settings set display_name=$1,revision=$2,updated_at=$3,ordering_enabled=$4 where id=1", [original.display_name, original.revision, original.updated_at, original.ordering_enabled]);
   await cleanupStaffFixtures(fixtures); await staffPool.end();
 });
 async function configRevision() { return Number((await staffPool.query("select revision from public.business_settings where id=1")).rows[0].revision); }
@@ -68,7 +68,7 @@ describe("H2 transacciones e idempotencia", () => {
   });
   it("revision antigua, activación prematura y horario superpuesto revierten sin recibos", async () => {
     await expect(actorQuery(first, "select public.update_business_config($1,'{\"displayName\":\"Viejo\"}',$2)", [original.revision, randomUUID()])).rejects.toMatchObject({ message: "CONFLICT" });
-    await expect(actorQuery(first, "select public.update_business_config($1,'{\"orderingEnabled\":true}',$2)", [await configRevision(), randomUUID()])).rejects.toMatchObject({ message: "CONFIG_NOT_READY" });
+    await expect(actorQuery(first, "select public.update_business_config($1,'{\"loyaltyEnabled\":true}',$2)", [await configRevision(), randomUUID()])).rejects.toMatchObject({ message: "CONFIG_NOT_READY" });
     const schedule = [{ day: 1, opensAt: "12:00", closesAt: "15:00", closesNextDay: false }, { day: 1, opensAt: "14:00", closesAt: "18:00", closesNextDay: false }];
     await expect(actorQuery(first, "select public.update_business_config($1,$2,$3)", [await configRevision(), JSON.stringify({ openingPeriods: schedule }), randomUUID()])).rejects.toMatchObject({ message: "VALIDATION_ERROR" });
   });

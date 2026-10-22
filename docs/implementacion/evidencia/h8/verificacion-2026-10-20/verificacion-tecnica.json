@@ -1,0 +1,95 @@
+{
+  "checkedAt": "2026-10-21T03:22:59.549Z",
+  "release": "6b2b2de06c08c9f483dd7a27e84e9fbf35fa213a",
+  "applicationCodeChanged": false,
+  "syntheticDataInProduction": false,
+  "commands": [
+    {
+      "command": "yarn db:start",
+      "result": "passed",
+      "environment": "local isolated"
+    },
+    {
+      "command": "yarn db:reset",
+      "result": "passed",
+      "migrations": 24,
+      "durationSeconds": 52.77
+    },
+    {
+      "command": "yarn lint",
+      "result": "passed",
+      "durationSeconds": 99.95
+    },
+    {
+      "command": "yarn test --maxWorkers=2",
+      "result": "passed",
+      "tests": 132,
+      "files": 29,
+      "durationSeconds": 82.16
+    },
+    {
+      "command": "yarn test:db",
+      "result": "passed",
+      "tests": 132,
+      "files": 9,
+      "durationSeconds": 4.48
+    },
+    {
+      "command": "yarn test:integration",
+      "result": "passed",
+      "tests": 113,
+      "files": 17,
+      "durationSeconds": 36.62
+    },
+    {
+      "command": "yarn test:e2e",
+      "result": "passed",
+      "tests": 50,
+      "durationSeconds": 226.13
+    },
+    {
+      "command": "yarn test:release",
+      "result": "passed",
+      "tests": 5
+    },
+    {
+      "command": "yarn build",
+      "result": "passed",
+      "environment": "production profile",
+      "typeScript": "passed",
+      "durationSeconds": 34.06
+    },
+    {
+      "command": "yarn test:boundary",
+      "result": "passed",
+      "durationSeconds": 59.41
+    },
+    {
+      "command": "yarn check:secrets",
+      "result": "passed",
+      "staticResources": 36
+    },
+    {
+      "command": "yarn release:check --launch",
+      "result": "launch_conditions_pending",
+      "configurationProblems": [],
+      "launchProblems": [
+        "PAYMENTS",
+        "REWARD_COST",
+        "LOYALTY_DOCUMENTS"
+      ]
+    },
+    {
+      "command": "yarn check:repository-secrets",
+      "result": "passed",
+      "candidateFiles": 1063,
+      "durationSeconds": 6.32
+    }
+  ],
+  "limitations": [
+    "No piloto humano ni recepción real de WhatsApp",
+    "No lector de pantalla, zoom real o segundo dispositivo físico acreditados",
+    "No restauración productiva ni custodia externa acreditadas",
+    "No activación pública"
+  ]
+}
