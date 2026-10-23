@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-10-22T23:53:37.842Z",
+  "origin": "https://fuegoybrasas.vercel.app",
+  "release": "f2c542a7ee258a39f34bca2bb6574096cd6a3e0c",
+  "orderingEnabled": true,
+  "loyaltyEnabled": true,
+  "publicProducts": 17,
+  "registrationFormEnabled": true,
+  "smsRequired": false,
+  "layouts": [
+    {
+      "width": 360,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "width": 768,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "width": 1280,
+      "overflow": false,
+      "axeViolations": 0
+    },
+    {
+      "width": 320,
+      "overflow": false,
+      "axeViolations": 0
+    }
+  ],
+  "documents": [
+    {
+      "path": "/condiciones-tarjeta",
+      "status": 200,
+      "draftStatusAbsent": true
+    },
+    {
+      "path": "/privacidad",
+      "status": 200,
+      "draftStatusAbsent": true
+    }
+  ],
+  "anonymousCardStatus": 401,
+  "mutations": [],
+  "createdCustomers": false,
+  "messagesSent": false,
+  "pageErrors": [],
+  "limitation": "Alta, sellos y canjes completos probados exclusivamente con datos sintéticos locales; esta comprobación productiva no crea clientes ni acredita dispositivos físicos o recepción WhatsApp."
+}

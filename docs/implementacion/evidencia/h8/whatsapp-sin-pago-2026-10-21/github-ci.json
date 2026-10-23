@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-22T23:51:20.271Z",
+  "checkedAt": "2026-10-23T00:00:39.674Z",
   "release": "d25af1d3e262c20535742817d5fb184b0ba0b978",
   "runs": [
     {
@@ -8,6 +8,130 @@
       "conclusion": "failure",
       "url": "https://github.com/ZecarlosF07/fuegoybrasas/actions/runs/39712592404",
       "diagnosis": "32 E2E aprobados; axe se ejecutó antes de instalar el título de la página tras redirección SSR; 18 casos dependientes no ejecutados. Corrección: esperar y exigir título válido, sin excluir la regla de accesibilidad."
+    },
+    {
+      "name": "Verificación de Fuego y Brasas",
+      "release": "f2c542a7ee258a39f34bca2bb6574096cd6a3e0c",
+      "status": "in_progress",
+      "conclusion": null,
+      "url": "https://github.com/ZecarlosF07/fuegoybrasas/actions/runs/39874581239",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run corepack enable",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run corepack prepare yarn@1.22.22 --activate",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn check:repository-secrets",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn test:release",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn db:start",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn env:local",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn db:reset",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn lint",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn typecheck",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn test --maxWorkers=2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn test:db",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn test:integration",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run yarn playwright install --with-deps chrome",
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "name": "Run yarn test:e2e",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Run yarn test:boundary",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Run yarn check:secrets",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Run yarn db:stop",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "pending",
+          "conclusion": null
+        }
+      ]
     }
   ]
 }

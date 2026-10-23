@@ -35,7 +35,6 @@ Los tipos, nombres de tablas y contratos son definiciones adoptadas para la impl
 | 13 | [Estructura de carpetas](13-estructura-carpetas.md) | Organización objetivo y dependencias del código. | Arquitectura, rutas y stack instalado. |
 | 14 | [Identidad visual y sistema UI](14-identidad-visual-y-sistema-ui.md) | Explicación de marca y aplicación por vistas; remite a reglas canónicas. | Análisis, frontend, investigación y sistema visual. |
 | 15 | [Investigación UX y referentes](15-investigacion-ux-y-referentes.md) | Evidencia pública, consultas de la skill y adaptación crítica. | Material del propietario y fuentes oficiales. |
-
 | 16 | [Acceso a tarjeta sin SMS](16-acceso-a-tarjeta-sin-sms.md) | Alta por nombre/contacto, clave privada, permisos y actualización de expectativas anteriores. | Decisión actual del propietario; sustituye identidad telefónica previa. |
 | 17 | [Administración y operación H7](17-administracion-y-operacion-h7.md) | Indicadores/clientes, correcciones, restitución, recuperación, contingencia e invitaciones. | DC-12–15 y permisos MFA; amplía contratos y datos. |
 | 18 | [Publicación y operación H8](18-publicacion-y-operacion-h8.md) | GitHub/Vercel, CI, salud, diagnóstico y datos comerciales. | DC-16–19; preparación diferenciada de piloto/activación. |
