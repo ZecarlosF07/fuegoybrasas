@@ -9,7 +9,7 @@ import { signOutStaffAction } from "@/features/identity/server/actions";
 import type { SignOutProps } from "@/features/identity/types/auth";
 import { forgetCardAction } from "@/features/loyalty/server/card-access-actions";
 
-export function SignOut({ audience = "staff" }: SignOutProps) {
+export function SignOut({ audience = "staff", variant = "secondary" }: SignOutProps) {
   async function signOut() {
     const result = await (audience === "customer" ? forgetCardAction() : signOutStaffAction());
     if (!result.ok) return failure({ code: result.error.code, message: result.error.message }, result.requestId);
@@ -23,5 +23,5 @@ export function SignOut({ audience = "staff" }: SignOutProps) {
     window.location.replace(audience === "customer" ? "/" : "/personal/acceso");
     return success(undefined, result.requestId);
   }
-  return <AsyncButton action={signOut} label="Cerrar sesión" pendingLabel="Cerrando sesión…" variant="secondary" />;
+  return <AsyncButton action={signOut} label="Cerrar sesión" pendingLabel="Cerrando sesión…" variant={variant} />;
 }

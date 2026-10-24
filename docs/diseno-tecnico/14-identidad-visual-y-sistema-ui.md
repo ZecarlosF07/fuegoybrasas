@@ -1,5 +1,7 @@
 # 14. Identidad visual y sistema UI
 
+**Actualización DC-28, 24/10/2026:** [revisión integral UX/UI](23-renovacion-ux-ui-y-marca.md) aplica la propuesta 06 aprobada al conjunto de pantallas. Las menciones iniciales a crema, fondos carbón y botón rojo quedan sustituidas por el sistema canónico vigente.
+
 **Aplicación visual del 14/10/2026:** [revisión de portada y carta](../implementacion/evidencia/h8/renovacion-visual/README.md) registra componentes, recursos referenciales identificados, prioridad de fotos propias y comprobaciones reales. La implementación conserva tokens y tipografías canónicos; el estado de especificación inicial de los párrafos siguientes corresponde a su fecha.
 
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
@@ -29,7 +31,7 @@ La carpeta `.agents/rules` es una organización del proyecto, no un mecanismo de
 
 ## 2. Dirección visual
 
-Crema y superficies claras sostienen lectura y compra. Carbón, rojo brasa y dorado mantienen conexión con el sello. El carácter se concentra en logo, títulos breves, fotografías y motivos discretos; no se coloca detrás de campos o importes.
+Blanco y superficies neutras sostienen lectura y compra. Encabezado rojo profundo con letras blancas, botones principales amarillos con texto carbón y precios/enlaces rojos mantienen conexión con el sello. El carácter se concentra en logo, títulos breves y fotografías; sin fondos decorativos detrás de campos o importes.
 
 La combinación tipográfica elegida separa títulos de marca con carácter de lectura funcional sencilla. Nombres, porciones, precios y formularios se leen como texto, sin manuscritas o letras incrustadas en fotos. Los colores de estado conservan significado acompañado por palabras e iconos.
 

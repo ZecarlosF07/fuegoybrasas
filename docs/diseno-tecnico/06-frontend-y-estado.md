@@ -1,5 +1,7 @@
 # 06. Frontend, rutas y estado
 
+**Actualización 22/10 — DC-27:** [pedido solo de platos](22-catalogo-y-pedido-solo-platos.md) sustituye el formulario logístico anterior. El flujo es `/pedido` → `/pedido/continuar`; `/pedido/datos` redirige a `/pedido`. No hay modalidad ni datos logísticos; se conservan líneas e indicaciones opcionales. Los borradores antiguos descartan esos campos al recuperarse.
+
 **Actualización 21/10/2026 — DC-23–25:** [pedido por WhatsApp sin pago y costo de premio opcional](20-pedido-whatsapp-y-costo-opcional.md) sustituye los campos/requisitos de pago y la obligatoriedad del costo de las definiciones anteriores.
 
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
@@ -16,7 +18,7 @@
 | `/` | W01 | Carta SSR pública, categorías y productos comprables. |
 | `/productos/[slug]` | W02 | Detalle público enlazable; mismas reglas de opciones que el diálogo de selección. |
 | `/pedido` | W03 | Carrito editable local. |
-| `/pedido/datos` | W04 | Formulario y revisión local. |
+| `/pedido/datos` | Compatibilidad con W04 | Redirección a `/pedido`; sin formulario adicional. |
 | `/pedido/continuar` | W05 | Mensaje preparado, apertura/copia y retorno; no confirmación de venta. |
 | `/mi-tarjeta/acceso` | W06 | Alta sin SMS o enlace privado guardado. |
 | `/mi-tarjeta` | W07 | Tarjeta propia e indicaciones; privado. |

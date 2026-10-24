@@ -1,5 +1,7 @@
 import { AuthForm } from "@/features/identity/components/auth-form";
 
+export const metadata = { title: "Acceso del personal | Fuego y Brasas", robots: { index: false, follow: false } };
+
 export default async function StaffLoginPage({ searchParams }: PageProps<"/personal/acceso">) {
   const { estado } = await searchParams;
   return <>

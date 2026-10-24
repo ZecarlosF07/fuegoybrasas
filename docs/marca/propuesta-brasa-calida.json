@@ -1,0 +1,46 @@
+{
+  "status": "descartada_por_el_propietario",
+  "name": "Brasa cálida",
+  "date": "2026-10-22",
+  "colors": {
+    "background": "#FAF7F2",
+    "surface": "#FFFFFF",
+    "ink": "#25201C",
+    "muted": "#6D6259",
+    "action": "#B4432D",
+    "hover": "#913321",
+    "gold": "#C69653",
+    "goldText": "#805820",
+    "border": "#E6DDD2",
+    "control": "#8A7868",
+    "success": "#276346",
+    "danger": "#A72F24",
+    "info": "#315D72"
+  },
+  "contrast": [
+    {
+      "name": "Texto / marfil",
+      "ratio": 15.09
+    },
+    {
+      "name": "Texto secundario / marfil",
+      "ratio": 5.55
+    },
+    {
+      "name": "Blanco / brasa",
+      "ratio": 5.55
+    },
+    {
+      "name": "Dorado oscuro / marfil",
+      "ratio": 5.89
+    },
+    {
+      "name": "Borde de control / blanco",
+      "ratio": 4.23
+    },
+    {
+      "name": "Dorado / carbón",
+      "ratio": 6.06
+    }
+  ]
+}

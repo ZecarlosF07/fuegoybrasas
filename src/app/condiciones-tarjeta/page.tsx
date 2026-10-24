@@ -7,7 +7,7 @@ import { getCardAccessSettings } from "@/features/loyalty/server/access-settings
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Condiciones de la tarjeta | Fuego y Brasas" };
 export default function CardTermsPage() {
-  return <CatalogShell showCartDock={false}><main className="mx-auto max-w-3xl space-y-6 px-4 py-8">
+  return <CatalogShell showCartDock={false}><main id="contenido" tabIndex={-1} className="mx-auto max-w-3xl space-y-6 px-4 py-8 focus:outline-none">
     <h1 className="font-brand text-3xl font-bold">Condiciones de la tarjeta</h1>
     <p className="text-sm text-brand-muted">Versión {LOYALTY_TERMS_VERSION}</p>
     {!getCardAccessSettings().ready && <p role="status">Propuesta para revisión del negocio. La participación pública aún no está habilitada.</p>}

@@ -1,0 +1,36 @@
+{
+  "status": "propuesta_pendiente_de_aprobacion",
+  "date": "2026-10-22",
+  "name": "Blanco, oro y rojo de llama",
+  "source": "Logo facilitado por el propietario; HEX aproximados de interfaz, no manual oficial.",
+  "colors": {
+    "background": "#FFFFFF",
+    "surface": "#FFFFFF",
+    "ink": "#171717",
+    "muted": "#5C5C5C",
+    "action": "#C99535",
+    "hover": "#B88427",
+    "onAction": "#171717",
+    "goldText": "#805A19",
+    "red": "#9D241B",
+    "orange": "#E56A16",
+    "border": "#E5E5E5",
+    "control": "#808080"
+  },
+  "contrast": {
+    "onAction": 6.69,
+    "body": 17.93,
+    "muted": 6.69,
+    "goldText": 6.19,
+    "red": 7.77,
+    "control": 3.95
+  },
+  "revisionOf": "03",
+  "header": "white",
+  "redUsage": [
+    "precios",
+    "navegación activa con subrayado",
+    "etiquetas de promociones reales"
+  ],
+  "rendering": "Chromium con Fraunces y Manrope locales"
+}

@@ -4,6 +4,8 @@ import { AuthForm } from "@/features/identity/components/auth-form";
 import { hasRecoveryPermission } from "@/features/identity/server/recovery-marker";
 import { getStaffAccess } from "@/features/staff/server/access";
 
+export const metadata = { title: "Restablecer contraseña | Fuego y Brasas", robots: { index: false, follow: false } };
+
 export default async function StaffResetPage() {
   const access = await getStaffAccess();
   if (!access.ok || !await hasRecoveryPermission(access.data.authUserId)) return <>

@@ -1,14 +1,14 @@
 # Sistema visual canónico — Fuego y Brasas
 
-**Versión:** 1.0 · **Fecha:** 3 de octubre de 2026.  
-**Estado:** propuesta de interfaz adoptada; base visual de H1 implementada y en revisión. Las interfaces comerciales y privadas de H2–H8 siguen pendientes; no es un manual gráfico oficial.  
+**Versión:** 1.1 · **Fecha:** 24 de octubre de 2026.
+**Estado:** propuesta 06 aprobada por el propietario el 24/10/2026; revisión integral en implementación y verificación. No constituye un manual original del logotipo ni certificación de interfaces.
 **Alcance:** carta, pedido, cliente, personal y administración. Fuente única de tokens y medidas.
 
 ## 1. Identidad y logotipo
 
 El [Facebook oficial](https://www.facebook.com/profile.php?id=61585453973558&sk=photos) y las imágenes del propietario muestran sello circular, llama y leños, carbón/marrón, crema, dorado y rojo/naranja. Los anuncios alternan superficies claras y oscuras; no aportan un manual ni códigos oficiales. Esta especificación normaliza esa identidad para la web.
 
-La personalidad es cálida, cercana y centrada en comida a la brasa. La compra usa superficies claras; el carbón se concentra en zonas de marca y cierres. Fotos y acentos transmiten el carácter del restaurante. El panel interno comparte la familia visual con composición funcional.
+La interfaz es directa, reconocible y centrada en comida a la brasa. Encabezado rojo profundo con letras blancas, acción principal amarilla con texto carbón y cuerpo blanco. Carbón para lectura; fotos y sello aportan el resto del color. Se retira la dirección cálida/crema descartada por el propietario. Los paneles internos comparten identidad con composición funcional.
 
 - Conservar el logotipo suministrado; no redibujar, recolorear, estirar ni sustituirlo mediante IA. Utilizar variantes claras/oscuras solo si existen como recursos aprobados y son legibles sobre su fondo.
 - Área libre mínima: un cuarto del diámetro exterior del sello. Ancho inicial: 64 px. Si las letras circulares pierden legibilidad, acompañar el sello con el nombre en texto; no transmitir contenido esencial solo mediante el logo.
@@ -17,49 +17,37 @@ La personalidad es cálida, cercana y centrada en comida a la brasa. La compra u
 
 ## 2. Tokens de color
 
-Los HEX son propuestas de interfaz, no mediciones oficiales de un manual. Los componentes consumen nombres semánticos; no añaden códigos alternativos.
+La propuesta 06 fue aprobada por el propietario. Los HEX son adaptaciones de interfaz al sello, no códigos oficiales de un manual original. Esta es la única fuente productiva; el tema Tailwind implementa estos valores. Los manuales de propuesta quedan como historial de aprobación.
 
 | Token | HEX | Uso |
 | --- | --- | --- |
-| `--fyb-bg` | `#FFF8ED` | Fondo público. |
-| `--fyb-surface` | `#FFFFFF` | Tarjetas, formularios, diálogos y trabajo privado. |
-| `--fyb-ink` | `#241C17` | Texto principal y fondos seleccionados de marca. |
-| `--fyb-muted` | `#6B5C50` | Texto secundario sobre claro. |
-| `--fyb-action` | `#9B2C20` | Acción principal, enlaces y foco sobre claro. |
-| `--fyb-action-hover` | `#7D2018` | Hover/pressed de acción. |
-| `--fyb-fire` | `#D65A1E` | Acento decorativo; no texto blanco normal. |
-| `--fyb-gold` | `#C89538` | Detalle decorativo de sello/motivo; acento legible sobre carbón. |
-| `--fyb-gold-ink` | `#8A5A16` | Texto dorado oscuro sobre claro. |
-| `--fyb-border` | `#DED0BE` | Separadores decorativos, no único límite de controles. |
-| `--fyb-control-border` | `#8A7869` | Contorno identificable de campos/controles sobre claro. |
-| `--fyb-success` | `#247044` | Éxito, siempre acompañado de texto. |
-| `--fyb-danger` | `#B42318` | Error y acción destructiva explícita. |
-| `--fyb-info` | `#275F83` | Información y revisión pendiente. |
+| `--fyb-bg` | `#FFFFFF` | Fondo público y privado. |
+| `--fyb-surface` | `#FFFFFF` | Tarjetas, formularios y texto sobre rojo. |
+| `--fyb-ink` | `#171717` | Texto principal. |
+| `--fyb-muted` | `#5C5C5C` | Texto secundario. |
+| `--fyb-action` | `#98251F` | Header, enlaces, precios, selección y foco sobre blanco. |
+| `--fyb-action-hover` | `#7D201A` | Hover rojo. |
+| `--fyb-primary` | `#FFC400` | Botón principal e indicador activo sobre rojo. |
+| `--fyb-primary-hover` | `#E6AD00` | Hover de botón amarillo. |
+| `--fyb-on-primary` | `#171717` | Texto/iconos sobre amarillo. |
+| `--fyb-primary-border` | `#966000` | Borde legible del botón amarillo. |
+| `--fyb-gold` | `#FFC400` | Alias decorativo del amarillo; no texto sobre blanco. |
+| `--fyb-gold-ink` | `#98251F` | Alias de énfasis legible existente; no otra paleta. |
+| `--fyb-fire` | `#E56A16` | Referencia de llama; no segundo color de acciones. |
+| `--fyb-subtle` | `#F5F5F5` | Apoyos neutros y pie. |
+| `--fyb-border` | `#E5E5E5` | Separación decorativa. |
+| `--fyb-control-border` | `#808080` | Contorno identificable de campos y controles secundarios. |
+| `--fyb-success` | `#247044` | Éxito con texto explícito. |
+| `--fyb-danger` | `#B42318` | Error/destrucción con texto y contexto. |
+| `--fyb-info` | `#275F83` | Información con texto. |
 
-Mensajes semánticos: superficie clara con texto/icono del token respectivo. Botones sólidos: texto surface. El verde de un icono oficial de WhatsApp puede conservarse dentro de ese recurso; no redefine la paleta ni introduce otro botón principal.
+No cambiar todos los usos de action a amarillo: enlaces y foco mantienen rojo. Primario: amarillo/texto carbón/borde oscuro. Secundario: blanco/texto carbón/contorno gris. Inverso de header: rojo/texto y contorno blancos. Error no se comunica solo con color. Precios rojos no implican descuento; etiquetas de promoción solo con datos reales.
 
 ### Pares comprobados
 
-Ratios calculados mediante luminancia relativa sRGB y redondeados; no son pruebas de interfaces renderizadas.
+Contraste sRGB sólido, no certificación de pantallas: carbón/blanco 17,93:1; secundario/blanco 6,69:1; blanco/rojo 8,02:1; carbón/amarillo 11,22:1; amarillo/rojo 5,02:1; borde amarillo/blanco 5,29:1 y borde/amarillo 3,31:1; contorno gris/blanco 3,95:1. Blanco/amarillo 1,60:1: prohibido para texto. Separadores claros son decorativos, no límites de campos.
 
-| Par | Ratio | Decisión |
-| --- | --- | --- |
-| ink / bg | 15,88:1 | Texto principal. |
-| muted / bg | 6,08:1 | Texto secundario. |
-| surface / action | 7,57:1 | Botón principal con texto blanco. |
-| gold-ink / bg | 5,60:1 | Texto dorado legible. |
-| control-border / bg | 4,00:1 | Límite de control; sobre surface alcanza 4,22:1. |
-| success / surface | 6,04:1 | Mensaje/acción de éxito. |
-| danger / surface | 6,57:1 | Mensaje/acción destructiva. |
-| info / surface | 6,88:1 | Mensaje informativo. |
-| gold / ink | 6,23:1 | Detalle dorado sobre carbón. |
-| surface / fire | 3,93:1 | No usar para texto normal de botón. |
-| gold / bg | 2,55:1 | Solo decoración sobre crema. |
-| border / bg | 1,43:1 | Solo separación decorativa. |
-
-Texto normal: 4,5:1; texto grande según WCAG: 3:1. Controles/estados relevantes: 3:1 frente a colores adyacentes. Verificar transparencias, fondos e indicadores reales. [Contraste de texto](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), [contraste no textual](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).
-
-Foco sobre claro: contorno action de 2 px, separado 2 px; sobre carbón: contorno surface con esa separación. Interacción sobre foto requiere superficie sólida. Selección combina indicador y texto/semántica, nunca solo cambio de color.
+Foco: 2 px separados 2 px, rojo sobre claro y blanco sobre header rojo. Selección añade indicador/subrayado y semántica, no solo color. Comprobar estados, opacidades, fondos adyacentes y contraste realmente renderizado. [Contraste WCAG](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
 
 ## 3. Tipografía
 
@@ -115,17 +103,17 @@ Encabezado compacto: sello/nombre, carta y acceso secundario a tarjeta. Paneles 
 
 | Familia | Presentación y comportamiento |
 | --- | --- |
-| Primaria | Fondo action/texto surface; hover action-hover. Una principal por bloque. Pendiente muestra verbo/estado sin éxito prematuro. |
-| Secundaria | Superficie clara, texto action y contorno control-border. Links en párrafos subrayados. |
+| Primaria | Fondo primary/texto on-primary/contorno primary-border; hover primary-hover. Una principal por bloque. Pendiente muestra verbo/estado sin éxito prematuro. |
+| Secundaria | Superficie clara, texto ink y contorno control-border. Inversa en header: rojo con texto/contorno blanco. Links en párrafos subrayados. |
 | Campo | Label persistente, contorno control-border, ayuda vinculada y error danger con texto; resumen enlazado cuando hay varios errores. |
 | Badge/estado | Superficie clara y texto/icono semántico completo; sin descuento o popularidad inventados. |
-| Producto | Foto → nombre/porción → inclusiones → precio/modalidad o «Desde» autorizado → acción. Agotamiento visible; precio/nombre esencial no truncados. |
+| Producto | Foto → nombre/porción → inclusiones → precio único o «Precio por confirmar» según DC-27 → acción. Agotamiento visible; precio/nombre esencial no truncados. |
 | Categorías | Selección visible con indicador y semántica; scroll horizontal explícito y teclado. Conservar posición al volver del detalle. |
 | Carrito | Cantidades, opciones e indicaciones por línea; cambios sin retiro silencioso. Dock solo con artículos y altura según contenido reservada en página. |
 | Revisión | Campos mínimos y condicionales; productos/cargos separados; pendiente no equivale a «gratis». |
 | WhatsApp | Revisar/enviar en chat, abrir/copiar y volver. Sin indicador de venta confirmada. |
-| Acceso | Labels, OTP pegable/autocompletado, espera/error y salida hacia carta. Staff accede con correo/contraseña y permisos vigentes, sin CAPTCHA ni segundo factor por DC-20/DC-22. |
-| Sellos | Diez posiciones, 5 × 2; conteo «X de 10», premio separado. Acreditados action, vacíos control-border; posiciones sin interacción. |
+| Acceso | Labels visibles, enlace privado de cliente, espera/error y salida hacia carta. Staff accede con correo/contraseña y permisos vigentes, sin CAPTCHA ni segundo factor por DC-20/DC-22. |
+| Sellos | Diez posiciones, 5 × 2; conteo «X de 10», premio separado. Acreditados primary/on-primary con borde; vacíos con contorno; posiciones sin interacción. |
 | Premio | Nombre/contenido, estado e instrucciones; distinguir ciclo nuevo con premio de tarjeta nueva. Sin vencimiento o compra extra inventados. |
 | Operación staff | Cliente, confirmaciones requeridas, efecto previsto y resultado real. Incertidumbre visible, sin saldo optimista. |
 | Administración | Listado/ficha, revisión y conflictos; separar subido/asociado, guardado/publicado. |
@@ -171,3 +159,13 @@ PT-09 parcialmente aclarado por Facebook confirmado: faltan originales del sello
 - [Frontend y estado](../../docs/diseno-tecnico/06-frontend-y-estado.md).
 - [WCAG: foco no oculto](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html).
 - [WCAG: tamaño de objetivo](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html).
+
+## 10. Aplicación aprobada del 24/10/2026 — DC-28
+
+[Propuesta 06 aprobada](../../docs/marca/manual-propuesto-06-rojo-profundo.md). Header rojo compartido con sello/nombre y letras blancas; navegación activa subrayada en amarillo. Inicio: foto principal estática y texto breve, categorías visibles y promociones reales/carta, sin duplicar tres tarjetas de acceso antes del menú. El usuario llega a platos sin ubicación, registro ni modalidad obligatoria. Footer neutro con accesos a información y personal.
+
+Panel privado: navegación por rol lateral en escritorio y menú desplegable explícito en móvil, con Escape y retorno de foco, manteniendo permisos y rutas. Tarjeta: diez posiciones 5 × 2, colores/texto de progreso y premios independientes. Sellos decorativos no son botones; su tamaño se adapta sin exigirles el objetivo táctil de controles.
+
+El sello original recibido se conserva como recurso; su presentación circular recorta únicamente el anuncio alrededor. No se recolorea ni reconstruye. Raster pequeño usado a tamaño contenido; el original vectorial/de mayor resolución sigue pendiente. Fotografías existentes identificadas como referenciales; Storage propio mantiene prioridad.
+
+DC-27 sustituye la modalidad/cargos públicos anteriores; DC-28 cambia presentación y accesibilidad, no precios, ventas, sellos, permisos ni textos legales. Las decisiones posteriores del índice técnico prevalecen sobre estados históricos de este documento.

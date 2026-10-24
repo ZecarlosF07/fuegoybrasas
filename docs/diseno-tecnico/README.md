@@ -1,12 +1,16 @@
 # Fuego y Brasas — Diseño técnico
 
+**Actualización DC-28, 24/10:** [revisión integral UX/UI y marca](23-renovacion-ux-ui-y-marca.md). Propuesta 06 aprobada; se aplica a toda la web. Los estados pendientes de aprobación de marca del 22/10 son antecedentes. Verificación y publicación de esta revisión se registran por separado.
+
+**Actualización DC-27, 22/10:** [catálogo y pedido solo de platos](22-catalogo-y-pedido-solo-platos.md): sin modalidad ni datos logísticos en la web; subtotal de productos y coordinación por WhatsApp. Comprobado en local, todavía sin verificar su publicación. Marca: amarillo aceptado y rojo de la [propuesta 06](../marca/manual-propuesto-06-rojo-profundo.md) pendiente de aprobación.
+
 **Actualización DC-26, 22/10:** [aprobación y activación de tarjeta](21-aprobacion-y-activacion-tarjeta.md).
 
 **Actualización 21/10/2026 — DC-23–25:** [pedido por WhatsApp sin pago y costo de premio opcional](20-pedido-whatsapp-y-costo-opcional.md) sustituye los campos/requisitos de pago y la obligatoriedad del costo de las definiciones anteriores.
 
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
 
-**Versión:** 1.15 · **Fecha:** 22 de octubre de 2026.
+**Versión:** 1.17 · **Fecha:** 24 de octubre de 2026.
 **Estado al 22/10/2026:** pedido publicado sin pagos y revisión técnica delegada comprobados; textos de tarjeta aprobados y programa oficial activado por DC-26. La evidencia registra la comprobación del despliegue por separado. Los controles humanos y operativos no ejecutados permanecen identificados.
 **Base funcional:** [Análisis del proyecto](../analisis-del-proyecto.md) y [Resumen ejecutivo](../resumen-ejecutivo.md).
 
@@ -41,11 +45,15 @@ Los tipos, nombres de tablas y contratos son definiciones adoptadas para la impl
 | 19 | [Personal sin MFA](19-acceso-del-personal-sin-mfa.md) | Login con contraseña, rol vigente, recuperación y ajuste Auth/SQL compatible. | DC-22; sustituye segundo factor en todos los hitos. |
 | 20 | [Pedido WhatsApp y costo opcional](20-pedido-whatsapp-y-costo-opcional.md) | Pedido sin pago, compatibilidad de borradores, costo interno opcional y revisión técnica delegada. | DC-23–25; actualiza H5/H6/H8. |
 | 21 | [Aprobación y activación de tarjeta](21-aprobacion-y-activacion-tarjeta.md) | Aprobación versionada y activación auditada. | DC-26. |
+| 22 | [Catálogo y pedido solo de platos](22-catalogo-y-pedido-solo-platos.md) | Sin modalidad, dirección ni pago; productos y coordinación por WhatsApp. | DC-27; actualiza H3/H5 y privacidad del pedido invitado. |
+| 23 | [Revisión UX/UI y marca](23-renovacion-ux-ui-y-marca.md) | Identidad aprobada, estructura de inicio y revisión de todas las áreas. | DC-28; no cambia reglas comerciales ni permisos. |
 
 Reglas para agentes: [Proyecto](../../.agents/rules/proyecto.md), [UX/UI](../../.agents/rules/ux-ui.md) y [Sistema visual](../../.agents/brand/sistema-visual.md), enlazadas desde [AGENTS.md](../../AGENTS.md). Los valores visuales se mantienen únicamente en el sistema canónico; [MASTER](../../design-system/fuego-y-brasas/MASTER.md) permite recuperarlo mediante la skill. La ejecución se organiza en los [ocho hitos](../implementacion/hitos-del-proyecto.md).
 
 
 ## 3. Decisiones confirmadas por el propietario
+
+**DC-27:** retirar modalidad y datos logísticos del pedido web. Cliente elige platos; entrega, dirección y costo de envío se coordinan por WhatsApp. Se conservan precios internos e historial, sin inventar un precio único cuando las fuentes difieren. [Especificación vigente](22-catalogo-y-pedido-solo-platos.md).
 
 **DC-26:** el propietario aprueba los textos y autoriza habilitar la tarjeta. [Registro vigente](21-aprobacion-y-activacion-tarjeta.md).
 

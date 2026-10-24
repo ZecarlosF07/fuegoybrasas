@@ -1,5 +1,7 @@
 # 12. Flujo de navegación, páginas y rutas
 
+**Actualización 22/10 — DC-27:** [pedido solo de platos](22-catalogo-y-pedido-solo-platos.md) simplifica la navegación a `/pedido` → `/pedido/continuar`. `/pedido/datos` redirige a `/pedido`; los diagramas anteriores de formulario no añaden una pantalla al flujo vigente.
+
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.
 
 **Actualización del 10/10/2026:** el acceso del cliente es por enlace privado/QR, sin SMS; nombre y teléfono son datos declarados. [Diseño vigente](16-acceso-a-tarjeta-sin-sms.md) sustituye las menciones anteriores a OTP, identidad telefónica Auth y `phone_change` del cliente. El acceso actual del personal se define en DC-22.

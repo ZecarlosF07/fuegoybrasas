@@ -7,6 +7,8 @@ import { getPrograms } from "@/features/loyalty/server/read";
 import { requireStaffPage } from "@/features/staff/server/access";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
+export const metadata = { title: "Configuración del negocio | Fuego y Brasas", robots: { index: false, follow: false } };
+
 export default async function ConfigurationPage() {
   const access = await requireStaffPage(true);
   if (!access.ok) return <p role="alert">{access.error.message}</p>;

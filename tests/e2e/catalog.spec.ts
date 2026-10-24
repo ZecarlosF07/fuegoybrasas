@@ -21,11 +21,12 @@ test("carta, categorías y vuelta conservan contexto sin sesión", async ({ page
   await page.getByRole("navigation", { name: "Categorías de la carta" }).getByRole("link", { name: "Pruebas H3" }).click();
   await expect(page).toHaveURL(new RegExp(`categoria=${E2E_CATEGORY_SLUG}#carta$`));
   await expect(page.locator("#carta article")).toHaveCount(2);
-  await expect(page.getByText("Desde S/14.90")).toBeVisible();
+  await expect(page.getByText("Precio por confirmar")).toBeVisible();
   await expect(page.getByText("Borrador confidencial H3")).toHaveCount(0);
   await page.getByRole("link", { name: "Ver detalle de Plato sintético H3, Porción sintética" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Plato sintético H3");
-  await expect(page.getByRole("heading", { name: "Precio según modalidad" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Precio según modalidad" })).toHaveCount(0);
+  await expect(page.getByLabel("Modalidad", { exact: true })).toHaveCount(0);
   await page.getByRole("link", { name: "Volver a la carta" }).click();
   await expect(page).toHaveURL(new RegExp(`categoria=${E2E_CATEGORY_SLUG}#carta$`));
   await page.goBack();
@@ -64,7 +65,7 @@ test("imagen cargada y fallida: el texto comercial permanece legible", async ({ 
   await page.route("**/_next/image?**", (route) => route.fulfill({ status: 404, body: "Recurso no disponible" }));
   await page.reload();
   await expect(page.getByText("Foto no disponible")).toBeVisible();
-  await expect(page.getByText("Desde S/14.90")).toBeVisible();
+  await expect(page.getByText("Precio por confirmar")).toBeVisible();
   await page.screenshot({ path: `${screenshots}/imagen-fallida.png`, fullPage: true });
   expect(E2E_IMAGE).toContain("items/");
 });

@@ -15,7 +15,7 @@ export function ProductImage({ item, large = false }: ProductImageProps) {
     <figure className={`relative flex aspect-4/3 items-center justify-center overflow-hidden ${large ? "rounded-card" : ""} ${showImage ? "bg-brand-ink" : "bg-brand-bg"}`}>
       {showImage ? (
         <>
-          <Image src={media.src} alt={media.alt} fill
+          <Image src={media.src} alt={media.alt} fill preload={large}
             sizes={large ? "(max-width: 767px) 100vw, 50vw" : "(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"}
             className="object-contain" onError={() => setFailedUrl(media.src)} />
           {media.referential && <figcaption className="absolute bottom-3 left-3 rounded-field bg-brand-ink/90 px-3 py-1 text-sm text-brand-surface">Imagen referencial</figcaption>}

@@ -2,6 +2,8 @@ import { IncidentsPanel } from "@/features/management/components/incidents-panel
 import { getIncidents } from "@/features/management/server/reads";
 import { requireStaffPage } from "@/features/staff/server/access";
 
+export const metadata = { title: "Incidencias | Fuego y Brasas", robots: { index: false, follow: false } };
+
 export default async function IncidentsPage() {
   const access = await requireStaffPage(true);
   if (!access.ok) return <p role="alert">{access.error.message}</p>;

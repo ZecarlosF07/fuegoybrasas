@@ -3,6 +3,8 @@ import Link from "next/link";
 import { CustomerLookup } from "@/features/loyalty/components/customer-lookup";
 import { requireStaffPage } from "@/features/staff/server/access";
 
+export const metadata = { title: "Inicio del personal | Fuego y Brasas", robots: { index: false, follow: false } };
+
 export default async function StaffHomePage() {
   const access = await requireStaffPage();
   if (!access.ok) return <p role="alert">{access.error.message}</p>;

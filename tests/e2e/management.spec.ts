@@ -43,7 +43,7 @@ async function layout(page: Page, name: string) {
     await page.screenshot({ path: `${captures}/${name}-${width}.png`, fullPage: true });
   }
 }
-test("resumen y filtros distinguen progreso y premio; móvil accesible", async ({ page, context }) => {
+test("resumen, filtros y menú móvil distinguen progreso y premio; accesible", async ({ page, context }) => {
   await context.addCookies(cookies); await page.goto("/administracion");
   await expect(page.getByRole("heading", { name: "Resumen de fidelización" })).toBeVisible();
   await expect(page.getByText("0 de 10 sellos · Premios pendientes: 1", { exact: true })).toBeVisible();
@@ -55,6 +55,18 @@ test("resumen y filtros distinguen progreso y premio; móvil accesible", async (
   await page.getByRole("button", { name: "Consultar actividad", exact: true }).click();
   await expect(page.locator("main [role=alert]")).toBeFocused();
   await expect(page.getByText("Selecciona un periodo válido de hasta 366 días.", { exact: true }).first()).toBeVisible();
+  const toggle = page.getByRole("button", { name: "Abrir menú del panel", exact: true });
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await toggle.click();
+  const navigation = page.getByRole("navigation", { name: "Navegación del personal" });
+  await expect(navigation.getByRole("link")).toHaveCount(6);
+  await navigation.getByRole("link", { name: "Resumen de fidelización", exact: true }).focus();
+  await page.keyboard.press("Escape");
+  await expect(toggle).toBeFocused();
+  await toggle.click();
+  await navigation.getByRole("link", { name: "Incidencias", exact: true }).click();
+  await expect(page).toHaveURL(/\/administracion\/incidencias$/);
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
 });
 test("corrección y reversión de décimo sello muestran estado real y conservan historia", async ({ page, context }) => {
   await context.addCookies(cookies); await page.goto("/administracion/clientes/" + ready.customerId);

@@ -6,6 +6,8 @@ import { getStaffCard } from "@/features/loyalty/server/read";
 import { requireStaffPage } from "@/features/staff/server/access";
 
 export const dynamic = "force-dynamic";
+export const metadata = { title: "Atender tarjeta | Fuego y Brasas", robots: { index: false, follow: false } };
+
 export default async function StaffCustomerPage({ params }: PageProps<"/personal/clientes/[id]">) {
   const access = await requireStaffPage();
   if (!access.ok) return <p role="alert">{access.error.message}</p>;

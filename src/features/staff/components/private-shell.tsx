@@ -1,23 +1,18 @@
-import Link from "next/link";
-
+import { StaffNavigation } from "./staff-navigation";
+import { BrandMark } from "@/components/brand/brand-mark";
 import { SignOut } from "@/features/identity/components/sign-out";
 import type { PrivateShellProps } from "@/features/staff/types/presentation";
 
 export function PrivateShell({ access, children }: PrivateShellProps) {
-  return <div className="mx-auto flex min-h-dvh max-w-content flex-col px-4 py-6 md:px-6 lg:px-8">
-    <header className="flex flex-wrap items-center justify-between gap-4 border-b border-brand-border pb-6">
-      <div><Link href="/personal" className="font-brand text-2xl font-bold text-brand-action">Fuego y Brasas</Link>
-        <p className="mt-2 text-sm text-brand-muted">{access.role === "manager" ? "Responsable" : "Atención"}</p></div>
-      <SignOut />
+  return <div className="min-h-dvh">
+    <header className="bg-brand-action text-brand-surface"><div className="mx-auto flex max-w-content flex-wrap items-center justify-between gap-4 px-4 py-4 md:px-6 lg:px-8">
+      <BrandMark href="/personal" subtitle={access.role === "manager" ? "Responsable" : "Atención"} />
+      <SignOut variant="inverse" />
+    </div>
     </header>
-    <nav aria-label="Navegación del personal" className="flex flex-wrap gap-4 border-b border-brand-border py-4">
-      <Link href="/personal" className="flex min-h-12 items-center text-brand-action underline">Inicio del personal</Link>
-      {access.role === "manager" && <Link href="/administracion" className="flex min-h-12 items-center text-brand-action underline">Resumen de fidelización</Link>}
-      {access.role === "manager" && <Link href="/administracion/incidencias" className="flex min-h-12 items-center text-brand-action underline">Incidencias</Link>}
-      {access.role === "manager" && <Link href="/administracion/personal" className="flex min-h-12 items-center text-brand-action underline">Administrar personal</Link>}
-      {access.role === "manager" && <Link href="/administracion/configuracion" className="flex min-h-12 items-center text-brand-action underline">Configuración</Link>}
-      {access.role === "manager" && <Link href="/administracion/carta" className="flex min-h-12 items-center text-brand-action underline">Administrar carta</Link>}
-    </nav>
-    <main id="contenido" className="py-8">{children}</main>
+    <div className="mx-auto grid max-w-content items-start gap-6 px-4 py-6 md:px-6 lg:grid-cols-[216px_minmax(0,1fr)] lg:gap-8 lg:px-8">
+      <div className="min-w-0 lg:sticky lg:top-6"><StaffNavigation manager={access.role === "manager"} /></div>
+      <main id="contenido" tabIndex={-1} className="min-w-0 focus:outline-none">{children}</main>
+    </div>
   </div>;
 }

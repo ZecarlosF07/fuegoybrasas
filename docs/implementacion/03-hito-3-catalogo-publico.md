@@ -1,5 +1,7 @@
 # Hito 3 — Mostrar la carta
 
+**Actualización 22/10 — DC-27:** [catálogo y pedido solo de platos](../diseno-tecnico/22-catalogo-y-pedido-solo-platos.md) retira modalidad de las fichas públicas y permite agregar directamente artículos sin opciones obligatorias. Conserva revisión expresa de precios/disponibilidad. La nueva marca está pendiente de aprobación; no cambia datos comerciales.
+
 **Versión:** 1.2 · **Fecha:** 8 de octubre de 2026.  
 **Destinatarios:** equipo de desarrollo y responsable del negocio.  
 **Estado:** implementado y conectado al Supabase remoto; verificación técnica aprobada, aceptación manual y confirmaciones comerciales PT-05 pendientes. Ver [evidencia de H3](evidencia/h3/README.md) y [matriz comercial](evidencia/h3/matriz-comercial.md).  

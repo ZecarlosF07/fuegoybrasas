@@ -14,12 +14,14 @@ Las contraseñas y claves se entregan por el canal privado acordado, nunca en es
 
 ## Cómo hace un pedido el cliente
 
-1. Consulta productos, porciones, inclusiones y precios; elige modalidad y agrega al carrito.
+1. Consulta productos, porciones, inclusiones y precios; elige platos y agrega al carrito.
 2. Revisa cantidades, opciones e indicaciones. El borrador permite volver a la carta y recargar.
-3. Completa nombre y los datos necesarios de coordinación; no selecciona pago ni ingresa vuelto. No necesita registrarse.
+3. Añade indicaciones generales solo si las necesita y prepara el mensaje. No completa nombre, dirección, modalidad o pago y no necesita registrarse.
 4. Revisa el mensaje preparado y abre WhatsApp **982 042 493**. Decide enviarlo y coordina la atención con el local.
 
-Si un cargo no está definido, el total correspondiente se confirma por WhatsApp. El subtotal de productos conserva sus precios verificados. Un cambio de precio o producto agotado exige revisión expresa. La web no confirma una venta, un pago o una entrega al abrir el chat.
+La web muestra únicamente el subtotal de productos con precios verificados. Entrega, dirección y costo de envío se coordinan por WhatsApp; no se supone envío gratuito ni se cotiza un total logístico. Un cambio de precio o producto agotado exige revisión expresa. La web no confirma una venta, un pago o una entrega al abrir el chat.
+
+**Revisión DC-27:** flujo implementado y comprobado en local; publicación por verificar separadamente. [Especificación vigente](../diseno-tecnico/22-catalogo-y-pedido-solo-platos.md).
 
 ## Cómo funciona la tarjeta
 

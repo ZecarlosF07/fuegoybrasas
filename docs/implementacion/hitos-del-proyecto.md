@@ -1,5 +1,7 @@
 # Fuego y Brasas — Hitos de implementación
 
+**Actualización DC-28, 24/10:** la [revisión integral UX/UI](../diseno-tecnico/23-renovacion-ux-ui-y-marca.md) aplica la identidad aprobada a todos los hitos con interfaces, con comprobaciones y evidencia propias. No altera acuerdos comerciales ni permisos.
+
 **Actualización DC-26, 22/10:** [aprobación y activación de tarjeta](../diseno-tecnico/21-aprobacion-y-activacion-tarjeta.md).
 
 **Actualización 21/10 — DC-23–25:** [pedido sin pago y costo de premio opcional](../diseno-tecnico/20-pedido-whatsapp-y-costo-opcional.md) sustituye los campos de pago/vuelto, la dependencia de pagos y el costo obligatorio de premio. La revisión técnica se delega al agente; ver [guía de entrega](../entrega-al-cliente/README.md).

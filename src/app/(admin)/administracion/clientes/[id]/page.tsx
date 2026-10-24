@@ -6,6 +6,8 @@ import { getHistory } from "@/features/management/server/reads";
 import type { CustomerAdministrationPageProps } from "@/features/management/types/management";
 import { requireStaffPage } from "@/features/staff/server/access";
 
+export const metadata = { title: "Supervisar tarjeta | Fuego y Brasas", robots: { index: false, follow: false } };
+
 export default async function CustomerAdministrationPage({ params }: CustomerAdministrationPageProps) {
   const access = await requireStaffPage(true);
   if (!access.ok) return <p role="alert">{access.error.message}</p>;

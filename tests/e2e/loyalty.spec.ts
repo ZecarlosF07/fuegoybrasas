@@ -46,7 +46,7 @@ test.afterAll(async () => {
 });
 async function checkLayout(page: Page, name: string) {
   // La redirección SSR puede completar antes de que Next instale sus metadatos.
-  await expect(page).toHaveTitle(/.+\| Fuego y Brasas$/);
+  await expect(page).toHaveTitle(/Fuego y Brasas$/);
   for (const width of [360, 390, 768, 1280, 320]) {
     await page.setViewportSize({ width, height: 900 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -184,9 +184,7 @@ test("preferencias opcionales: lectura fallida o borrador cambiado no bloquean n
   await context.addCookies(customerCookies);
   await page.goto("/productos/gran-promocion"); await page.getByRole("button", { name: "Agregar al pedido", exact: true }).click();
   await page.getByRole("link", { name: "Revisar pedido", exact: true }).click();
-  await page.getByRole("link", { name: "Continuar con mis datos", exact: true }).click();
-  await page.getByLabel("Tu nombre", { exact: true }).fill("Invitado sintético");
-  await page.getByLabel("Dirección de entrega").fill("Dirección sintética H6");
+  await page.getByText("Añadir indicaciones generales (opcional)", { exact: true }).click();
   await expect(page.getByLabel("Medio de pago")).toHaveCount(0);
   await page.getByRole("button", { name: "Aplicar mis indicaciones frecuentes", exact: true }).click();
   await expect(page.getByLabel("Indicaciones generales (opcional)")).toHaveValue("Sin ají sintético");

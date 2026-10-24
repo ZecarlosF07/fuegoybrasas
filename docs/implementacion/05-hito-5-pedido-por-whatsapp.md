@@ -1,5 +1,7 @@
 # Hito 5 — Completar el pedido por WhatsApp
 
+**Actualización 22/10 — DC-27:** [pedido solo de platos](../diseno-tecnico/22-catalogo-y-pedido-solo-platos.md) sustituye modalidad, formulario logístico y cálculo de cargos. `/pedido` reúne platos e indicaciones opcionales y continúa a `/pedido/continuar`. `/pedido/datos` redirige a `/pedido`; la API acepta solo líneas y devuelve subtotal de productos. Entrega y costo de envío se coordinan por WhatsApp. Se conservan tablas logísticas internas e historial, sin requerir otra migración.
+
 **Actualización 21/10 — DC-23–25:** [pedido sin pago y costo de premio opcional](../diseno-tecnico/20-pedido-whatsapp-y-costo-opcional.md) sustituye los campos de pago/vuelto, la dependencia de pagos y el costo obligatorio de premio. La revisión técnica se delega al agente; ver [guía de entrega](../entrega-al-cliente/README.md).
 
 **Actualización DC-22, 13/10/2026:** [personal sin MFA](../diseno-tecnico/19-acceso-del-personal-sin-mfa.md) sustituye los requisitos de segundo factor, enrolamiento y AAL2 de este documento. Acceso con correo/contraseña, cuenta activa y rol vigente; cliente sin SMS. Evidencia histórica conserva las reglas comprobadas en su fecha.

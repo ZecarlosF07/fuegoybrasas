@@ -1,7 +1,7 @@
 # Fuego y Brasas — Entrada del sistema visual
 
-**Versión:** 1.0 · **Fecha:** 3 de octubre de 2026.  
-**Estado:** diseño especificado; base visual de H1 implementada y en revisión. Interfaces de H2–H8 pendientes.
+**Versión:** 1.1 · **Fecha:** 24 de octubre de 2026.
+**Estado:** propuesta 06 aprobada; [revisión integral DC-28](../../docs/diseno-tecnico/23-renovacion-ux-ui-y-marca.md) en implementación/verificación. Los estados iniciales de H1–H8 no describen el avance actual. Consultar la evidencia fechada de cada hito.
 
 Este archivo permite recuperar el sistema desde el flujo de `ui-ux-pro-max`. **Antes de diseñar, construir o revisar una página, leer completos:**
 

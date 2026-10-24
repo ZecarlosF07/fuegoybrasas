@@ -9,7 +9,7 @@ export const metadata = { title: "Cambiar teléfono | Fuego y Brasas", robots: {
 export default async function ChangePhonePage() {
   const card = await getMyCard();
   if (!card.ok && card.error.code !== "SERVICE_UNAVAILABLE") redirect("/mi-tarjeta/acceso");
-  return <CatalogShell showCartDock={false}><main className="mx-auto max-w-2xl px-4 py-8">
+  return <CatalogShell showCartDock={false}><main id="contenido" tabIndex={-1} className="mx-auto max-w-2xl px-4 py-8 focus:outline-none">
     {card.ok ? <ContactForm card={card.data} /> : <p role="alert">{card.error.message}</p>}
   </main></CatalogShell>;
 }

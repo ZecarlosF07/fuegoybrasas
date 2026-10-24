@@ -9,7 +9,7 @@ import { cartDraft, cartInput, cartLine, checkoutCatalog, fingerprint } from "..
 afterEach(() => { localStorage.clear(); sessionStorage.clear(); vi.restoreAllMocks(); });
 function Harness() {
   const cart = useCart();
-  return <><p>{cart.ready ? "Listo" : "Recuperando"}</p><p>{cart.error?.message}</p><p>{cart.warning}</p><p>{cart.validated?.status}</p><button onClick={() => cart.dispatch({ type: "addLine", line: cartLine, mode: "delivery" })}>Agregar</button><button onClick={() => cart.dispatch({ type: "setCheckout", fields: cartDraft.checkout })}>Datos</button><button onClick={() => cart.dispatch({ type: "setQuantity", lineId: cartLine.lineId, quantity: 3 })}>Editar</button><button onClick={cart.validate} disabled={cart.validating}>{cart.validating ? "Validando" : "Validar"}</button></>;
+  return <><p>{cart.ready ? "Listo" : "Recuperando"}</p><p>{cart.error?.message}</p><p>{cart.warning}</p><p>{cart.validated?.status}</p><button onClick={() => cart.dispatch({ type: "addLine", line: cartLine })}>Agregar</button><button onClick={() => cart.dispatch({ type: "setCheckout", fields: cartDraft.checkout })}>Datos</button><button onClick={() => cart.dispatch({ type: "setQuantity", lineId: cartLine.lineId, quantity: 3 })}>Editar</button><button onClick={cart.validate} disabled={cart.validating}>{cart.validating ? "Validando" : "Validar"}</button></>;
 }
 async function start() {
   render(<CartProvider><Harness /></CartProvider>);

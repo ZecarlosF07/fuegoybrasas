@@ -60,3 +60,18 @@ test("la respuesta pública no contiene la clave secreta", async ({ page }) => {
   expect(html).not.toContain("SUPABASE_SECRET_KEY");
   expect(html).not.toContain("sb_secret_");
 });
+
+test("marca y salto de teclado presentes en tarjeta y páginas informativas", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 900 });
+  for (const path of ["/mi-tarjeta/acceso", "/privacidad", "/condiciones-tarjeta"]) {
+    await page.goto(path);
+    await expect(page.locator("header img")).toBeVisible();
+    await expect(page.getByRole("link", { name: "Mi pedido", exact: true })).toBeVisible();
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("link", { name: "Saltar al contenido" })).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page.locator("main#contenido")).toBeFocused();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze()).violations).toEqual([]);
+  }
+});

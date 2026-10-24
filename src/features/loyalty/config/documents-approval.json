@@ -8,11 +8,25 @@
   "documents": [
     {
       "path": "src/app/condiciones-tarjeta/page.tsx",
-      "sha256": "6f38a3ba0938a649b56be0a55870d22984923ef7ebebc6fbaabd4585019955e7"
+      "sha256": "a55e3e4f0858d6c50b30d47c52c19afea4e22f87f15181e8c9e2f20c30de2bb6"
     },
     {
       "path": "src/app/privacidad/page.tsx",
-      "sha256": "e986e609c2e04fbcfe5b38eb5b9e4ecbd48fd962377fbe4209b598b02e2aff92"
+      "sha256": "66f24002f094c515ee6f3e2d297919bbd3c6682ced8b7d72567c6e98d5c78e1e"
+    }
+  ],
+  "amendments": [
+    {
+      "decision": "DC-27",
+      "date": "2026-10-22",
+      "scope": "Solo descripción del pedido invitado: retirada solicitada de nombre/dirección/modalidad y coordinación logística por WhatsApp. No cambia el tratamiento de tarjeta aprobado en DC-26.",
+      "authorization": "Instrucción del propietario: no poner la modalidad; envío por WhatsApp; solo pedir los platos."
+    },
+    {
+      "decision": "DC-28",
+      "date": "2026-10-24",
+      "scope": "Solo atributos y presentación accesible del contenedor principal de condiciones/privacidad: id de salto de teclado, tabIndex y foco. El contenido legal no cambia.",
+      "authorization": "El propietario aprueba la propuesta 06 y solicita revisar y modificar la UX/UI de toda la web."
     }
   ]
 }

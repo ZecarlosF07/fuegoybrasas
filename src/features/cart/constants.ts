@@ -9,4 +9,3 @@ export const CART_BODY_BYTES = 32 * 1024;
 export const CART_MAX_IDLE_MS = 7 * 24 * 60 * 60 * 1000;
 export const VALIDATION_TTL_MS = 60_000;
 export const WHATSAPP_MAX_URL_LENGTH = 7000;
-export const MODE_LABELS = { delivery: "Entrega", pickup: "Recojo" };

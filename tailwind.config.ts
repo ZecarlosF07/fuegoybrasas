@@ -6,10 +6,11 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          bg: "#FFF8ED", surface: "#FFFFFF", ink: "#241C17", muted: "#6B5C50",
-          action: "#9B2C20", "action-hover": "#7D2018", fire: "#D65A1E",
-          gold: "#C89538", "gold-ink": "#8A5A16", border: "#DED0BE",
-          "control-border": "#8A7869", success: "#247044", danger: "#B42318", info: "#275F83",
+          bg: "#FFFFFF", surface: "#FFFFFF", ink: "#171717", muted: "#5C5C5C",
+          action: "#98251F", "action-hover": "#7D201A", fire: "#E56A16",
+          primary: "#FFC400", "primary-hover": "#E6AD00", "on-primary": "#171717", "primary-border": "#966000",
+          gold: "#FFC400", "gold-ink": "#98251F", border: "#E5E5E5", subtle: "#F5F5F5",
+          "control-border": "#808080", success: "#247044", danger: "#B42318", info: "#275F83",
         },
       },
       fontFamily: {

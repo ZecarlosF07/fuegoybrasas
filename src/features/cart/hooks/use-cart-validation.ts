@@ -17,13 +17,13 @@ export function useCartValidation({ current, available, setError }: CartValidati
   async function validate() {
     if (busy.current || !available) return false;
     const draft = current.current;
-    const form = checkoutFormSchema.safeParse({ ...draft.checkout, mode: draft.mode });
+    const form = checkoutFormSchema.safeParse(draft.checkout);
     const input = cartValidationSchema.safeParse(draftInput(draft));
     if (!form.success) {
       const fieldErrors = Object.fromEntries(form.error.issues.map((issue) => [issue.path.join("."), [issue.message]]));
       setError({ code: "VALIDATION_ERROR", message: "Revisa los datos del pedido.", fieldErrors }); return false;
     }
-    if (!input.success || draft.lines.some((line) => line.instructionsStatus !== "ready")) { setError({ code: "VALIDATION_ERROR", message: "Revisa los productos, modalidad e indicaciones del carrito." }); return false; }
+    if (!input.success || draft.lines.some((line) => line.instructionsStatus !== "ready")) { setError({ code: "VALIDATION_ERROR", message: "Revisa los productos e indicaciones del carrito." }); return false; }
     busy.current = true; setValidating(true); setValidation(null); setError(null);
     const startedAt = performance.now();
     try {

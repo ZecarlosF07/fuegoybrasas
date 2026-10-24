@@ -13,7 +13,7 @@ export const metadata = { title: "Mi tarjeta | Fuego y Brasas", robots: { index:
 export default async function CustomerCardPage() {
   const result = await getMyCard();
   if (!result.ok && ["AUTH_REQUIRED", "NOT_FOUND", "CUSTOMER_RECOVERY_REVIEW"].includes(result.error.code)) redirect("/mi-tarjeta/acceso");
-  return <CatalogShell showCartDock={false}><main className="mx-auto max-w-content space-y-6 px-4 py-8 md:px-6 lg:px-8">
+  return <CatalogShell showCartDock={false}><main id="contenido" tabIndex={-1} className="mx-auto max-w-content space-y-6 px-4 py-8 focus:outline-none md:px-6 lg:px-8">
     <div className="flex flex-wrap items-center justify-between gap-4"><h1 className="font-brand text-3xl font-bold">Mi tarjeta</h1><SignOut audience="customer" /></div>
     {result.ok ? <div className="grid gap-6 lg:grid-cols-2"><CardSummary card={result.data} /><div className="space-y-6"><PreferencesForm card={result.data} />
       <Link className="inline-flex min-h-12 items-center text-brand-action underline" href="/mi-tarjeta/telefono">Cambiar mi teléfono</Link>

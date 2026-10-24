@@ -3,9 +3,12 @@ import type { Catalog, CatalogItem } from "../types/catalog";
 import { formatPen } from "@/lib/money/utils";
 
 export function productPrice(item: CatalogItem) {
-  const prices = item.prices.map((price) => price.priceCents);
-  const minimum = Math.min(...prices);
-  return `${Math.max(...prices) > minimum ? "Desde " : ""}${formatPen(minimum)}`;
+  const price = orderUnitPrice(item);
+  return price === null ? "Precio por confirmar" : formatPen(price);
+}
+export function orderUnitPrice(item: CatalogItem) {
+  const prices = [...new Set(item.prices.map((price) => price.priceCents))];
+  return prices.length === 1 ? prices[0] : null;
 }
 export function productImageUrl(item: CatalogItem, supabaseUrl: string) {
   if (!item.imagePath) return null;

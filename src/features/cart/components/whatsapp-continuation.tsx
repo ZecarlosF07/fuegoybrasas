@@ -24,10 +24,10 @@ export function WhatsAppContinuation() {
     return () => clearInterval(timer);
   }, [cart.deadline]);
   const result = cart.validated;
-  if (!result || result.status !== "ready") return <div className="space-y-4"><p>Necesitamos revisar el pedido antes de preparar WhatsApp. Tu borrador está conservado.</p><Button aria-busy={cart.validating} disabled={cart.validating} onClick={cart.validate}>{cart.validating ? "Revisando pedido…" : "Revalidar pedido"}</Button><Link href="/pedido/datos" className="inline-flex min-h-12 items-center underline">Revisar mis datos</Link></div>;
+  if (!result || result.status !== "ready") return <div className="space-y-4"><p>Necesitamos revisar el pedido antes de preparar WhatsApp. Tu borrador está conservado.</p><Button aria-busy={cart.validating} disabled={cart.validating} onClick={cart.validate}>{cart.validating ? "Revisando pedido…" : "Revalidar pedido"}</Button><Link href="/pedido" className="inline-flex min-h-12 items-center underline">Revisar mis platos</Link></div>;
   let prepared: PreparedMessage;
   try { prepared = prepareMessage(result, cart.draft); }
-  catch (cause) { return <p role="alert">{cause instanceof Error ? cause.message : "Revisa el pedido antes de continuar."} <Link href="/pedido/datos" className="underline">Volver a los datos</Link></p>; }
+  catch (cause) { return <p role="alert">{cause instanceof Error ? cause.message : "Revisa el pedido antes de continuar."} <Link href="/pedido" className="underline">Volver a mi pedido</Link></p>; }
   async function copy(): Promise<Result<void>> {
     if (!prepared || performance.now() >= cart.deadline) return { ok: false, error: { code: "CATALOG_CHANGED", message: "La revisión expiró. Revalida antes de copiar." }, requestId: crypto.randomUUID() };
     try { await navigator.clipboard.writeText(prepared.message); setNotice("Mensaje copiado. Pégalo en el chat para coordinar tu pedido."); return { ok: true, data: undefined, requestId: crypto.randomUUID() }; }
@@ -44,6 +44,6 @@ export function WhatsAppContinuation() {
     }}>Abrir WhatsApp</a>}
     <AsyncButton label="Copiar mensaje completo" pendingLabel="Copiando mensaje…" action={copy} disabled={expired || cart.validating || cart.external} variant="secondary" />
     {notice && <p role="status">{notice}</p>}
-    <Link href="/pedido/datos" className="inline-flex min-h-12 items-center underline">Volver y editar datos</Link>
+    <Link href="/pedido" className="inline-flex min-h-12 items-center underline">Volver y editar pedido</Link>
   </section>;
 }

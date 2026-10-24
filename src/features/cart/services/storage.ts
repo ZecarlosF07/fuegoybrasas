@@ -13,7 +13,7 @@ export function recoverDraft(commercial: string | null, personal: string | null,
       const instructions = external ? "" : checkout?.lineInstructions[line.lineId] ?? "";
       return { ...line, instructions, instructionsStatus: hadInstructions && !instructions ? "needs_review" : "ready" };
     });
-    const draft: CartDraft = { ...empty, mode: cart.mode, updatedAt: cart.updatedAt, checkout: checkout?.fields ?? empty.checkout, lines: lines.map((line) => ({ ...line, instructionsStatus: line.instructionsStatus === "ready" ? "ready" : "needs_review" })) };
+    const draft: CartDraft = { ...empty, updatedAt: cart.updatedAt, checkout: checkout?.fields ?? empty.checkout, lines: lines.map((line) => ({ ...line, instructionsStatus: line.instructionsStatus === "ready" ? "ready" : "needs_review" })) };
     const expired = now - Date.parse(cart.updatedAt) > CART_MAX_IDLE_MS || Date.parse(cart.updatedAt) > now + CART_MAX_IDLE_MS;
     return { draft, warning: expired ? "Este borrador lleva más de siete días sin actualizarse. Decide si quieres revisarlo o empezar otro." : lines.some((line) => line.instructionsStatus === "needs_review") ? "Revisa las indicaciones que no se pudieron recuperar." : null, blocked: false, expired };
   } catch { return { draft: empty, warning: "Hay un borrador incompatible o dañado. Lo conservamos sin sobrescribirlo. Para continuar debes autorizar empezar otro.", blocked: true, expired: false }; }
@@ -31,7 +31,7 @@ export function readDraft(external = false): CartRecovery {
   return { ...recovered, warning: [...warnings, recovered.warning, "Puedes seguir en memoria; al cerrar podrías perder el pedido."].filter(Boolean).join(" ") };
 }
 export function serializeDraft(draft: CartDraft, writerId: string) {
-  const cart = { schemaVersion: 1, updatedAt: draft.updatedAt, mode: draft.mode, writerId, lines: draft.lines.map(({ instructions, instructionsStatus, ...line }) => ({ ...line, hadInstructions: Boolean(instructions) || instructionsStatus === "needs_review" })) };
+  const cart = { schemaVersion: 1, updatedAt: draft.updatedAt, writerId, lines: draft.lines.map(({ instructions, instructionsStatus, ...line }) => ({ ...line, hadInstructions: Boolean(instructions) || instructionsStatus === "needs_review" })) };
   const checkout = { schemaVersion: 1, fields: draft.checkout, lineInstructions: Object.fromEntries(draft.lines.filter((line) => line.instructionsStatus === "ready").map((line) => [line.lineId, line.instructions])) };
   return { commercial: JSON.stringify(storedCartSchema.parse(cart)), personal: JSON.stringify(storedCheckoutSchema.parse(checkout)) };
 }

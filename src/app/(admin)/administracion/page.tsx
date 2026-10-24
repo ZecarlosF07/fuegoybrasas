@@ -3,6 +3,8 @@ import { getCustomers, getDashboard } from "@/features/management/server/reads";
 import { defaultPeriod } from "@/features/management/services/dates";
 import { requireStaffPage } from "@/features/staff/server/access";
 
+export const metadata = { title: "Resumen de fidelización | Fuego y Brasas", robots: { index: false, follow: false } };
+
 export default async function AdministrationPage() {
   const access = await requireStaffPage(true);
   if (!access.ok) return <p role="alert">{access.error.message}</p>;

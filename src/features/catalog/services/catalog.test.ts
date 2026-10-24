@@ -18,10 +18,10 @@ describe("Catálogo: dinero, contenido y contrato público", () => {
     const group = { id: crypto.randomUUID(), name: "Opciones de prueba", minChoices: 2, maxChoices: 2, revision: 1, choices: [{ id: crypto.randomUUID(), label: "Primera", extraPriceCents: 0, revision: 1 }] };
     expect(catalogSchema.safeParse({ ...catalogFixture, items: [{ ...catalogFixture.items[0], optionGroups: [group] }] }).success).toBe(false);
   });
-  it("muestra Desde cuando existen precios distintos y conserva los céntimos", () => {
+  it("no inventa un precio único ante precios distintos y conserva los céntimos", () => {
     const item = catalogFixture.items[0];
     expect(productPrice(item)).toBe("S/89.90");
-    expect(productPrice({ ...item, prices: [...item.prices, { mode: "pickup", priceCents: 7990, revision: 1 }] })).toBe("Desde S/79.90");
+    expect(productPrice({ ...item, prices: [...item.prices, { mode: "pickup", priceCents: 7990, revision: 1 }] })).toBe("Precio por confirmar");
     expect(productDescription(item)).toContain("1 pollo entero + ½ pollo");
   });
   it("no inventa imagen e impide rutas que no pertenecen al artículo", () => {

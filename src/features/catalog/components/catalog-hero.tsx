@@ -2,20 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CATALOG_HERO_IMAGE } from "../media";
+import { buttonClasses } from "@/components/ui/button-classes";
 
 export function CatalogHero() {
   return (
-    <section aria-labelledby="bienvenida-titulo" className="overflow-hidden rounded-card bg-brand-ink text-brand-surface">
+    <section aria-labelledby="bienvenida-titulo" className="overflow-hidden rounded-card border border-brand-border bg-brand-surface">
       <div className="grid lg:grid-cols-2 lg:items-center">
-        <div className="flex flex-col items-start gap-5 p-6 md:p-8 lg:p-12">
+        <div className="flex flex-col items-start gap-4 p-5 md:p-8 lg:p-10">
           <p className="flex items-center gap-3 text-sm font-semibold tracking-wide">
-            <span aria-hidden="true" className="h-px w-8 bg-brand-gold" />Pollo a la brasa · Parcona
+            <span aria-hidden="true" className="h-1 w-8 rounded-full bg-brand-primary" />Pollo a la brasa · Parcona
           </p>
           <h1 id="bienvenida-titulo" className="max-w-md font-brand text-brand-mobile font-bold md:text-brand-desktop">
-            Sabor que une,<br /><span className="text-brand-gold">momentos que quedan.</span>
+            Sabor que une,<br /><span className="text-brand-action">momentos que quedan.</span>
           </h1>
-          <p className="max-w-md text-brand-surface/85">Pollo a la brasa, mostritos y alitas. Encuentra ese antojo para ti o para compartir.</p>
-          <Link href="#carta" className="inline-flex min-h-12 items-center justify-center gap-4 rounded-button bg-brand-action px-6 font-semibold text-brand-surface transition-colors duration-feedback hover:bg-brand-action-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-surface motion-reduce:transition-none">
+          <p className="max-w-md text-brand-muted">Pollo a la brasa, mostritos y alitas. Elige tus platos y continúa por WhatsApp.</p>
+          <Link href="#carta" className={buttonClasses("primary")}>
             Explorar la carta<span aria-hidden="true">→</span>
           </Link>
         </div>

@@ -47,7 +47,7 @@ export function LoyaltyDashboard({ initial, customers: initialCustomers }: Dashb
       <SubmitButton label="Consultar actividad" pendingLabel="Consultando actividad…" pending={statsWork.pending} />
       <p className="text-sm text-brand-muted">Periodo mostrado: {dashboard.from} al {dashboard.until}, hora de Perú. Clientes, progreso, premios pendientes e incidencias muestran su estado actual.</p>
     </form>
-    <dl className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{metrics.map(([label, value]) => <div key={label} className="rounded-card border border-brand-border bg-brand-surface p-4"><dt className="text-brand-muted">{label}</dt><dd className="mt-2 text-3xl font-bold tabular-nums">{value}</dd></div>)}</dl>
+    <dl className="grid grid-cols-2 gap-3 xl:grid-cols-3">{metrics.map(([label, value]) => <div key={label} className="rounded-card border border-brand-border bg-brand-surface p-3 md:p-4"><dt className="text-sm leading-6 text-brand-muted">{label}</dt><dd className="mt-3 text-3xl font-bold tabular-nums text-brand-action">{value}</dd></div>)}</dl>
     <section className="space-y-4" aria-labelledby="customers-title">
       <h2 id="customers-title" className="text-2xl font-bold">Clientes y tarjetas</h2>
       <form method="post" onSubmit={(event) => { event.preventDefault(); void consultCustomers(String(new FormData(event.currentTarget).get("filter"))); }} className="flex flex-wrap items-end gap-4">

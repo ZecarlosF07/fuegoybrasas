@@ -1,5 +1,7 @@
 # H8 — Preparación de publicación
 
+**Actualización DC-28, 24/10:** [renovación integral UX/UI](renovacion-ux-ui-2026-10-24/README.md), con marca aprobada y revisión de carta, pedido, tarjeta y paneles. El reporte distingue las pruebas locales de la posterior comprobación del despliegue.
+
 **Estado vigente 22/10 — DC-26:** textos aprobados y programa oficial activado por autorización del propietario. [Evidencia vigente](whatsapp-sin-pago-2026-10-21/README.md). Los reportes fechados anteriores no describen el estado actual de los flags.
 
 **Actualización 21/10 — DC-23–25:** [revisión delegada, pedido sin pago y costo opcional](whatsapp-sin-pago-2026-10-21/README.md). 134 unitarias, 132 DB, 116 integración y 51 E2E aprobadas; migración adicional aplicada al oficial. Se retiran pagos/costo como bloqueos y se separa preparación de pedidos/tarjeta. [Guía de entrega](../../../entrega-al-cliente/README.md).

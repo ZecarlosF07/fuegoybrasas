@@ -1,6 +1,7 @@
 import type { z } from "zod";
 
 import type { recoveryMarkerSchema } from "../validation/schemas";
+import type { ButtonVariant } from "@/components/ui/types/button";
 import type { Result } from "@/contracts/types/result";
 import type { StaffConflict } from "@/features/staff/types/staff";
 
@@ -9,5 +10,5 @@ export type AuthDestination = { destination: "/personal" | "/personal/restablece
 export type AuthFormKind = "login" | "recovery" | "password";
 export type AuthFormProps = { kind: AuthFormKind };
 export type AuthFormResult = { destination?: string; message?: string };
-export type SignOutProps = { audience?: "staff" | "customer" };
+export type SignOutProps = { audience?: "staff" | "customer"; variant?: ButtonVariant };
 export type FormAction<T> = (input: unknown) => Promise<Result<T, StaffConflict>>;
