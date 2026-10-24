@@ -1,6 +1,6 @@
 # Reglas UX/UI — Fuego y Brasas
 
-**Versión:** 1.1 · **Fecha:** 4 de octubre de 2026.
+**Versión:** 1.2 · **Fecha:** 24 de octubre de 2026.
 **Alcance:** diseño, construcción y revisión de interfaces, componentes y documentación que determine su apariencia o interacción.
 
 ## Lectura y uso obligatorio de la skill
@@ -14,8 +14,8 @@
 ## Experiencia de compra y fidelización
 
 - **UI-06.** La carta permite entender fotografía, nombre, porción, inclusiones, precio y acción sin registrarse. Usar una promoción destacada apta según el contrato, categorías visibles y acciones explícitas. No añadir carruseles automáticos, ventanas de venta adicional, ubicación obligatoria al entrar, filtros avanzados, favoritos o indicadores de popularidad sin requisito aprobado.
-- **UI-07.** Conservar borrador, cantidades, observaciones, modalidad y posición al volver según el frontend. Mostrar agotados, incompatibilidades y precios cambiados para resolverlos expresamente. Mantener el importe de productos separado de cargos pendientes. Barra de pedido únicamente con contenido, reservando espacio y safe-area. No tapar controles ni mostrar instrucciones técnicas al comprador.
-- **UI-08.** Formularios con etiquetas visibles, ayudas útiles y campos condicionales del contrato. Error junto al campo y resumen enlazado cuando haya varios; al enviar, llevar foco al resumen si existe y al primer campo inválido si no. No mover foco al validar por blur. Conservar entradas y permitir pegar/autocompletar OTP y usar gestores de contraseña. No crear autenticación distinta de la definida.
+- **UI-07.** Conservar borrador, cantidades, observaciones y posición al volver según el frontend. DC-27 retira modalidad y datos logísticos del pedido web; coordinar entrega y envío por WhatsApp. Mostrar agotados, incompatibilidades y precios cambiados para resolverlos expresamente. Mantener el importe de productos separado de cargos pendientes. Barra de pedido únicamente con contenido, reservando espacio y safe-area. No tapar controles ni mostrar instrucciones técnicas al comprador.
+- **UI-08.** Formularios con etiquetas visibles, ayudas útiles y campos condicionales del contrato. Error junto al campo y resumen enlazado cuando haya varios; al enviar, llevar foco al resumen si existe y al primer campo inválido si no. No mover foco al validar por blur. Conservar entradas y permitir pegar/autocompletar campos pertinentes y usar gestores de contraseña. Cliente con enlace privado, sin SMS; personal sin CAPTCHA ni MFA según las decisiones vigentes. No crear autenticación distinta de la definida.
 - **UI-09.** Distinguir mensaje preparado, intento de apertura y confirmación comercial posterior. Emplear «Continuar por WhatsApp» para la salida al chat; no afirmar «Pedido confirmado», «Pagado» o «En preparación» por abrirlo. Acceso a tarjeta secundario y opcional. Cierre de sesión y limpieza de datos respetan el borrador no sensible.
 - **UI-10.** Mostrar posiciones de sellos y conteo textual; premios pendientes separados del progreso. Operaciones de personal muestran cliente, efecto previsto, confirmaciones requeridas y resultado autorizado. Nunca aumentar saldo de forma optimista. Resultado incierto exige consulta/reintento de la misma operación; no ofrecer una nueva acreditación o canje por falta de respuesta. Incidencia no equivale a corrección aplicada.
 

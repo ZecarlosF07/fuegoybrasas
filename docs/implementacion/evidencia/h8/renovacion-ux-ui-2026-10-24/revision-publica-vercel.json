@@ -1,0 +1,98 @@
+{
+  "checkedAt": "2026-10-24T05:45:04.917Z",
+  "timezone": "America/Bogota",
+  "environment": "Vercel publicado con Supabase oficial, solo lecturas sin sesión",
+  "base": "https://fuegoybrasas.vercel.app",
+  "routes": [
+    {
+      "route": "/",
+      "status": 200,
+      "redirect": null,
+      "hasMainTarget": true,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/productos/mostrito-octavo-pollo",
+      "status": 200,
+      "redirect": null,
+      "hasMainTarget": true,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/pedido",
+      "status": 200,
+      "redirect": null,
+      "hasMainTarget": true,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/pedido/datos",
+      "status": 307,
+      "redirect": "/pedido",
+      "hasMainTarget": false,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/pedido/continuar",
+      "status": 200,
+      "redirect": null,
+      "hasMainTarget": true,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/mi-tarjeta/acceso",
+      "status": 200,
+      "redirect": null,
+      "hasMainTarget": true,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/personal/acceso",
+      "status": 200,
+      "redirect": null,
+      "hasMainTarget": true,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/privacidad",
+      "status": 200,
+      "redirect": null,
+      "hasMainTarget": true,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/condiciones-tarjeta",
+      "status": 200,
+      "redirect": null,
+      "hasMainTarget": true,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/ruta-inexistente-revision-ui",
+      "status": 404,
+      "redirect": null,
+      "hasMainTarget": true,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/personal",
+      "status": 307,
+      "redirect": "/personal/acceso",
+      "hasMainTarget": false,
+      "hasBrandSeal": true
+    },
+    {
+      "route": "/administracion",
+      "status": 307,
+      "redirect": "/personal/acceso",
+      "hasMainTarget": false,
+      "hasBrandSeal": true
+    }
+  ],
+  "catalog": {
+    "status": 200,
+    "products": 17,
+    "orderingEnabled": true
+  },
+  "mutation": "No se crean clientes, pedidos ni operaciones; no se envía WhatsApp."
+}

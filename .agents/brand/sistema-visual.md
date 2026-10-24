@@ -1,7 +1,7 @@
 # Sistema visual canónico — Fuego y Brasas
 
 **Versión:** 1.1 · **Fecha:** 24 de octubre de 2026.
-**Estado:** propuesta 06 aprobada por el propietario el 24/10/2026; revisión integral en implementación y verificación. No constituye un manual original del logotipo ni certificación de interfaces.
+**Estado:** propuesta 06 aprobada por el propietario el 24/10/2026; revisión integral implementada, con comprobaciones locales y publicación verificadas. No constituye un manual original del logotipo ni certificación de interfaces.
 **Alcance:** carta, pedido, cliente, personal y administración. Fuente única de tokens y medidas.
 
 ## 1. Identidad y logotipo
@@ -169,3 +169,5 @@ Panel privado: navegación por rol lateral en escritorio y menú desplegable exp
 El sello original recibido se conserva como recurso; su presentación circular recorta únicamente el anuncio alrededor. No se recolorea ni reconstruye. Raster pequeño usado a tamaño contenido; el original vectorial/de mayor resolución sigue pendiente. Fotografías existentes identificadas como referenciales; Storage propio mantiene prioridad.
 
 DC-27 sustituye la modalidad/cargos públicos anteriores; DC-28 cambia presentación y accesibilidad, no precios, ventas, sellos, permisos ni textos legales. Las decisiones posteriores del índice técnico prevalecen sobre estados históricos de este documento.
+
+Evidencia de DC-28: [revisión y publicación del 24/10](../../docs/implementacion/evidencia/h8/renovacion-ux-ui-2026-10-24/README.md). La verificación automatizada conserva los límites indicados allí.

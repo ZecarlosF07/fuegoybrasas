@@ -1,6 +1,6 @@
 # Fuego y Brasas — Diseño técnico
 
-**Actualización DC-28, 24/10:** [revisión integral UX/UI y marca](23-renovacion-ux-ui-y-marca.md). Propuesta 06 aprobada; se aplica a toda la web. Los estados pendientes de aprobación de marca del 22/10 son antecedentes. Verificación y publicación de esta revisión se registran por separado.
+**Actualización DC-28, 24/10:** [revisión integral UX/UI y marca](23-renovacion-ux-ui-y-marca.md). Propuesta 06 aprobada, implementada y publicada; [comprobaciones y límites](../implementacion/evidencia/h8/renovacion-ux-ui-2026-10-24/README.md). Los estados pendientes de aprobación de marca del 22/10 son antecedentes.
 
 **Actualización DC-27, 22/10:** [catálogo y pedido solo de platos](22-catalogo-y-pedido-solo-platos.md): sin modalidad ni datos logísticos en la web; subtotal de productos y coordinación por WhatsApp. Comprobado en local, todavía sin verificar su publicación. Marca: amarillo aceptado y rojo de la [propuesta 06](../marca/manual-propuesto-06-rojo-profundo.md) pendiente de aprobación.
 

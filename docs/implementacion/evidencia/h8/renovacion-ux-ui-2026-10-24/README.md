@@ -1,6 +1,6 @@
 # Revisión integral UX/UI — 24/10/2026
 
-**Referencia:** [DC-28](../../../../diseno-tecnico/23-renovacion-ux-ui-y-marca.md), propuesta 06 aprobada. Trabajo sobre `c1465bd` más los cambios de esta entrega. Estado: revisión implementada y verificada en local; commit/publicación se registran después de comprobarlos.
+**Referencia:** [DC-28](../../../../diseno-tecnico/23-renovacion-ux-ui-y-marca.md), propuesta 06 aprobada. Código implementado en `0b1d4c31484f78119a79ef4954105b76f4bd6fb1`, sobre `c1465bd`. **Estado:** revisión implementada, verificada en local y publicada en Vercel; estado de CI registrado por separado.
 
 ## Cambios revisados
 
@@ -27,7 +27,7 @@
 | `yarn check:secrets` | 38 recursos estáticos comprobados sin secretos locales/remotos en esa ejecución. |
 | Límite de componentes / `git diff --check` | Sin componentes propios de más de 170 líneas; sin errores de whitespace tras corrección. |
 
-Los 54 casos corresponden a la regresión completa antes del ajuste final del menú; los nueve administrativos se repitieron después. La retirada de texto duplicado del detalle y la presentación 404/reintento son ajustes de presentación posteriores, comprobados con build y revisión pública; no se atribuye otra regresión completa a esos cambios.
+En local, los 54 casos corresponden a la regresión completa antes del ajuste final del menú; los nueve administrativos se repitieron después. La retirada de texto duplicado del detalle y la presentación 404/reintento se comprobaron con build y revisión pública. Posteriormente, **GitHub Actions aprobó el flujo completo sobre el commit final de código `0b1d4c3`**, incluidos los últimos ajustes; no se confunden ambas ejecuciones.
 
 Capturas en [capturas](capturas/): inicio, detalle/agotado/error, acceso/recuperación, editor de carta, pedido/mensaje, tarjeta y administración. Anchos automatizados: 320, 360, 390, 768 y 1280 px según recorrido. Axe, teclado, foco y reflujo incluidos en las suites; captura y contraste real no sustituyen certificación de accesibilidad.
 
@@ -47,4 +47,11 @@ No se declaran revisión humana de Narrador, dispositivos físicos, recepción r
 
 ## Publicación
 
-Pendiente de registrar SHA, subida y comprobación del nuevo despliegue. Las comprobaciones locales anteriores no se presentan como pruebas de la versión publicada antes de actualizarla.
+- Commit de código: [`0b1d4c3`](https://github.com/ZecarlosF07/fuegoybrasas/commit/0b1d4c31484f78119a79ef4954105b76f4bd6fb1), subido a `origin/master`.
+- [Despliegue de Vercel](https://vercel.com/zecarlos-projects/fuegoybrasas/Cn3xUF6ji9fj4DNjV4XcQwYJKeRR) completado. `/api/health` respondió 200 con `release` igual al SHA de código; no se infiere publicación solo del push.
+- [Revisión HTTP de Vercel](revision-publica-vercel.json): páginas públicas 200, 404 de ruta inexistente, redirecciones 307 conservadas y 17 productos con pedidos habilitados. Sin mutaciones de clientes o negocio.
+- [Fotografías publicadas](fotos-publicadas.json): 16 recursos únicos para los 17 productos, todos con HTTP 200 y tipo de imagen. Comprobación HEAD; no demuestra una fotografía real del local ni sustituye la revisión del encuadre.
+- Navegador sobre [la web publicada](https://fuegoybrasas.vercel.app/): header calculado `rgb(152, 37, 31)`, fondo blanco, botón principal `rgb(255, 196, 0)` con texto `rgb(23, 23, 23)`; portada y sello visibles. La pestaña publicada quedó abierta como entrega.
+- [GitHub Actions](https://github.com/ZecarlosF07/fuegoybrasas/actions/runs/40067341875): **completed / success**, 24 pasos completados sin fallos. Incluye lint, tipos, unitarias, DB, integración, Chrome/E2E, límite servidor/cliente y secretos sobre el código final. [Estado comprobado](publicacion.json).
+
+Los commits posteriores que solo actualicen esta evidencia no modifican el código funcional verificado. La revisión pública y la regresión aislada conservan alcances distintos.

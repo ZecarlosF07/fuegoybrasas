@@ -1,0 +1,138 @@
+{
+  "checkedAt": "2026-10-24T05:49:17.111Z",
+  "products": 17,
+  "uniqueImages": 16,
+  "allAvailable": true,
+  "method": "Lectura HEAD de imágenes públicas; no modifica productos ni transforma o descarga fotografías.",
+  "photos": [
+    {
+      "slugs": [
+        "promo-mostrito",
+        "mostrito-octavo-pollo"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 271470
+    },
+    {
+      "slugs": [
+        "promo-pollo-entero"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 391088
+    },
+    {
+      "slugs": [
+        "ronda-alitas"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 391062
+    },
+    {
+      "slugs": [
+        "combo-mostrito"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 292650
+    },
+    {
+      "slugs": [
+        "gran-promocion"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 325792
+    },
+    {
+      "slugs": [
+        "cuarto-pollo-para-llevar"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 270108
+    },
+    {
+      "slugs": [
+        "medio-pollo-a-la-brasa"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 308536
+    },
+    {
+      "slugs": [
+        "pollo-entero-a-la-brasa"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 327176
+    },
+    {
+      "slugs": [
+        "mostrito-cuarto-pollo"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 316884
+    },
+    {
+      "slugs": [
+        "mostrito-medio-pollo"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 375746
+    },
+    {
+      "slugs": [
+        "mostrito-pollo-entero"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 429454
+    },
+    {
+      "slugs": [
+        "alitas-clasicas"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 251392
+    },
+    {
+      "slugs": [
+        "alitas-dulces"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 276414
+    },
+    {
+      "slugs": [
+        "alitas-picantes"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 280190
+    },
+    {
+      "slugs": [
+        "alitas-acevichadas"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 267518
+    },
+    {
+      "slugs": [
+        "alitas-maracuya"
+      ],
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 252248
+    }
+  ]
+}
