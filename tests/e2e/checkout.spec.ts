@@ -46,6 +46,11 @@ test.afterAll(async () => {
 async function addProduct(page: Page, instructions = "Sin ají sintético") {
   await page.goto(`/productos/${slug}`);
   await expect(page.getByLabel("Modalidad", { exact: true })).toHaveCount(0);
+  const increase = page.getByRole("button", { name: /^Aumentar cantidad de/ });
+  await increase.focus();
+  await increase.press("Enter");
+  await expect(page.getByLabel(/^Unidades de/)).toHaveText("2");
+  await page.getByRole("button", { name: /^Reducir cantidad de/ }).press("Space");
   await page.getByLabel("Salsa sintética (+S/1.00)", { exact: true }).check();
   await page.getByLabel("Indicaciones para este producto (opcional)").fill(instructions);
   await page.getByRole("button", { name: "Agregar al pedido", exact: true }).click();
@@ -66,10 +71,11 @@ async function checkLayout(page: Page, step: string) {
 
 test("invitado: solo platos, sin modalidad ni datos logísticos, WhatsApp sin escrituras de pedidos", async ({ page }) => {
   await page.goto("/pedido"); await expect(page.getByText("Tu pedido está vacío. Elige productos en la carta para comenzar.")).toBeVisible();
-  await addProduct(page); await page.reload(); await expect(page.getByLabel("Indicaciones del producto (opcional)")).toHaveValue("Sin ají sintético");
+  await addProduct(page); await page.reload(); await expect(page.getByText("Indicaciones: Sin ají sintético")).toBeVisible();
   for (const label of ["Modalidad del pedido", "Tu nombre", "Dirección de entrega", "Zona", "Medio de pago"]) await expect(page.getByLabel(label, { exact: true })).toHaveCount(0);
   await checkLayout(page, "carrito-solo-platos");
-  await page.getByLabel("Cantidad", { exact: true }).focus(); expect(await page.getByLabel("Cantidad", { exact: true }).evaluate(el => getComputedStyle(el).outlineWidth)).toBe("2px");
+  const increase = page.getByRole("button", { name: /^Aumentar cantidad de/ });
+  await increase.focus(); expect(await increase.evaluate(el => getComputedStyle(el).outlineWidth)).toBe("2px");
   await prepare(page); await expect(page).toHaveURL(/\/pedido\/continuar$/); await checkLayout(page, "whatsapp-solo-platos");
   const text = await page.getByLabel("Mensaje completo para WhatsApp").inputValue();
   expect(text).toContain("Sin ají sintético"); expect(text).toContain("S/16.90"); expect(text).toContain("costo de envío por este chat");
@@ -110,8 +116,8 @@ test("cambio de precio exige aceptación expresa y conserva las indicaciones", a
 test("indicaciones perdidas, borrador corrupto y otra pestaña se recuperan expresamente", async ({ page, context }) => {
   await addProduct(page); await page.evaluate(() => sessionStorage.removeItem("fyb.checkout.v1")); await page.reload();
   await expect(page.getByText(/Las indicaciones de este producto no se recuperaron/)).toBeVisible(); await page.getByRole("button", { name: "Confirmar sin indicaciones", exact: true }).click();
-  const other = await context.newPage(); await other.goto("/pedido"); await other.getByLabel("Cantidad", { exact: true }).fill("2"); await other.getByRole("button", { name: "Guardar producto e indicaciones" }).click();
-  await expect(page.getByRole("button", { name: "Cargar versión de la otra pestaña" })).toBeVisible(); await page.getByRole("button", { name: "Cargar versión de la otra pestaña" }).click(); await expect(page.getByLabel("Cantidad", { exact: true })).toHaveValue("2"); await other.close();
+  const other = await context.newPage(); await other.goto("/pedido"); await other.getByRole("button", { name: /^Aumentar cantidad de/ }).click();
+  await expect(page.getByRole("button", { name: "Cargar versión de la otra pestaña" })).toBeVisible(); await page.getByRole("button", { name: "Cargar versión de la otra pestaña" }).click(); await expect(page.getByLabel(/^Unidades de/)).toHaveText("2"); await other.close();
   await page.evaluate(() => localStorage.setItem("fyb.cart.v1", '{"schemaVersion":2}')); await page.reload(); await expect(page.getByText(/borrador incompatible o dañado/)).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("fyb.cart.v1"))).toBe('{"schemaVersion":2}'); await page.getByRole("button", { name: "Descartar borrador y empezar otro" }).click(); await expect(page.getByText("Tu pedido está vacío. Elige productos en la carta para comenzar.")).toBeVisible();
 });
@@ -128,7 +134,7 @@ test("revisión expirada y clipboard denegado conservan el mensaje", async ({ pa
 test("fallo de conexión conserva platos y el enlace antiguo de datos lleva al pedido", async ({ page }) => {
   await addProduct(page); await page.goto("/pedido/datos"); await expect(page).toHaveURL(/\/pedido$/);
   await page.route("**/api/cart/validate", route => route.abort("failed"), { times: 1 }); await prepare(page);
-  await expect(page.locator("main").getByRole("alert")).toContainText("No pudimos validar"); await expect(page.getByLabel("Indicaciones del producto (opcional)")).toHaveValue("Sin ají sintético");
+  await expect(page.locator("main").getByRole("alert")).toContainText("No pudimos validar"); await expect(page.getByText("Indicaciones: Sin ají sintético")).toBeVisible();
   await prepare(page); await expect(page).toHaveURL(/\/pedido\/continuar$/);
   await page.getByRole("button", { name: "Empezar un nuevo pedido", exact: true }).click(); await page.getByRole("button", { name: "Conservar mi pedido", exact: true }).click(); await expect(page.getByRole("heading", { name: "Solicitud preparada", exact: true })).toBeVisible();
 });
@@ -146,9 +152,10 @@ test("un límite del pedido muestra error solo en el plato que intentó agregars
   const card = page.locator("#carta article").filter({ has: page.getByRole("button", { name: /^Agregar / }) }).first();
   await card.getByRole("button", { name: /^Agregar / }).click();
   await page.goto("/pedido");
-  await page.getByLabel("Cantidad", { exact: true }).fill("20");
-  await page.getByRole("button", { name: "Guardar producto e indicaciones", exact: true }).click();
-  await expect(page.getByRole("status")).toContainText("Producto actualizado.");
+  const increase = page.getByRole("button", { name: /^Aumentar cantidad de/ });
+  for (let quantity = 1; quantity < 20; quantity += 1) await increase.click();
+  await expect(increase).toBeDisabled();
+  await expect(page.getByLabel(/^Unidades de/)).toHaveText("20");
   await page.goto("/?categoria=mostritos#carta");
   await card.getByRole("button", { name: /^Agregar / }).click();
   await expect(card.getByRole("alert")).toContainText("No pudimos agregar este plato.");

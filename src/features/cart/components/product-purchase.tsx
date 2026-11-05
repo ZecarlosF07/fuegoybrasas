@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import type { FormEvent } from "react";
 
 import { ChoiceFields } from "./choice-fields";
+import { QuantityStepper } from "./quantity-stepper";
 import { useProductOrder } from "../hooks/use-product-order";
 import type { PurchaseProps } from "../types/cart";
 import { Button } from "@/components/ui/button";
@@ -13,6 +15,7 @@ import { orderUnitPrice } from "@/features/catalog/services/presentation";
 
 export function ProductPurchase({ item, catalog }: PurchaseProps) {
   const order = useProductOrder(item);
+  const [quantity, setQuantity] = useState(1);
   if (!catalog.configuration.orderingEnabled) return <p className="rounded-card border border-brand-border p-4">Estamos preparando los pedidos por WhatsApp. Puedes consultar la carta.</p>;
   if (item.availability !== "available") return <p>Este producto está agotado por ahora.</p>;
   if (orderUnitPrice(item) === null) return <p role="status">Consulta el precio de este plato con el local antes de agregarlo.</p>;
@@ -25,7 +28,8 @@ export function ProductPurchase({ item, catalog }: PurchaseProps) {
     <FormFeedback error={order.error} message={order.notice} />
     <form method="post" onSubmit={add} className="space-y-5">
       <ChoiceFields item={item} selected={[]} />
-      <div className="max-w-32"><TextField id="purchase-quantity" label="Cantidad" name="quantity" type="number" min={1} max={20} defaultValue={1} required /></div>
+      <QuantityStepper itemName={item.name} quantity={quantity} onChange={setQuantity} disabled={order.disabled} />
+      <input type="hidden" name="quantity" value={quantity} />
       <TextField id="purchase-instructions" label="Indicaciones para este producto (opcional)" name="instructions" maxLength={200} />
       <Button type="submit" className="w-full justify-between" disabled={order.disabled}>Agregar al pedido <span aria-hidden="true">+</span></Button>
     </form>

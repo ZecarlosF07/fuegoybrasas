@@ -17,9 +17,10 @@ export type CartContextValue = { draft: CartDraft; ready: boolean; warning: stri
 export type CartProviderProps = { children: ReactNode };
 export type CartPageProps = { catalog: Catalog; step: "cart" | "continue" };
 export type PurchaseProps = { item: CatalogItem; catalog: Catalog };
-export type ProductCardActionProps = { item: CatalogItem; orderingEnabled: boolean; selectedSlug: string };
+export type ProductCardActionProps = { item: CatalogItem; orderingEnabled: boolean; detailHref: string };
 export type ChoiceFieldsProps = { item: CatalogItem; selected: string[]; disabled?: boolean; prefix?: string };
 export type CartLineProps = { line: CartLine; item?: CatalogItem };
+export type QuantityStepperProps = { quantity: number; itemName: string; onChange: (quantity: number) => void; disabled?: boolean };
 
 export type CartValidationOptions = { current: RefObject<CartDraft>; available: boolean; setError: (error: OperationError | null) => void };
 

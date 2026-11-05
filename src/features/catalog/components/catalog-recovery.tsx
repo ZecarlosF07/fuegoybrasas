@@ -12,7 +12,7 @@ import { catalogSchema } from "../validation/schemas";
 import { AsyncButton } from "@/components/ui/async-button";
 import { failure, success } from "@/contracts/services/result";
 
-export function CatalogRecovery({ message, productSlug, selectedSlug = "todas" }: CatalogFailureProps) {
+export function CatalogRecovery({ message, productSlug, selectedSlug = "todas", search = "" }: CatalogFailureProps) {
   const [catalog, setCatalog] = useState<Catalog | null>(null);
   useEffect(() => { if (catalog) document.getElementById("contenido")?.focus(); }, [catalog]);
   async function retry() {
@@ -24,10 +24,10 @@ export function CatalogRecovery({ message, productSlug, selectedSlug = "todas" }
     return success(undefined, "catalog-retry");
   }
   const safeCategory = catalog ? selectedCategorySlug(catalog, selectedSlug) : "todas";
-  if (catalog && !productSlug) return <CatalogView catalog={catalog} selectedSlug={safeCategory} />;
+  if (catalog && !productSlug) return <CatalogView catalog={catalog} selectedSlug={safeCategory} search={search} />;
   const item = catalog?.items.find((value) => value.slug === productSlug);
   const category = catalog?.categories.find((value) => value.id === item?.categoryId);
-  if (catalog && item && category) return <ProductDetail item={item} catalog={catalog} category={category} selectedSlug={safeCategory} />;
+  if (catalog && item && category) return <ProductDetail item={item} catalog={catalog} category={category} selectedSlug={safeCategory} search={search} />;
   if (catalog) return <main id="contenido" tabIndex={-1} className="mx-auto max-w-content px-4 py-12 focus:outline-none"><h1 className="font-brand text-brand-mobile font-bold">Producto no disponible</h1><p className="my-4">Este producto ya no está en la carta.</p><Link href="/" className="inline-flex min-h-12 items-center text-brand-action underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-action">Volver a la carta</Link></main>;
   return (
     <main id="contenido" tabIndex={-1} className="mx-auto max-w-content px-4 py-12 focus:outline-none md:px-6 lg:px-8">

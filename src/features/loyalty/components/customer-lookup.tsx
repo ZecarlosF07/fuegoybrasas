@@ -24,9 +24,10 @@ export function CustomerLookup() {
     router.push("/personal/clientes/" + result.data.card.customerId);
   }
   return <form method="post" onSubmit={submit} noValidate className="space-y-4 rounded-card border border-brand-border bg-brand-surface p-4 md:p-6">
-    <h2 className="text-xl font-bold">Buscar tarjeta del cliente</h2><p className="text-brand-muted">Usa el celular completo. Es un número declarado, sin verificación SMS: confirma la tarjeta presentada, el nombre y el último movimiento antes de operar.</p>
+    <h2 className="text-xl font-bold">Buscar tarjeta del cliente</h2>
     <FormFeedback error={work.error} message={message} />
-    <TextField id="phone" name="phone" label="Celular peruano del cliente" autoComplete="off" inputMode="tel" maxLength={24} disabled={work.pending} required />
+    <TextField id="phone" name="phone" type="tel" label="Celular peruano del cliente" autoComplete="off" inputMode="tel" placeholder="Ej. 987 654 321" maxLength={24} disabled={work.pending} required />
     <SubmitButton pending={work.pending} label="Buscar tarjeta" pendingLabel="Buscando tarjeta…" />
+    <p className="text-sm text-brand-muted">Antes de registrar una operación, coteja la tarjeta presentada, el nombre y el último movimiento con el cliente.</p>
   </form>;
 }

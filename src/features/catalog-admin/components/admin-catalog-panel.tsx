@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { CheckboxField } from "@/components/ui/checkbox-field";
@@ -16,6 +16,8 @@ import { entityRows, selectEntity, selectionItem } from "@/features/catalog-admi
 import type { AdminPanelProps, CatalogEntityType, EntitySelection } from "@/features/catalog-admin/types/catalog-admin";
 import type { StaffConflict } from "@/features/staff/types/staff";
 
+const DESKTOP_PANEL = "(min-width: 64rem)";
+
 export function AdminCatalogPanel({ initial, actorUserId }: AdminPanelProps) {
   const [catalog, setCatalog] = useState(initial);
   const [selection, setSelection] = useState<EntitySelection | null>(null);
@@ -25,13 +27,23 @@ export function AdminCatalogPanel({ initial, actorUserId }: AdminPanelProps) {
   const [error, setError] = useState<OperationError<StaffConflict> | null>(null);
   const busy = useRef(false);
   const operationBusy = useRef(false);
+  const records = useRef<HTMLDetailsElement>(null);
+  const editor = useRef<HTMLElement>(null);
+  const shouldFocusEditor = useRef(false);
   const [operating, setOperating] = useState(false);
   const itemId = selectionItem(selection, catalog);
+  useEffect(() => {
+    if (!shouldFocusEditor.current) return;
+    shouldFocusEditor.current = false;
+    if (records.current && !window.matchMedia(DESKTOP_PANEL).matches) records.current.open = false;
+    editor.current?.focus();
+  }, [selection]);
   function choose(value: EntitySelection) {
     if (busy.current || operationBusy.current) return;
     try {
       const journal = readCatalogJournal(actorUserId);
       if (journal && (journal.entityId !== value.entityId || journal.entityType !== value.entityType)) { setError({ code: "OPERATION_UNCERTAIN", message: "Resuelve la operación pendiente del editor actual antes de cambiar de registro." }); return; }
+      shouldFocusEditor.current = true;
       setSelection(value); setError(null); setMessage(null);
     } catch { setError({ code: "SERVICE_UNAVAILABLE", message: "No pudimos comprobar las operaciones pendientes. Habilita el almacenamiento de esta pestaña." }); }
   }
@@ -62,12 +74,21 @@ export function AdminCatalogPanel({ initial, actorUserId }: AdminPanelProps) {
     <div><h1 className="font-brand text-3xl font-bold">Administrar carta</h1><p className="mt-3 max-w-3xl text-brand-muted">Precios, promociones y disponibilidad del local. Guarda borradores y publica cuando sus datos estén confirmados. Los cambios quedan registrados con tu cuenta.</p></div>
     <FormFeedback error={error} message={message} />
     <div className="flex flex-wrap gap-3"><Button variant="secondary" disabled={pending || operating} onClick={() => create("category")}>Nueva categoría</Button><Button disabled={pending || operating} onClick={() => create("catalog_item")}>Nuevo producto</Button><Button variant="secondary" disabled={pending || operating} aria-busy={pending} onClick={discardAndReload}>{pending ? "Cargando carta…" : "Descartar cambios y cargar versión actual"}</Button></div>
-    <CheckboxField id="show-deleted" label="Mostrar registros retirados" checked={showDeleted} onChange={(event) => setShowDeleted(event.target.checked)} />
     <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-      <details open={!selection} className="min-w-0 rounded-card border border-brand-border p-4"><summary className="min-h-12 cursor-pointer py-3 font-semibold">Seleccionar producto o categoría</summary><CatalogList catalog={catalog} disabled={pending || operating} showDeleted={showDeleted} onSelect={choose} /></details>
-      <div className="min-w-0 space-y-6">{selection ? <EntityEditor key={`${selection.entityType}:${selection.entityId}:${selection.row.revision}`} selection={selection} catalog={catalog} actorUserId={actorUserId} onSaved={reload} onBusyChange={setOperationBusy} /> : <p className="rounded-card border border-brand-border bg-brand-surface p-6">Selecciona un producto para revisar su contenido, precios, promoción y opciones.</p>}
+      <details ref={records} open className="min-w-0 rounded-card border border-brand-border p-4">
+        <summary id="registros-carta" className="min-h-12 cursor-pointer rounded-field py-3 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-action">Seleccionar producto o categoría</summary>
+        <div className="space-y-4 pt-2">
+          <CheckboxField id="show-deleted" label="Mostrar registros retirados" checked={showDeleted} onChange={(event) => setShowDeleted(event.target.checked)} />
+          <CatalogList catalog={catalog} disabled={pending || operating} showDeleted={showDeleted} onSelect={choose} />
+        </div>
+      </details>
+      <section ref={editor} tabIndex={-1} aria-label="Edición de carta" className="min-w-0 scroll-mt-6 space-y-6 rounded-card focus:outline-2 focus:outline-offset-4 focus:outline-brand-action">
+        {selection ? <>
+          <a href="#registros-carta" onClick={() => { if (records.current) records.current.open = true; }} className="inline-flex min-h-12 items-center font-semibold text-brand-action underline">Volver a la lista de productos</a>
+          <EntityEditor key={`${selection.entityType}:${selection.entityId}:${selection.row.revision}`} selection={selection} catalog={catalog} actorUserId={actorUserId} onSaved={reload} onBusyChange={setOperationBusy} />
+        </> : <p className="rounded-card border border-brand-border bg-brand-surface p-6">Selecciona un producto para revisar su contenido, precios, promoción y opciones.</p>}
         {itemId && <RelatedRecords catalog={catalog} itemId={itemId} showDeleted={showDeleted} disabled={pending || operating} onSelect={choose} onCreate={create} />}
-      </div>
+      </section>
     </div>
   </div>;
 }

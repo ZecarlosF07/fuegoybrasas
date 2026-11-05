@@ -44,7 +44,17 @@ test.afterAll(async () => {
 });
 
 test("editor móvil y teclado; publicación denegada, precio confirmado y carta actualizada", async ({ page }) => {
-  await page.getByRole("button", { name: "Editar Producto de prueba H4", exact: true }).click();
+  await page.setViewportSize({ width: 390, height: 900 });
+  const search = page.getByLabel("Buscar producto", { exact: true });
+  await search.fill("porcion sintetica");
+  const product = page.getByRole("button", { name: "Editar Producto de prueba H4", exact: true });
+  await expect(product).toHaveAccessibleDescription(/Porción sintética/);
+  await product.click();
+  await expect(search).toBeHidden();
+  await page.getByRole("link", { name: "Volver a la lista de productos" }).click();
+  await expect(search).toHaveValue("porcion sintetica");
+  await product.click();
+  await expect(page.getByRole("region", { name: "Edición de carta", exact: true })).toBeFocused();
   const editor = page.getByRole("region", { name: "Editor de carta" });
   await editor.getByLabel("Habilitado para la web").check(); await editor.getByLabel("Confirmo la porción y las inclusiones").check(); await editor.getByLabel("Estado de publicación").selectOption("published");
   await editor.getByRole("button", { name: "Guardar cambios", exact: true }).click();

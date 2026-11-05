@@ -13,6 +13,8 @@ export default async function StaffCustomerPage({ params }: PageProps<"/personal
   if (!access.ok) return <p role="alert">{access.error.message}</p>;
   const id = z.uuid().safeParse((await params).id);
   const result = id.success ? await getStaffCard(id.data) : null;
-  return <>{result?.ok ? <StaffCardView initial={result.data} actorUserId={access.data.authUserId} /> : <p role="alert">{result?.error.message ?? "No encontramos el recurso solicitado."}</p>}
-    <Link className="mt-6 inline-flex min-h-12 items-center text-brand-action underline" href="/personal">Volver a buscar tarjeta</Link></>;
+  return <>
+    <Link className="mb-4 inline-flex min-h-12 items-center gap-2 font-semibold text-brand-action underline" href="/personal"><span aria-hidden="true">←</span> Volver a buscar tarjeta</Link>
+    {result?.ok ? <StaffCardView initial={result.data} actorUserId={access.data.authUserId} /> : <p role="alert">{result?.error.message ?? "No encontramos el recurso solicitado."}</p>}
+  </>;
 }

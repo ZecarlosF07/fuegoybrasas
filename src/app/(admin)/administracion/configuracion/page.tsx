@@ -17,6 +17,18 @@ export default async function ConfigurationPage() {
   const parsed = configSchema.safeParse(response.data);
   if (response.error || !parsed.success) return <p role="alert">No pudimos leer la configuración. Vuelve a intentar sin iniciar un guardado.</p>;
   const programs = await getPrograms();
-  return <><ConfigForm initial={parsed.data} actorUserId={access.data.authUserId} /><CheckoutConfigPanel initial={parsed.data} actorUserId={access.data.authUserId} />
-    {programs.ok ? <ProgramPanel initial={programs.data} actorUserId={access.data.authUserId} launchReady={getCardAccessSettings().ready} /> : <p role="alert">{programs.error.message}</p>}</>;
+  const sections = [
+    { id: "datos-local", label: "Datos y horarios" },
+    { id: "condiciones-pedido", label: "Condiciones del pedido" },
+    { id: "programa-fidelizacion", label: "Tarjeta de fidelización" },
+  ];
+  return <div className="space-y-6">
+    <h1 className="font-brand text-3xl font-bold">Configuración del local</h1>
+    <nav aria-label="Secciones de configuración" className="flex flex-wrap gap-x-6 gap-y-2 rounded-card border border-brand-border bg-brand-subtle px-4 py-2">
+      {sections.map(({ id, label }) => <a key={id} href={`#${id}`} className="inline-flex min-h-12 items-center font-semibold text-brand-action underline">{label}</a>)}
+    </nav>
+    <div id="datos-local" tabIndex={-1} className="scroll-mt-6"><ConfigForm initial={parsed.data} actorUserId={access.data.authUserId} /></div>
+    <div id="condiciones-pedido" tabIndex={-1} className="flow-root scroll-mt-6"><CheckoutConfigPanel initial={parsed.data} actorUserId={access.data.authUserId} /></div>
+    <div id="programa-fidelizacion" tabIndex={-1} className="scroll-mt-6">{programs.ok ? <ProgramPanel initial={programs.data} actorUserId={access.data.authUserId} launchReady={getCardAccessSettings().ready} /> : <p role="alert">{programs.error.message}</p>}</div>
+  </div>;
 }

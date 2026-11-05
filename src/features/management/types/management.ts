@@ -26,6 +26,7 @@ export type ManagementController = {
   run: (kind: ManagementKind, input: ManagementInput) => Promise<void>; check: () => Promise<void>; refresh: () => Promise<void>;
 };
 export type DashboardProps = { initial: Dashboard; customers: Customers };
+export type DashboardMetricsProps = { metrics: { label: string; value: number }[] };
 export type CustomerManagementProps = { card: StaffCard; history: History; actorUserId: string };
 export type CorrectionProps = { card: StaffCard; operation: ManagementController };
 export type HistoryProps = { history: History; operation: ManagementController; onMore: () => Promise<void>; loading: boolean };

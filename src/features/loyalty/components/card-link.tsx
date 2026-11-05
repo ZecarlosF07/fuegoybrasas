@@ -55,7 +55,8 @@ export function SaveCardLink() {
     if (result?.ok) setMessage("Enlace copiado. Guárdalo en un lugar privado para volver a abrir tu tarjeta.");
   }
   return <section className="space-y-4 rounded-card border border-brand-border bg-brand-surface p-4 md:p-6">
-    <h2 className="text-xl font-bold">Guardar mi tarjeta</h2><p>Este celular recuerda tu tarjeta. Guarda también su enlace para abrirla en otro dispositivo. Cualquier persona con el enlace podrá ver tu tarjeta y tus indicaciones; no lo publiques.</p>
+    <h2 className="text-xl font-bold">Guardar mi tarjeta</h2>
+    <p>Guarda el enlace privado para abrir tu tarjeta en otro celular. Quien lo tenga podrá ver tus sellos e indicaciones.</p>
     <Button variant="secondary" onClick={copy} disabled={work.pending} aria-busy={work.pending}>{work.pending ? "Preparando enlace privado…" : "Copiar enlace y mostrar QR"}</Button>
     <FormFeedback error={work.error} message={message} />
     {value && <div className="space-y-4"><TextField id="privateCardLink" label="Enlace privado de mi tarjeta" value={value.link} readOnly help="Si no se pudo copiar, selecciona este texto y guárdalo. No lo compartas con otras personas." />

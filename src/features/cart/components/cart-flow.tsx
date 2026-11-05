@@ -30,7 +30,13 @@ export function CartFlow({ catalog, step }: CartPageProps) {
   }
   return <main id="contenido" tabIndex={-1} className="mx-auto max-w-content space-y-6 px-4 py-8 focus:outline-none md:px-6 lg:px-8">
     <div><p className="mb-2 text-sm font-semibold text-brand-gold-ink">Tu antojo, a un mensaje</p><h1 className="font-brand text-brand-mobile font-bold md:text-brand-desktop">{step === "cart" ? "Revisa tu pedido" : "Continúa por WhatsApp"}</h1></div>
-    <nav aria-label="Pasos del pedido" className="flex items-center gap-3 text-sm"><Link href="/pedido" className="inline-flex min-h-12 items-center font-semibold text-brand-action underline" aria-current={step === "cart" ? "step" : undefined}>1. Tus platos</Link><span aria-hidden="true">→</span><Link href="/pedido/continuar" className="inline-flex min-h-12 items-center font-semibold text-brand-action underline" aria-current={step === "continue" ? "step" : undefined}>2. WhatsApp</Link></nav>
+    <nav aria-label="Pasos del pedido"><ol className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
+      <li>{step === "cart" ? <span aria-current="step" className="rounded-field bg-brand-action px-3 py-2 font-semibold text-brand-surface">1. Tus platos</span> :
+        <Link href="/pedido" className="inline-flex min-h-12 items-center font-semibold text-brand-action underline">1. Tus platos</Link>}</li>
+      <li aria-hidden="true">→</li>
+      <li>{step === "continue" ? <span aria-current="step" className="rounded-field bg-brand-action px-3 py-2 font-semibold text-brand-surface">2. WhatsApp</span> :
+        <span className="text-brand-muted">2. WhatsApp</span>}</li>
+    </ol></nav>
     <CartRecovery />
     <FormFeedback error={step === "continue" && cart.error ? { ...cart.error, fieldErrors: undefined } : cart.error} />
     {!catalog.configuration.orderingEnabled && <p role="status">Los pedidos por WhatsApp están pausados. Tu borrador se conserva.</p>}
@@ -46,7 +52,7 @@ export function CartFlow({ catalog, step }: CartPageProps) {
           <SubmitButton pending={cart.validating} label="Preparar mensaje de WhatsApp" pendingLabel="Revisando pedido…" disabled={!catalog.configuration.orderingEnabled} />
           <p className="text-sm text-brand-muted">Revisaremos precios y disponibilidad. El local confirma la atención por el chat.</p>
         </form>
-      </div> : <div className="mx-auto max-w-3xl space-y-6"><CartReview /><WhatsAppContinuation /></div>}
+      </div> : <div className="mx-auto max-w-3xl space-y-6"><WhatsAppContinuation /><CartReview /></div>}
       <div className="flex flex-wrap items-start gap-4"><Link href="/#carta" className="inline-flex min-h-12 items-center text-brand-action underline">Seguir eligiendo en la carta</Link>
       {confirmNew ? <section className="space-y-3 rounded-card border border-brand-control-border p-4"><p>¿Descartar todos los productos e indicaciones de este pedido?</p><div className="flex flex-wrap gap-3"><Button onClick={() => { cart.dispatch({ type: "clearDraft" }); setConfirmNew(false); router.push("/pedido"); }}>Sí, empezar otro pedido</Button><Button variant="secondary" onClick={() => setConfirmNew(false)}>Conservar mi pedido</Button></div></section> : <Button variant="secondary" onClick={() => setConfirmNew(true)}>Empezar un nuevo pedido</Button>}
       </div>

@@ -10,11 +10,15 @@ export default async function StaffHomePage() {
   if (!access.ok) return <p role="alert">{access.error.message}</p>;
   return <div className="max-w-2xl space-y-6">
     <h1 className="font-brand text-3xl font-bold">Inicio del personal</h1>
-    <p>Tu acceso está verificado. Identifica la tarjeta antes de registrar una visita o un canje.</p>
+    <p className="text-brand-muted">Busca una tarjeta para registrar un sello o canjear un premio.</p>
     <CustomerLookup />
     {access.data.role === "manager" && <div className="rounded-card border border-brand-border bg-brand-surface p-6">
-      <h2 className="text-xl font-semibold">Datos del local</h2><p className="my-4 text-brand-muted">Revisa el nombre, contacto y datos operativos antes de habilitar la carta y los pedidos.</p>
-      <Link href="/administracion/configuracion" className="flex min-h-12 items-center text-brand-action underline">Revisar configuración</Link>
+      <h2 className="text-xl font-semibold">Administrar el negocio</h2>
+      <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+        <Link href="/administracion" className="inline-flex min-h-12 items-center font-semibold text-brand-action underline">Ver tarjetas e indicadores</Link>
+        <Link href="/administracion/carta" className="inline-flex min-h-12 items-center font-semibold text-brand-action underline">Administrar la carta</Link>
+        <Link href="/administracion/configuracion" className="inline-flex min-h-12 items-center font-semibold text-brand-action underline">Revisar configuración</Link>
+      </div>
     </div>}
   </div>;
 }

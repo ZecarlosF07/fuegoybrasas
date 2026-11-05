@@ -81,7 +81,7 @@ export function ConfigForm({ initial, actorUserId }: ConfigFormProps) {
     catch { checking.setError({ code: "SERVICE_UNAVAILABLE", message: "El resultado está registrado, pero no pudimos limpiar el registro local. Consulta al responsable." }); }
   }
   return <div className="max-w-3xl space-y-6">
-    <h1 className="font-brand text-3xl font-bold">Configuración del local</h1>
+    <h2 className="font-brand text-2xl font-bold">Datos y horarios</h2>
     <p className="text-brand-muted">Versión {config.revision}. Los cambios se registran con tu cuenta.</p>
     <FormFeedback error={saving.error ?? checking.error ?? loading.error} message={message} />
     {journal && <div className="space-y-4 rounded-card border border-brand-control-border bg-brand-surface p-4">

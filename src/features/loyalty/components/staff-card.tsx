@@ -26,7 +26,7 @@ export function StaffCardView({ initial, actorUserId }: StaffCardProps) {
   const operation = useLoyaltyOperation(actorUserId, reload);
   return <div className="space-y-6">
     <div className="flex flex-wrap items-center justify-between gap-4"><h1 className="font-brand text-3xl font-bold">Atender tarjeta</h1><Button variant="secondary" disabled={operation.pending || refreshing || operation.journal !== null} aria-busy={operation.pending || refreshing} onClick={operation.refresh}>{refreshing ? "Consultando tarjeta…" : "Consultar tarjeta actual"}</Button></div>
-    <p>Confirma identidad: <strong>{card.displayName}</strong> · {card.phone ?? "teléfono pendiente de revisión"}.</p>
+    <p>Verifica con el cliente que la tarjeta y sus últimos movimientos correspondan a <strong>{card.displayName}</strong> · {card.phone ?? "teléfono pendiente de revisión"}.</p>
     <FormFeedback error={operation.error} message={operation.message} />
     {operation.journal && <div className="space-y-4 rounded-card border border-brand-control-border bg-brand-surface p-4">
       <p>Hay una operación pendiente. No registres otra acreditación o canje.</p><p className="break-all text-sm">Referencia: {operation.journal.operationId}</p>

@@ -6,12 +6,11 @@ import { useProductOrder } from "../hooks/use-product-order";
 import type { ProductCardActionProps } from "../types/cart";
 import { Button } from "@/components/ui/button";
 import { buttonClasses } from "@/components/ui/button-classes";
-import { productHref } from "@/features/catalog/services/presentation";
 
-export function ProductCardAction({ item, orderingEnabled, selectedSlug }: ProductCardActionProps) {
+export function ProductCardAction({ item, orderingEnabled, detailHref }: ProductCardActionProps) {
   const order = useProductOrder(item);
   if (!orderingEnabled || item.availability !== "available") return null;
-  if (item.optionGroups.some((group) => group.minChoices > 0)) return <Link href={productHref(item, selectedSlug)} className={buttonClasses("primary")}>Elegir opciones</Link>;
+  if (item.optionGroups.some((group) => group.minChoices > 0)) return <Link href={detailHref} className={buttonClasses("primary")}>Elegir opciones</Link>;
   function add() {
     const form = new FormData();
     form.set("quantity", "1");

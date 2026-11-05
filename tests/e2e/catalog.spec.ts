@@ -52,6 +52,25 @@ test("detalle agotado, borrador y metadata segura", async ({ page }) => {
   await page.screenshot({ path: `${screenshots}/no-encontrado.png`, fullPage: true });
 });
 
+test("la búsqueda tolera tildes, conserva el contexto y se puede limpiar", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 900 });
+  await page.goto("/?categoria=" + E2E_CATEGORY_SLUG + "#carta");
+  const input = page.getByRole("searchbox", { name: "Buscar un plato" });
+  await input.fill("sintetico porcion");
+  await input.press("Enter");
+  await expect(page.getByRole("status")).toContainText("1 resultado");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.getByRole("link", { name: "Ver detalle de Plato sintético H3, Porción sintética" }).click();
+  await page.getByRole("link", { name: "Volver a la carta" }).click();
+  await expect(input).toHaveValue("sintetico porcion");
+  await input.fill("sin coincidencias");
+  await page.getByRole("button", { name: "Buscar", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("0 resultados");
+  await page.getByRole("link", { name: "Limpiar búsqueda" }).click();
+  await expect(input).toBeEmpty();
+  await expect(page.locator("#carta article")).toHaveCount(2);
+});
+
 test("imagen cargada y fallida: el texto comercial permanece legible", async ({ page }) => {
   // PNG abstracto de prueba: verifica carga y layout; no representa comida ni una foto real.
   const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==", "base64");
